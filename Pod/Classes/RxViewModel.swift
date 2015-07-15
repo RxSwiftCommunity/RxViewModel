@@ -111,4 +111,52 @@ public class RxViewModel: NSObject {
       }
     }
   }
+  
+  /**
+  Subscribes (or resubscribes) to the given signal whenever
+  `didBecomeActiveSignal` fires.
+
+  When `didBecomeInactiveSignal` fires, any active subscription to `signal` is
+  disposed.
+
+  Returns a signal which forwards `next`s from the latest subscription to
+  `signal`, and completes when the receiver is deallocated. If `signal` sends
+  an error at any point, the returned signal will error out as well.
+  */
+  public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
+    let signal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
+    
+    return create { (o: ObserverOf<T>) -> Disposable in
+      let disposable = CompositeDisposable()
+      var signalDisposable: Disposable? = nil
+      var disposeKey: Bag<Disposable>.KeyType?
+    
+      let activeDisposable = signal >- subscribe( { active in
+        if active == true {
+          signalDisposable = observable >- subscribe( { value in
+            o.on(.Next(value))
+            }, error: { error in
+              o.on(.Error(error))
+            }, completed: {})
+          
+          if let sd = signalDisposable { disposeKey = disposable.addDisposable(sd) }
+        } else {
+          if let sd = signalDisposable {
+            sd.dispose()
+            if let dk = disposeKey {
+              disposable.removeDisposable(dk)
+            }
+          }
+        }
+      }, error: { error in
+        o.on(.Error(error))
+      }, completed: {
+        o.on(.Completed)
+      })
+      
+      disposable.addDisposable(activeDisposable)
+      
+      return disposable
+    }
+  }
 }

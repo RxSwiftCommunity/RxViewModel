@@ -60,5 +60,46 @@ class RxViewModelSpec: QuickSpec {
       vm.active = true
       expect(nextSteps).to(equal(2))
     }
+    
+    it("should forward a signal") {
+      guard let vm = self.viewModel else {
+        fail("• RxViewModel property not initialized.")
+        
+        /// Added to silence compiler warning
+        return
+      }
+      
+      vm.active = true
+      var values = [String]()
+      var completed = false
+      
+      let input = create { o -> Disposable in
+        o.on(.Next("1"))
+        o.on(.Next("2"))
+        
+        return AnonymousDisposable {}
+      } as Observable<String?>
+      
+      vm.forwardSignalWhileActive(input) >- subscribe({ value in
+        values.append(value!)
+      }, error: { err in
+          
+      }, completed: {
+        completed = true
+      })
+      
+      var expectedValues = ["1", "2"]
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      vm.active = false
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      vm.active = true
+      expectedValues = ["1", "2", "1", "2"]
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+    }
   }
 }

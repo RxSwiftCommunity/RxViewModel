@@ -59,3 +59,6 @@ RxViewModel is available under the MIT license. See the LICENSE file for more in
 
 [rvm]:https://github.com/ReactiveCocoa/ReactiveViewModel
 [rxcocoa]:https://github.com/kzaher/RxSwift
+
+# :warning: Warning • Notice
+This project is still a _WIP_; more so because its based on `Swift 2.0` which is not out of ß yet.

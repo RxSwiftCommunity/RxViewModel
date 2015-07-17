@@ -159,4 +159,42 @@ public class RxViewModel: NSObject {
       return disposable
     }
   }
+  
+  /**
+   Throttles events on the given `observable` while the receiver is inactive.
+  
+   Unlike `forwardSignalWhileActive:`, this method will stay subscribed to
+   `observable` the entire time, except that its events will be throttled when the
+   receiver becomes inactive.
+  
+  - parameter observable: The `Observable` to which this method will stay 
+  subscribed the entire time.
+  
+  - returns: Returns an `observable` which forwards events from `observable` (throttled while the
+  receiver is inactive), and completes when `observable` completes or the receiver
+  is deallocated.
+  */
+  public func throttleSignalWhileInactive<T>(observable: Observable<T>) -> Observable<T> {
+    replay(1)(observable)
+    let result = ReplaySubject<T>(bufferSize: 1)
+    
+    let activeSignal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
+      >- takeUntil(create { (o: ObserverOf<T>) -> Disposable in
+        observable >- subscribeCompleted {
+          result.on(.Completed)
+        }
+      })
+
+    let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in
+      (active, o)
+      } >- throttle(2) { (active: Bool?, value: T) -> Bool in
+        return active == false
+    } >- subscribe({ (value:(Bool?, T)) in
+      result.on(.Next(value.1))
+    }, error: { _ in }, completed: {
+      result.on(.Completed)
+    })
+
+    return result
+  }
 }

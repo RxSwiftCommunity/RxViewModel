@@ -82,9 +82,7 @@ class RxViewModelSpec: QuickSpec {
       
       vm.forwardSignalWhileActive(input) >- subscribe({ value in
         values.append(value!)
-      }, error: { err in
-          
-      }, completed: {
+      }, error: { _ in }, completed: {
         completed = true
       })
       
@@ -100,6 +98,69 @@ class RxViewModelSpec: QuickSpec {
       expectedValues = ["1", "2", "1", "2"]
       expect(values).to(equal(expectedValues))
       expect(completed).to(beFalsy())
+    }
+    
+    it("should throttle a signal") {
+      guard let vm = self.viewModel else {
+        fail("• RxViewModel property not initialized.")
+        
+        /// Added to silence compiler warning
+        return
+      }
+      
+      vm.active = true
+      var values = [String]()
+      var completed = false
+      let subject = ReplaySubject<String>(firstElement: "0")
+      
+      vm.throttleSignalWhileInactive(subject)
+      >- subscribe({ value in
+        values.append(value)
+      }, error: { _ in  }, completed: {
+        completed = true
+      })
+      
+      var expectedValues = ["0"]
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      subject.on(.Next("1"))
+      expectedValues = ["0", "1"]
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      vm.active = false
+      
+      // Since the VM is inactive, these events should be throttled.
+      subject.on(.Next("2"))
+      subject.on(.Next("3"))
+      
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      expectedValues = ["0", "1", "3"]
+      expect(values).toEventually(equal(expectedValues), timeout: 4, pollInterval: 2)
+      expect(completed).to(beFalsy())
+      
+      // After reactivating, we should still get this event.
+      subject.on(.Next("4"))
+      vm.active = true
+      
+      expectedValues = ["0", "1", "3", "4"]
+      expect(values).toEventually(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      // And now new events should be instant.
+      subject.on(.Next("5"))
+      
+      expectedValues = ["0", "1", "3", "4", "5"]
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beFalsy())
+      
+      subject.on(.Completed)
+      
+      expect(values).to(equal(expectedValues))
+      expect(completed).to(beTruthy())
     }
   }
 }

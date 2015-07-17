@@ -1,6 +1,3 @@
-# :warning: Warning • Notice
-This project is still a _WIP_; more so because its based on `Swift 2.0` which is not out of ß yet.
-
 # RxViewModel
 
 [![CI Status](http://img.shields.io/travis/esttorhe/RxViewModel.svg?style=flat)](https://travis-ci.org/esttorhe/RxViewModel)
@@ -24,13 +21,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 This project depends directly on [`RxCocoa`/`RxSwift`][rxcocoa] since its the driving force behind the «reactiveness» of the view model.
 
-At this time this project is being written directly in `Swift 2.0` and this the following needs to be included in the `Podfile` in order to use it:
-
-```ruby
-pod 'RxCocoa', :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-```
-
 ## Installation
 
 RxViewModel is available through [CocoaPods](http://cocoapods.org). To install
@@ -39,15 +29,6 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod "RxViewModel"
 ```
----
-*And momentarily add this as well:*
-```ruby
-pod 'RxCocoa', :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-```
-*Later on this will be added as direct dependencies in the `podspec`*
-
----
 
 ## Features
 

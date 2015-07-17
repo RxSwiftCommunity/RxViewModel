@@ -1,11 +1,8 @@
 machine:
   xcode:
     version: "6.3.1"
-  ruby:
-    version:
-      2.2.0
 dependencies:
-  post:
+  pre:
     - make bootstrap
 test:
   override:

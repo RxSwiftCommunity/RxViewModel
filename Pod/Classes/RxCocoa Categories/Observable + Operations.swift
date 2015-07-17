@@ -52,7 +52,7 @@ public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Obs
         if !hasNextValue { return }
         if let nV = nextValue
           where send == true {
-            o.on(.Next(nV))
+            o.on(.Next(RxBox<E>(nV)))
         }
         
         nextValue = nil
@@ -64,14 +64,14 @@ public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Obs
         flushNext(false)
         
         if !shouldThrottle {
-          o.on(.Next($0))
+          o.on(.Next(RxBox<E>($0)))
           
           return
         }
         
         nextValue = $0
         hasNextValue = true
-        timer(interval, scheduler: scheduler) >- subscribeNext { _ in
+        timer(dueTime: interval, scheduler) >- subscribeNext { _ in
           flushNext(true)
         }
       }

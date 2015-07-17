@@ -18,7 +18,6 @@ Given the fact that there's no `Swift` branch and the lack of interest in the pr
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.dependency 'RxCocoa'
-    #, :branch => 'feature/swift2.0' <<== commented out for now because we would be depending on Swift 2.0
+  s.dependency 'RxCocoa', '~> 1.8'
   s.frameworks = 'Foundation'
 end

@@ -79,7 +79,7 @@ public class RxViewModel: NSObject {
   */
   public var didBecomeActive: Observable<RxViewModel> {
     get {
-      return deferred { [weak self] () -> Observable<RxViewModel> in
+      return defer { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.activeSubject == nil {
             weakSelf.activeSubject = ReplaySubject(bufferSize: 1)
@@ -99,7 +99,7 @@ public class RxViewModel: NSObject {
   */
   public var didBecomeInactive: Observable<RxViewModel> {
     get {
-      return deferred { [weak self] () -> Observable<RxViewModel> in
+      return defer { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.inactiveSubject == nil {
             weakSelf.inactiveSubject = ReplaySubject(bufferSize: 1)
@@ -124,17 +124,17 @@ public class RxViewModel: NSObject {
   an error at any point, the returned signal will error out as well.
   */
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
-    let signal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
+    let signal = self.rx_observe("_active", options: .Initial | .New) as Observable<Bool?>
     
     return create { (o: ObserverOf<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
       var disposeKey: Bag<Disposable>.KeyType?
     
-      let activeDisposable = signal >- subscribe( { active in
+      let activeDisposable = signal >- subscribe( next: { active in
         if active == true {
-          signalDisposable = observable >- subscribe( { value in
-            o.on(.Next(value))
+          signalDisposable = observable >- subscribe( next: { (value: T) in
+            o.on(.Next(RxBox<T>(value)))
             }, error: { error in
               o.on(.Error(error))
             }, completed: {})
@@ -178,7 +178,7 @@ public class RxViewModel: NSObject {
     replay(1)(observable)
     let result = ReplaySubject<T>(bufferSize: 1)
     
-    let activeSignal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
+    let activeSignal = self.rx_observe("_active", options: .Initial | .New) as Observable<Bool?>
       >- takeUntil(create { (o: ObserverOf<T>) -> Disposable in
         observable >- subscribeCompleted {
           result.on(.Completed)
@@ -187,10 +187,11 @@ public class RxViewModel: NSObject {
 
     let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in
       (active, o)
-      } >- throttle(2) { (active: Bool?, value: T) -> Bool in
+      }
+      >- throttle(2) { (active: Bool?, value: T) -> Bool in
         return active == false
-    } >- subscribe({ (value:(Bool?, T)) in
-      result.on(.Next(value.1))
+      } >- subscribe( next: { (value:(Bool?, T)) in
+      result.on(.Next(RxBox<T>(value.1)))
     }, error: { _ in }, completed: {
       result.on(.Completed)
     })

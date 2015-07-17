@@ -2,8 +2,8 @@ bootstrap:
 	bundle install --path="vendor/bundle"
 	bundle update
 	cd Example
-	bundle exec pod install
-	bundle exec pod update
+	bundle exec pod install --project-directory=Example/
+	bundle exec pod update --project-directory=Example/
 
 bundle: 
 	bundle exec pod install

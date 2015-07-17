@@ -4,7 +4,7 @@ PODS:
   - RxCocoa (1.8):
     - RxSwift
   - RxSwift (1.8)
-  - RxViewModel (0.2.0):
+  - RxViewModel (0.2.1):
     - RxCocoa (~> 1.8)
 
 DEPENDENCIES:
@@ -21,6 +21,6 @@ SPEC CHECKSUMS:
   Quick: 824572d3d198d51e52cf4aa722cebf7e59952a35
   RxCocoa: 596208e539333929faed6b4c98f8acb9e3dc042c
   RxSwift: 779bad8fccc06b5c22080af13dfeaeab2ee378c5
-  RxViewModel: 90121a2d4dde8bd60a1e09e9402d37f5bf6b3c39
+  RxViewModel: 2ec4271032adac02ef52de989f56e7e8c4c99ca3
 
 COCOAPODS: 0.37.2

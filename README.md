@@ -51,14 +51,12 @@ pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'featur
 
 ## Features
 
-Currently `RxViewModel` supports the following features from [`ReactiveViewModel`][rvm]:
+Currently `RxViewModel` supports the following features from [`ReactiveViewModel`][rvm] (*ALL of them :wink:):
 
 - [x] `didBecomeActive`
 - [x] `didBecomeInactive`
 - [x] `forwardSignalWhileActive`
-
-### TODO:
-- [ ] `throttleSignalWhileInactive`
+- [x] `throttleSignalWhileInactive`
 
 ## Author
 

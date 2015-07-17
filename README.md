@@ -3,7 +3,7 @@ This project is still a _WIP_; more so because its based on `Swift 2.0` which is
 
 # RxViewModel
 
-[![CI Status](http://img.shields.io/travis/esttorhe/RxViewModel.svg?style=flat)](https://travis-ci.org/esttorhe/RxViewModel)
+[![Circle CI](https://circleci.com/gh/esttorhe/RxViewModel.svg?style=svg)](https://circleci.com/gh/esttorhe/RxViewModel)
 [![Version](https://img.shields.io/cocoapods/v/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![License](https://img.shields.io/cocoapods/l/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![Platform](https://img.shields.io/cocoapods/p/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)

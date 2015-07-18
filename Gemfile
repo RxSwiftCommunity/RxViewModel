@@ -12,3 +12,7 @@ gem 'cocoapods-deintegrate'
 # A command-line tool that reorganizes your Xcode project folder to match your Xcode
 # groups
 gem 'synx'
+
+# Script, that automatically generate changelog from your tags, issues, labels and pull
+# requests.
+gem 'github_changelog_generator'

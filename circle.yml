@@ -12,7 +12,7 @@ test:
         CODE_SIGN_IDENTITY=
         PROVISIONING_PROFILE=
         -sdk iphonesimulator
-        -destination 'platform=iOS Simulator,OS=8.2,name=iPhone 6'
+        -destination 'platform=iOS Simulator,OS=8.3,name=iPhone 6'
         -workspace Example/RxViewModel.xcworkspace
         -scheme "RxViewModel-Example"
         clean build test |

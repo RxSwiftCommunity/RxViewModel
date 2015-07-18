@@ -16,7 +16,7 @@ import RxSwift
 /**
  Throttles `next`s for which `predicate` returns `true`.
 
- When `predicate` returns `true` for a `next`:
+ When `valuePassingTest` returns `true` for a `next`:
 
   1. If another `next` is received before `interval` seconds have passed, the
      prior value is discarded. This happens regardless of whether the new
@@ -25,41 +25,41 @@ import RxSwift
      received, it will be forwarded on the scheduler that it was received
      upon.
 
- When `predicate` returns NO for a `next`, it is forwarded immediately,
+ When `valuePassingTest` returns NO for a `next`, it is forwarded immediately,
  without any throttling.
 
  - parameter interval: The number of seconds for which to buffer the latest value that
-             passes `predicate`.
- - parameter predicate: Passed each `next` from the receiver, this closuer returns
+             passes `valuePassingTest`.
+ - parameter valuePassingTest: Passed each `next` from the receiver, this closuer returns
              whether the given value should be throttled.
 
- - returns: Returns a signal which sends `next` events, throttled when `predicate`
+ - returns: Returns a signal which sends `next` events, throttled when `valuePassingTest`
 returns `true`. Completion and errors are always forwarded immediately.
 */
-public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Observable<E> -> Observable<E>) {
+public func throttle<E>(interval: NSTimeInterval, valuePassingTest predicate:(E) -> Bool) -> (Observable<E> -> Observable<E>) {
   return { source in
     create { (o: ObserverOf<E>) -> Disposable in
       let disposable = CompositeDisposable()
       
-      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Default)
+      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Low)
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue:E?
       
-      let flushNext: (Bool) -> Void = { send in
-        nextDisposable.dispose()
-        
-        if !hasNextValue { return }
-        if let nV = nextValue
-          where send == true {
-            o.on(.Next(RxBox<E>(nV)))
+      let subscriptionDisposable = source >- subscribeNext {
+        func flushNext(send: Bool) -> Void {
+          nextDisposable.dispose()
+          
+          if !hasNextValue { return }
+          if let nV = nextValue
+            where send == true {
+              o.on(.Next(RxBox<E>(nV)))
+          }
+          
+          nextValue = nil
+          hasNextValue = false
         }
         
-        nextValue = nil
-        hasNextValue = false
-      }
-      
-      let subscriptionDisposable = source >- subscribeNext {
         let shouldThrottle = predicate($0)
         flushNext(false)
         
@@ -69,10 +69,12 @@ public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Obs
           return
         }
         
-        nextValue = $0
         hasNextValue = true
+        nextValue = $0
+        
+        let flush = flushNext
         timer(dueTime: interval, scheduler) >- subscribeNext { _ in
-          flushNext(true)
+          flush(true)
         }
       }
       

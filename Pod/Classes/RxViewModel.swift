@@ -187,10 +187,10 @@ public class RxViewModel: NSObject {
 
     let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in
       (active, o)
-      }
-      >- throttle(2) { (active: Bool?, value: T) -> Bool in
-        return active == false
-      } >- subscribe( next: { (value:(Bool?, T)) in
+    }
+    >- throttle(2) { (active: Bool?, value: T) -> Bool in
+      return active == false
+    } >- subscribe( next: { (value:(Bool?, T)) in
       result.on(.Next(RxBox<T>(value.1)))
     }, error: { _ in }, completed: {
       result.on(.Completed)

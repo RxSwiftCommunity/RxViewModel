@@ -18,6 +18,9 @@ Implements behaviors that drive the UI, and/or adapts a domain model to be
 user-presentable.
 */
 public class RxViewModel: NSObject {
+  // MARK: Constants
+  let ThrottleTime: NSTimeInterval = 2
+  
   // MARK: Properties
   /// Scope dispose to avoid leaking
   internal var dispose: ScopedDispose? = nil
@@ -187,7 +190,7 @@ public class RxViewModel: NSObject {
 
     let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in
       (active, o)
-      } >- throttle(2) { (active: Bool?, value: T) -> Bool in
+      } >- throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
         return active == false
     } >- subscribe({ (value:(Bool?, T)) in
       result.on(.Next(value.1))

@@ -16,7 +16,7 @@ import RxSwift
 /**
  Throttles `next`s for which `predicate` returns `true`.
 
- When `predicate` returns `true` for a `next`:
+ When `valuesPassingTest` returns `true` for a `next`:
 
   1. If another `next` is received before `interval` seconds have passed, the
      prior value is discarded. This happens regardless of whether the new
@@ -25,41 +25,48 @@ import RxSwift
      received, it will be forwarded on the scheduler that it was received
      upon.
 
- When `predicate` returns NO for a `next`, it is forwarded immediately,
+ When `valuesPassingTest` returns NO for a `next`, it is forwarded immediately,
  without any throttling.
 
  - parameter interval: The number of seconds for which to buffer the latest value that
-             passes `predicate`.
- - parameter predicate: Passed each `next` from the receiver, this closuer returns
+             passes `valuesPassingTest`.
+ - parameter valuesPassingTest: Passed each `next` from the receiver, this closuer returns
              whether the given value should be throttled.
 
  - returns: Returns a signal which sends `next` events, throttled when `predicate`
 returns `true`. Completion and errors are always forwarded immediately.
 */
-public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Observable<E> -> Observable<E>) {
+public func throttle<E>(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> (Observable<E> -> Observable<E>) {
   return { source in
     create { (o: ObserverOf<E>) -> Disposable in
       let disposable = CompositeDisposable()
-      
       let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Default)
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue:E?
       
-      let flushNext: (Bool) -> Void = { send in
-        nextDisposable.dispose()
+      let subscriptionDisposable = source >- subscribeNext {
+        /**
+        Disposes the «last» `next` subscription if there was a previous value it gets
+        flushed to the observable `o`.
         
-        if !hasNextValue { return }
-        if let nV = nextValue
-          where send == true {
-            o.on(.Next(nV))
+        - parameter send: 	`Bool` flag indicating where or not the `next` value should be
+        «flushed» to the `observable` `o` or not.
+        */
+        func flushNext(send: Bool) -> Void  {
+          defer {
+            nextValue = nil
+            hasNextValue = false
+          }
+          
+          nextDisposable.dispose()
+          
+          guard let nV = nextValue
+            where hasNextValue == true
+                  && send == true else { return }
+          o.on(.Next(nV))
         }
         
-        nextValue = nil
-        hasNextValue = false
-      }
-      
-      let subscriptionDisposable = source >- subscribeNext {
         let shouldThrottle = predicate($0)
         flushNext(false)
         
@@ -69,10 +76,12 @@ public func throttle<E>(interval: NSTimeInterval, predicate:(E) -> Bool) -> (Obs
           return
         }
         
-        nextValue = $0
         hasNextValue = true
+        nextValue = $0
+        
+        let flush = flushNext
         timer(interval, scheduler: scheduler) >- subscribeNext { _ in
-          flushNext(true)
+          flush(true)
         }
       }
       

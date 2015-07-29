@@ -119,7 +119,7 @@ public class RxViewModel: NSObject {
   When `didBecomeInactiveSignal` fires, any active subscription to `signal` is
   disposed.
 
-  Returns a signal which forwards `next`s from the latest subscription to
+  - returns: Returns a signal which forwards `next`s from the latest subscription to
   `signal`, and completes when the receiver is deallocated. If `signal` sends
   an error at any point, the returned signal will error out as well.
   */

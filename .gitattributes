@@ -1,0 +1,8 @@
+.bundle/* linguist-vendored
+circle.yml linguist-vendored
+Makefile linguist-vendored
+Gemfile linguist-vendored
+Gemfile.* linguist-vendored
+.ruby-version linguist-vendored
+Example/Podfile linguist-vendored
+RxViewModel.podspec linguist-vendored

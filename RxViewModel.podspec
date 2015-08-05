@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RxViewModel"
-  s.version          = "1.0.0"
+  s.version          = "1.1.0"
   s.summary          = "A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`."
   s.description      = <<-DESC
 Since [`ReactiveViewModel`](https://github.com/ReactiveCocoa/ReactiveViewModel) project felt on stagnation and there's not `Swift` or `Swift 2.0` implementation we found the need to implement something like this on `Swift`.
@@ -14,7 +14,8 @@ Given the fact that there's no `Swift` branch and the lack of interest in the pr
   s.source           = { :git => "https://github.com/esttorhe/RxViewModel.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/esttorhe'
 
-  s.platform     = :ios, '8.0'
+  s.ios.deloyment_target  = '8.0'
+  s.osx.deployment_target = '10.9'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'

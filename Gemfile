@@ -1,7 +1,7 @@
-source 'https://rubygems.org'
+msource 'https://rubygems.org'
 
 # The Cocoa library package manager.
-gem 'cocoapods', '0.38.0'
+gem 'cocoapods', '0.38.2'
 
 # Label labels the gems in your Gemfile
 gem 'label'

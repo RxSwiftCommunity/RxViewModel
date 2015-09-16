@@ -1,54 +1,28 @@
 PODS:
-  - Nimble (2.0.0-rc.1)
-  - Quick (0.5.0)
-  - RxCocoa (1.7):
-    - RxSwift
-  - RxSwift (1.7)
+  - Nimble (2.0.0-rc.3)
+  - Quick (0.6.0)
+  - RxCocoa (2.0.0-alpha.3):
+    - RxSwift (~> 2.0.0-alpha)
+  - RxSwift (2.0.0-alpha.3)
   - RxViewModel (0.1.0):
     - RxCocoa
 
 DEPENDENCIES:
-  - Nimble (from `https://github.com/Quick/Nimble`, branch `swift-2.0`)
-  - Quick (from `https://github.com/Quick/Quick`, branch `swift-2.0`)
-  - RxCocoa (from `https://github.com/kzaher/RxSwift`, branch `feature/swift2.0`)
-  - RxSwift (from `https://github.com/kzaher/RxSwift`, branch `feature/swift2.0`)
+  - Nimble (= 2.0.0-rc.3)
+  - Quick (~> 0.6.0)
+  - RxCocoa (~> 2.0.0-alpha.3)
+  - RxSwift (~> 2.0.0-alpha.3)
   - RxViewModel (from `../`)
 
 EXTERNAL SOURCES:
-  Nimble:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Quick
-  RxCocoa:
-    :branch: feature/swift2.0
-    :git: https://github.com/kzaher/RxSwift
-  RxSwift:
-    :branch: feature/swift2.0
-    :git: https://github.com/kzaher/RxSwift
   RxViewModel:
-    :path: "../"
-
-CHECKOUT OPTIONS:
-  Nimble:
-    :commit: 0adbea1f51e6bb489d81463a164df16d8d36d810
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :commit: 39db56818cf68f8fefd6c3534362890fa337a326
-    :git: https://github.com/Quick/Quick
-  RxCocoa:
-    :commit: 128cd69d4de99984c4fe1bdeac510faf144d41ed
-    :git: https://github.com/kzaher/RxSwift
-  RxSwift:
-    :commit: 128cd69d4de99984c4fe1bdeac510faf144d41ed
-    :git: https://github.com/kzaher/RxSwift
+    :path: ../
 
 SPEC CHECKSUMS:
-  Nimble: 7ab11d79c4f70cb6b5a4a01685ae90243345c8ee
-  Quick: 32ee0b5feeb3ec2c9f2db120c4bb319db6625e3c
-  RxCocoa: dd0cd170cb83747e98bdd0b2da1ca1ab562dec79
-  RxSwift: 4dbb4151de7ece29b6e77d54ed2477838d5dda38
-  RxViewModel: 7a57cf832250185235245ac17700335f9986edbf
+  Nimble: 9dff98ee195ffe7351d3b2fb01d3a1420fd97948
+  Quick: 563686dbcf0ae0f9f7401ac9cd2d786ee1b7f3d7
+  RxCocoa: 2a45f35cd0eb6a01e081b3d11849c2fcb0bdb6de
+  RxSwift: c66f7956b2e5fb397a62bf4a3ec6072749a816a7
+  RxViewModel: 7b9615a9369021a850d77365770bf41d7f977539
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

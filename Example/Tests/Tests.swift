@@ -41,7 +41,7 @@ class RxViewModelSpec: QuickSpec {
       }
       
       var nextSteps = 0
-      vm.didBecomeActive >- subscribeNext { model in
+      vm.didBecomeActive.subscribeNext { model in
         expect(model).to(equal(vm))
         
         nextSteps++

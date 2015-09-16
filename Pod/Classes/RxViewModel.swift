@@ -20,7 +20,8 @@ user-presentable.
 public class RxViewModel: NSObject {
   // MARK: Properties
   /// Scope dispose to avoid leaking
-  internal var dispose: ScopedDispose? = nil
+  var disposeBag = DisposeBag()
+//  internal var dispose: ScopedDispose? = nil
   
   /// The subject for active «signals»
   private var activeSubject: ReplaySubject<RxViewModel>?
@@ -52,9 +53,9 @@ public class RxViewModel: NSObject {
   public override init() {
     super.init()
     
+    let observable = self.rx_observe("_active") as Observable<Bool?>
     /// Start observing changes on our underlying `_active` property.
-    self.dispose = self.rx_observe("_active", options: .New) as Observable<Bool?>
-      >- subscribeNext { active in
+    observable.subscribeNext { active in
         /// If we have an active subject and the flag is true send ourselves
         /// as the next value in the stream to the active subject; else send
         /// ourselves to the inactive one.
@@ -65,11 +66,11 @@ public class RxViewModel: NSObject {
           where active == false {
             sendNext(inactSub, self)
         }
-    } >- scopedDispose
+    }.addDisposableTo(disposeBag)
   }
   
   deinit {
-    self.dispose = nil
+//    self.disposeBag = nil
   }
   
   /**
@@ -82,7 +83,7 @@ public class RxViewModel: NSObject {
       return deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.activeSubject == nil {
-            weakSelf.activeSubject = ReplaySubject(bufferSize: 1)
+            weakSelf.activeSubject = ReplaySubject.create(bufferSize: 1)
             
             return weakSelf.activeSubject!
         }
@@ -102,7 +103,7 @@ public class RxViewModel: NSObject {
       return deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.inactiveSubject == nil {
-            weakSelf.inactiveSubject = ReplaySubject(bufferSize: 1)
+            weakSelf.inactiveSubject = ReplaySubject.create(bufferSize: 1)
             
             return weakSelf.inactiveSubject!
         }

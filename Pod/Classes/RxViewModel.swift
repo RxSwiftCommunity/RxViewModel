@@ -64,10 +64,10 @@ public class RxViewModel: NSObject {
         /// ourselves to the inactive one.
         if let actSub = self.activeSubject
           where active == true {
-            sendNext(actSub, self)
+            actSub.on(.Next(self))
         } else if let inactSub = self.inactiveSubject
           where active == false {
-            sendNext(inactSub, self)
+            inactSub.on(.Next(self))
         }
     }.addDisposableTo(disposeBag)
   }

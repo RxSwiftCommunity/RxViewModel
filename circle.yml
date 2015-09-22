@@ -4,6 +4,8 @@ machine:
   ruby:
     version:
       2.2.0
+  environment:
+    XCODE_SCHEME: "RxViewModel_Tests"
 dependencies:
   post:
     - make bootstrap

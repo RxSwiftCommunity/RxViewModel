@@ -1,13 +1,9 @@
 machine:
-  environment:
-    XCODE_SCHEME: "RxViewModel_Tests"
   xcode:
     version: "7.0"
   ruby:
     version:
       2.2.0
-  environment:
-    XCODE_SCHEME: "RxViewModel_Tests"
 dependencies:
   post:
     - make bootstrap

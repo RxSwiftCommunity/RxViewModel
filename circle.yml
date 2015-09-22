@@ -1,4 +1,6 @@
 machine:
+  environment:
+    XCODE_SCHEME: "RxViewModel_Tests"
   xcode:
     version: "7.0"
   ruby:

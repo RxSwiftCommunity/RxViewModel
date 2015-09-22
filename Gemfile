@@ -1,4 +1,4 @@
-msource 'https://rubygems.org'
+source 'https://rubygems.org'
 
 # The Cocoa library package manager.
 gem 'cocoapods', '0.38.2'

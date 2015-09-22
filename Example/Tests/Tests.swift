@@ -80,7 +80,7 @@ class RxViewModelSpec: QuickSpec {
         return AnonymousDisposable {}
       } as Observable<String?>
       
-      vm.forwardSignalWhileActive(input) >- subscribe({ value in
+      vm.forwardSignalWhileActive(input).subscribe( next: { value in
         values.append(value!)
       }, error: { _ in }, completed: {
         completed = true
@@ -111,10 +111,10 @@ class RxViewModelSpec: QuickSpec {
       vm.active = true
       var values = [String]()
       var completed = false
-      let subject = ReplaySubject<String>(firstElement: "0")
+      let subject = ReplaySubject<String>.create(bufferSize: 5)
+      subject.on(.Next("0"))
       
-      vm.throttleSignalWhileInactive(subject)
-      >- subscribe({ value in
+      vm.throttleSignalWhileInactive(subject).subscribe( next: { value in
         values.append(value)
       }, error: { _ in  }, completed: {
         completed = true
@@ -139,7 +139,7 @@ class RxViewModelSpec: QuickSpec {
       expect(completed).to(beFalsy())
       
       expectedValues = ["0", "1", "3"]
-      expect(values).toEventually(equal(expectedValues), timeout: 4, pollInterval: 2)
+      expect(values).toEventually(equal(expectedValues), timeout: 2.2, pollInterval: 2.1)
       expect(completed).to(beFalsy())
       
       // After reactivating, we should still get this event.

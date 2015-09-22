@@ -23,7 +23,6 @@ public class RxViewModel: NSObject {
   
   // MARK: Properties
   /// Scope dispose to avoid leaking
-//  internal var dispose: ScopedDispose? = nil
   var disposeBag = DisposeBag()
   
   /// The subject for active «signals»
@@ -70,10 +69,6 @@ public class RxViewModel: NSObject {
             inactSub.on(.Next(self))
         }
     }.addDisposableTo(disposeBag)
-  }
-  
-  deinit {
-//    self.disposeBag = nil
   }
   
   /**
@@ -135,9 +130,9 @@ public class RxViewModel: NSObject {
       var signalDisposable: Disposable? = nil
       var disposeKey: Bag<Disposable>.KeyType?
     
-      let activeDisposable = signal >- subscribe( { active in
+      let activeDisposable = signal.subscribe( next: { active in
         if active == true {
-          signalDisposable = observable >- subscribe( { value in
+          signalDisposable = observable.subscribe( next: { value in
             o.on(.Next(value))
             }, error: { error in
               o.on(.Error(error))
@@ -179,21 +174,21 @@ public class RxViewModel: NSObject {
   is deallocated.
   */
   public func throttleSignalWhileInactive<T>(observable: Observable<T>) -> Observable<T> {
-    replay(1)(observable)
-    let result = ReplaySubject<T>(bufferSize: 1)
+    observable.replay(1)
+    let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
-      >- takeUntil(create { (o: ObserverOf<T>) -> Disposable in
-        observable >- subscribeCompleted {
-          result.on(.Completed)
-        }
-      })
+    let activeSignal = (self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: ObserverOf<T>) -> Disposable in
+      observable.subscribeCompleted {
+        defer { result.dispose() }
+        
+        result.on(.Completed)
+      }
+    })
 
-    let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in
-      (active, o)
-      } >- throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
-        return active == false
-    } >- subscribe({ (value:(Bool?, T)) in
+    let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
+      .throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
+      return active == false
+    }.subscribe(next: { (value:(Bool?, T)) in
       result.on(.Next(value.1))
     }, error: { _ in }, completed: {
       result.on(.Completed)

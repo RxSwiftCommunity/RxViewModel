@@ -36,16 +36,17 @@ import RxSwift
  - returns: Returns a signal which sends `next` events, throttled when `predicate`
 returns `true`. Completion and errors are always forwarded immediately.
 */
-public func throttle<E>(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> (Observable<E> -> Observable<E>) {
-  return { source in
-    create { (o: ObserverOf<E>) -> Disposable in
+extension ObservableType {
+  public func throttle(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> Observable<E> {
+    return create { (o: ObserverOf<E>) -> Disposable in
       let disposable = CompositeDisposable()
       let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Default)
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue:E?
+      let parent = self.asObservable()
       
-      let subscriptionDisposable = source >- subscribeNext {
+      let subscriptionDisposable = parent.subscribeNext {
         /**
         Disposes the «last» `next` subscription if there was a previous value it gets
         flushed to the observable `o`.
@@ -54,16 +55,14 @@ public func throttle<E>(interval: NSTimeInterval, valuesPassingTest predicate:(E
         «flushed» to the `observable` `o` or not.
         */
         func flushNext(send: Bool) -> Void  {
-          defer {
-            nextValue = nil
-            hasNextValue = false
-          }
-          
           nextDisposable.dispose()
           
-          guard let nV = nextValue
-            where hasNextValue == true
-                  && send == true else { return }
+          guard let nV = nextValue where hasNextValue == true && send == true
+            else { return }
+          
+          nextValue = nil
+          hasNextValue = false
+          
           o.on(.Next(nV))
         }
         
@@ -80,7 +79,7 @@ public func throttle<E>(interval: NSTimeInterval, valuesPassingTest predicate:(E
         nextValue = $0
         
         let flush = flushNext
-        timer(interval, scheduler: scheduler) >- subscribeNext { _ in
+        timer(interval, scheduler).subscribeNext { _ in
           flush(true)
         }
       }

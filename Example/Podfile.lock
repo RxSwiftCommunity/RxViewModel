@@ -4,39 +4,24 @@ PODS:
   - RxCocoa (2.0.0-alpha.3):
     - RxSwift (~> 2.0.0-alpha)
   - RxSwift (2.0.0-alpha.3)
-  - RxViewModel (0.2.0):
+  - RxViewModel (1.0.0):
     - RxCocoa (~> 2.0.0-alpha.3)
+    - RxSwift (~> 2.0.0-alpha.3)
 
 DEPENDENCIES:
-  - Nimble (from `https://github.com/Quick/Nimble`, branch `swift-2.0`)
-  - Quick (from `https://github.com/Quick/Quick`, branch `swift-2.0`)
-  - RxCocoa (~> 2.0.0-alpha.3)
-  - RxSwift (~> 2.0.0-alpha.3)
+  - Nimble (= 2.0.0-rc.3)
+  - Quick (~> 0.6.0)
   - RxViewModel (from `../`)
 
 EXTERNAL SOURCES:
-  Nimble:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :branch: swift-2.0
-    :git: https://github.com/Quick/Quick
   RxViewModel:
     :path: "../"
 
-CHECKOUT OPTIONS:
-  Nimble:
-    :commit: a87c41424b2b8bc7821cf9e0352f87f53daf5263
-    :git: https://github.com/Quick/Nimble
-  Quick:
-    :commit: bfba21156d7b50d250f32424d0280511435206e6
-    :git: https://github.com/Quick/Quick
-
 SPEC CHECKSUMS:
-  Nimble: 2f64d173ad23dc39f10110840a1ed15f29ef75e8
-  Quick: aaa961333f0bec39bfefa4b759128e4eb39f0d0e
+  Nimble: 9dff98ee195ffe7351d3b2fb01d3a1420fd97948
+  Quick: 563686dbcf0ae0f9f7401ac9cd2d786ee1b7f3d7
   RxCocoa: 2a45f35cd0eb6a01e081b3d11849c2fcb0bdb6de
   RxSwift: c66f7956b2e5fb397a62bf4a3ec6072749a816a7
-  RxViewModel: 415c0ff139e5802f058fb73e7c84d86a2c907f5c
+  RxViewModel: 37356ea3c1eed1b7d62194d4875cadcec417900a
 
-COCOAPODS: 0.38.0
+COCOAPODS: 0.38.2

@@ -1,11 +1,11 @@
 machine:
   xcode:
     version: "7.0"
+  ruby:
+    version: "2.2.0"
 dependencies:
   pre:
     - rm -rf Example/Podfile.lock
-  post:
-    - make bootstrap
 test:
   override:
     - set -o pipefail &&

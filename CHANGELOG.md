@@ -1,5 +1,19 @@
 # Change Log
 
+## [2.0.0](https://github.com/esttorhe/RxViewModel/tree/2.0.0) (2015-09-22)
+[Full Changelog](https://github.com/esttorhe/RxViewModel/compare/1.1.0...2.0.0)
+
+**Closed issues:**
+
+- Throttle [\#3](https://github.com/esttorhe/RxViewModel/issues/3)
+- RxCocoa dependency conflicts [\#1](https://github.com/esttorhe/RxViewModel/issues/1)
+
+## [1.1.0](https://github.com/esttorhe/RxViewModel/tree/1.1.0) (2015-08-05)
+[Full Changelog](https://github.com/esttorhe/RxViewModel/compare/1.0.0...1.1.0)
+
+## [1.0.0](https://github.com/esttorhe/RxViewModel/tree/1.0.0) (2015-07-18)
+[Full Changelog](https://github.com/esttorhe/RxViewModel/compare/0.2.1...1.0.0)
+
 ## [0.2.1](https://github.com/esttorhe/RxViewModel/tree/0.2.1) (2015-07-17)
 [Full Changelog](https://github.com/esttorhe/RxViewModel/compare/0.2.0...0.2.1)
 

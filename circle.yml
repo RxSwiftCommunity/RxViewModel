@@ -2,6 +2,8 @@ machine:
   xcode:
     version: "7.0"
 dependencies:
+  pre:
+    - rm -rf Example/Podfile.lock
   post:
     - make bootstrap
 test:

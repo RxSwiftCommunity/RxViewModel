@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.2.0'
+
 # The Cocoa library package manager.
 gem 'cocoapods', '0.39.0.beta.4'
 

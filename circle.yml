@@ -1,9 +1,6 @@
 machine:
   xcode:
     version: "7.0"
-  ruby:
-    version:
-      2.2.0
 dependencies:
   post:
     - make bootstrap

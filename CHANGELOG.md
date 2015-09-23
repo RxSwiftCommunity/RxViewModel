@@ -1,5 +1,8 @@
 # Change Log
 
+## [2.1.0](https://github.com/esttorhe/RxViewModel/tree/2.1.0) (2015-09-23)
+[Full Changelog](https://github.com/esttorhe/RxViewModel/compare/2.0.0...2.1.0)
+
 ## [2.0.0](https://github.com/esttorhe/RxViewModel/tree/2.0.0) (2015-09-22)
 [Full Changelog](https://github.com/esttorhe/RxViewModel/compare/1.1.0...2.0.0)
 

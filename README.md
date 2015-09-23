@@ -1,9 +1,7 @@
-# :warning: Warning • Notice
-This project is still a _WIP_; more so because its based on `Swift 2.0` which is not out of ß yet.
-
 # RxViewModel
 
-[![Circle CI](https://circleci.com/gh/esttorhe/RxViewModel.svg?style=svg)](https://circleci.com/gh/esttorhe/RxViewModel)
+[![Circle CI](https://circleci.com/gh/esttorhe/RxViewModel/tree/master.svg?style=svg)](https://circleci.com/gh/esttorhe/RxViewModel/tree/master)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![License](https://img.shields.io/cocoapods/l/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![Platform](https://img.shields.io/cocoapods/p/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
@@ -33,21 +31,33 @@ pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'featur
 
 ## Installation
 
-RxViewModel is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+### CocoaPods
+
+Simply add the following line to your Podfile:
 
 ```ruby
-pod "RxViewModel"
+pod "RxViewModel", "~> 2.1.0"
 ```
----
-*And momentarily add this as well:*
-```ruby
-pod 'RxCocoa', :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-```
-*Later on this will be added as direct dependencies in the `podspec`*
 
----
+And then run:
+
+```console
+pod install
+```
+
+### Carthage
+
+Just add the following to your [`Cartfile`](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile)
+
+```swift
+github "esttorhe/RxViewModel", ~> 2.1.0
+```
+
+And run:
+
+```console
+carthage update
+```
 
 ## Features
 

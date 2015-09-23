@@ -4,6 +4,7 @@ machine:
 dependencies:
   pre:
     - rm -rf Example/Podfile.lock
+    - rm -rf Example/Pods/
 test:
   override:
     - set -o pipefail &&

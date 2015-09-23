@@ -18,17 +18,6 @@ Given the fact that there's no `Swift` branch and the lack of interest in the pr
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
-
-This project depends directly on [`RxCocoa`/`RxSwift`][rxcocoa] since its the driving force behind the «reactiveness» of the view model.
-
-At this time this project is being written directly in `Swift 2.0` and this the following needs to be included in the `Podfile` in order to use it:
-
-```ruby
-pod 'RxCocoa', :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-pod 'RxSwift',   :git => 'https://github.com/kzaher/RxSwift', :branch => 'feature/swift2.0'
-```
-
 ## Installation
 
 ### CocoaPods

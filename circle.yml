@@ -5,6 +5,8 @@ dependencies:
   pre:
     - rm -rf Example/Podfile.lock
     - rm -rf Example/Pods/
+  post:
+    - bundle exec pod install --project-directory=Example
 test:
   override:
     - set -o pipefail &&

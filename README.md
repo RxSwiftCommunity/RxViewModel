@@ -6,7 +6,25 @@
 [![License](https://img.shields.io/cocoapods/l/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![Platform](https://img.shields.io/cocoapods/p/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 
-# What's `RxViewModel`?
+# Model-View-ViewModel
+
+`Model-View-ViewModel` (MVVM from now on) was created by [Microsoft][mvvm] and is defined as follows:
+
+>The Model-View-ViewModel (MVVM) pattern is an application pattern that isolates the user interface from the underlying business logic. MVVM belongs to a class of patterns called Separated Presentation. These patterns provide a clean separation between the UI and the rest of the application. This improves the testability of the application and allows the application and its UI to evolve more easily and independently.
+>
+>The Model-View-ViewModel (MVVM) pattern helps you to cleanly separate the business and presentation logic of your application from its user interface (UI). Maintaining a clean separation between application logic and UI helps to address numerous development and design issues and can make your application much easier to test, maintain, and evolve. It can also greatly improve code re-use opportunities and allows developers and UI designers to more easily collaborate when developing their respective parts of the application.
+
+It basically adds a new «separation layer» to break down the `MVC` pattern into more manageable pieces.
+
+`MVC` on Cocoa hast always been a pain because it always translates to «Massive View Controller» due to the need to __many__ `delegates` that are usually implemented by one controller (e.g. when binding a tableview where you need a delegate for the tableview and also a delegate for the data source, etc).
+
+`MVVM` separates the `View` from the `Model` via an «intermediate» class named `ViewModel`.
+
+This intermediate class allows the binding of the `View` and the `Model` in a more clean and easy manner and also separates some logic as to how/when to load the data removing that responsability from the `View` and leaving pretty much only the `UI` specific code in it.
+
+# `RxViewModel`
+
+`RxViewModel` is the marriage between `MVVM` and `Rx` extensions
 
 Long story short: a blatant «imitation» of [`ReactiveViewModel`][rvm] using [`RxCocoa`][rxcocoa].
 
@@ -70,3 +88,4 @@ RxViewModel is available under the MIT license. See the LICENSE file for more in
 
 [rvm]:https://github.com/ReactiveCocoa/ReactiveViewModel
 [rxcocoa]:https://github.com/kzaher/RxSwift
+[mvvm]:http://msdn.microsoft.com/en-us/library/gg430869(v=PandP.40).aspx

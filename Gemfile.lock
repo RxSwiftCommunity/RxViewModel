@@ -63,7 +63,7 @@ GEM
     jwt (1.5.1)
     label (1.0.0)
     mini_portile (0.6.2)
-    minitest (5.8.0)
+    minitest (5.8.1)
     molinillo (0.3.1)
     multi_json (1.11.2)
     multi_xml (0.5.5)

@@ -1,8 +1,8 @@
 
 Pod::Spec.new do |s|
   s.name             = "RxViewModel"
-  s.version          = "2.1.3"
-  s.summary          = "A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`."
+  s.version          = "2.1.4"
+  s.summary          = "`RxViewModel` is the marriage between `MVVM` and `Rx` extensions. A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`."
   s.description      = <<-DESC
 `RxViewModel` is the marriage between `MVVM` and `Rx` extensions
 

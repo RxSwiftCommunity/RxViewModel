@@ -79,7 +79,7 @@ extension ObservableType {
         nextValue = $0
         
         let flush = flushNext
-        timer(interval, scheduler).subscribeNext { _ in
+        let _ = timer(interval, scheduler).subscribeNext { _ in
           flush(true)
         }
       }

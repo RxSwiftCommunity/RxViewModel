@@ -79,9 +79,11 @@ extension ObservableType {
         nextValue = $0
         
         let flush = flushNext
-        let _ = timer(interval, scheduler).subscribeNext { _ in
+        let d = timer(interval, scheduler).subscribeNext { _ in
           flush(true)
         }
+        
+        disposable.addDisposable(d)
       }
       
       disposable.addDisposable(subscriptionDisposable)

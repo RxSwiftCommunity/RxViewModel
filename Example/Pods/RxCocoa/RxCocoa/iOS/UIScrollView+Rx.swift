@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import Foundation
 #if !RX_NO_MODULE
 import RxSwift
@@ -38,7 +40,7 @@ extension UIScrollView {
     public var rx_contentOffset: ControlProperty<CGPoint> {
         let proxy = proxyForObject(self) as RxScrollViewDelegateProxy
         
-        return ControlProperty(source: proxy.contentOffsetSubject, observer: ObserverOf { [weak self] event in
+        return ControlProperty(source: proxy.contentOffsetSubject, observer: AnyObserver { [weak self] event in
             switch event {
             case .Next(let value):
                 self?.contentOffset = value
@@ -64,3 +66,5 @@ extension UIScrollView {
         return installDelegate(proxy, delegate: delegate, retainDelegate: false, onProxyForObject: self)
     }
 }
+
+#endif

@@ -29,7 +29,8 @@ extension NSObject {
     
     For more information take a look at `rx_observe` method.
     */
-    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial), retainSelf: Bool = true) -> Observable<CGRect?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial], retainSelf: Bool = true) -> Observable<CGRect?> {
         return rx_observe(keyPath, options: options, retainSelf: retainSelf)
             .map { (value: NSValue?) in
                 if let value = value {
@@ -51,7 +52,8 @@ extension NSObject {
     
     For more information take a look at `rx_observe` method.
     */
-    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial), retainSelf: Bool = true) -> Observable<CGSize?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial], retainSelf: Bool = true) -> Observable<CGSize?> {
         return rx_observe(keyPath, options: options, retainSelf: retainSelf)
             .map { (value: NSValue?) in
                 if let value = value {
@@ -73,7 +75,8 @@ extension NSObject {
     
     For more information take a look at `rx_observe` method.
     */
-    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial), retainSelf: Bool = true) -> Observable<CGPoint?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observe(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial], retainSelf: Bool = true) -> Observable<CGPoint?> {
         return rx_observe(keyPath, options: options, retainSelf: retainSelf)
             .map { (value: NSValue?) in
                 if let value = value {
@@ -101,7 +104,8 @@ extension NSObject {
     
     For more information take a look at `rx_observeWeakly` method.
     */
-    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial)) -> Observable<CGRect?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial]) -> Observable<CGRect?> {
         return rx_observeWeakly(keyPath, options: options)
             .map { (value: NSValue?) in
                 if let value = value {
@@ -123,7 +127,8 @@ extension NSObject {
     
     For more information take a look at `rx_observeWeakly` method.
     */
-    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial)) -> Observable<CGSize?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial]) -> Observable<CGSize?> {
         return rx_observeWeakly(keyPath, options: options)
             .map { (value: NSValue?) in
                 if let value = value {
@@ -145,7 +150,8 @@ extension NSObject {
     
     For more information take a look at `rx_observeWeakly` method.
     */
-    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = NSKeyValueObservingOptions.New.union(NSKeyValueObservingOptions.Initial)) -> Observable<CGPoint?> {
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func rx_observeWeakly(keyPath: String, options: NSKeyValueObservingOptions = [.New, .Initial]) -> Observable<CGPoint?> {
         return rx_observeWeakly(keyPath, options: options)
             .map { (value: NSValue?) in
                 if let value = value {

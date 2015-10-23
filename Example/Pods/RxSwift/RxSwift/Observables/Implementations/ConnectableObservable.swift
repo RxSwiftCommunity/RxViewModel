@@ -28,7 +28,9 @@ class Connection<S: SubjectType> : Disposable {
             }
             
             self.subscription = nil
-            self.parent!.connection = nil
+            if self.parent?.connection === self {
+                parent.connection = nil
+            }
             self.parent = nil
             
             oldSubscription.dispose()

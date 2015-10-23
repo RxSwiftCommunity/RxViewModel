@@ -27,9 +27,7 @@ class AnonymousObservableSink<O: ObserverType> : Sink<O>, ObserverType {
                 return
             }
             self.observer?.on(event)
-        case .Error:
-            fallthrough
-        case .Completed:
+        case .Error, .Completed:
             if OSAtomicCompareAndSwap32(0, 1, &isStopped) {
                 self.observer?.on(event)
                 self.dispose()
@@ -38,12 +36,12 @@ class AnonymousObservableSink<O: ObserverType> : Sink<O>, ObserverType {
     }
     
     func run(parent: Parent) -> Disposable {
-        return parent.subscribeHandler(ObserverOf(self))
+        return parent.subscribeHandler(AnyObserver(self))
     }
 }
 
 public class AnonymousObservable<Element> : Producer<Element> {
-    public typealias SubscribeHandler = (ObserverOf<Element>) -> Disposable
+    public typealias SubscribeHandler = (AnyObserver<Element>) -> Disposable
 
     public let subscribeHandler: SubscribeHandler
     

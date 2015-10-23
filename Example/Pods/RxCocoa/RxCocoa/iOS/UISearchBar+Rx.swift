@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import Foundation
 #if !RX_NO_MODULE
 import RxSwift
@@ -39,7 +41,7 @@ extension UISearchBar {
                     .startWith(text)
         }
         
-        return ControlProperty(source: source, observer: ObserverOf { [weak self] event in
+        return ControlProperty(source: source, observer: AnyObserver { [weak self] event in
             switch event {
             case .Next(let value):
                 self?.text = value
@@ -51,3 +53,5 @@ extension UISearchBar {
         })
     }
 }
+
+#endif

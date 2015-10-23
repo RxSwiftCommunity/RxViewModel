@@ -21,13 +21,14 @@ extension NSArray : NMBContainer {}
 extension NSSet : NMBContainer {}
 extension NSHashTable : NMBContainer {}
 
-/// Protocol for types that support only beEmpty()
+/// Protocol for types that support only beEmpty(), haveCount() matchers
 @objc public protocol NMBCollection {
     var count: Int { get }
 }
 extension NSSet : NMBCollection {}
 extension NSDictionary : NMBCollection {}
 extension NSHashTable : NMBCollection {}
+extension NSMapTable : NMBCollection {}
 
 /// Protocol for types that support beginWith(), endWith(), beEmpty() matchers
 @objc public protocol NMBOrderedCollection : NMBCollection {

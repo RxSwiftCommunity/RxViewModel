@@ -125,18 +125,18 @@ public class RxViewModel: NSObject {
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
     let signal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
     
-    return create { (o: ObserverOf<T>) -> Disposable in
+    return create { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
       var disposeKey: Bag<Disposable>.KeyType?
     
-      let activeDisposable = signal.subscribe( next: { active in
+      let activeDisposable = signal.subscribe( onNext: { active in
         if active == true {
-          signalDisposable = observable.subscribe( next: { value in
+          signalDisposable = observable.subscribe( onNext: { value in
             o.on(.Next(value))
-            }, error: { error in
+            }, onError: { error in
               o.on(.Error(error))
-            }, completed: {})
+            }, onCompleted: {})
           
           if let sd = signalDisposable { disposeKey = disposable.addDisposable(sd) }
         } else {
@@ -147,9 +147,9 @@ public class RxViewModel: NSObject {
             }
           }
         }
-      }, error: { error in
+      }, onError: { error in
         o.on(.Error(error))
-      }, completed: {
+      }, onCompleted: {
         o.on(.Completed)
       })
       
@@ -174,10 +174,10 @@ public class RxViewModel: NSObject {
   is deallocated.
   */
   public func throttleSignalWhileInactive<T>(observable: Observable<T>) -> Observable<T> {
-    observable.replay(1)
+//    observable.replay(1)
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = (self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: ObserverOf<T>) -> Disposable in
+    let activeSignal = (self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: AnyObserver<T>) -> Disposable in
       observable.subscribeCompleted {
         defer { result.dispose() }
         
@@ -188,9 +188,9 @@ public class RxViewModel: NSObject {
     let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
       .throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
       return active == false
-    }.subscribe(next: { (value:(Bool?, T)) in
+    }.subscribe(onNext: { (value:(Bool?, T)) in
       result.on(.Next(value.1))
-    }, error: { _ in }, completed: {
+    }, onError: { _ in }, onCompleted: {
       result.on(.Completed)
     })
 

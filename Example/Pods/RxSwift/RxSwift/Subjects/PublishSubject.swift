@@ -9,7 +9,7 @@
 import Foundation
 
 class Subscription<Element> : Disposable {
-    typealias KeyType = Bag<ObserverOf<Element>>.KeyType
+    typealias KeyType = Bag<AnyObserver<Element>>.KeyType
     
     private var lock = SpinLock()
 
@@ -48,13 +48,13 @@ Each notification is broadcasted to all subscribed observers.
 public class PublishSubject<Element> : Observable<Element>, SubjectType, Cancelable, ObserverType {
     public typealias SubjectObserverType = PublishSubject<Element>
     
-    typealias DisposeKey = Bag<ObserverOf<Element>>.KeyType
+    typealias DisposeKey = Bag<AnyObserver<Element>>.KeyType
     
     private let lock = NSRecursiveLock()
     
     // state
     var _disposed = false
-    var observers = Bag<ObserverOf<Element>>()
+    var observers = Bag<AnyObserver<Element>>()
     var stoppedEvent = nil as Event<Element>?
     
     /**
@@ -89,8 +89,7 @@ public class PublishSubject<Element> : Observable<Element>, SubjectType, Cancela
                 }
                 
                 observers.forEach { $0.on(event) }
-            case .Completed: fallthrough
-            case .Error:
+            case .Completed, .Error:
                 if stoppedEvent == nil {
                     self.stoppedEvent = event
                     observers.forEach { $0.on(event) }

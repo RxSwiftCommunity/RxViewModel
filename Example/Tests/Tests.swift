@@ -80,9 +80,9 @@ class RxViewModelSpec: QuickSpec {
         return AnonymousDisposable {}
       } as Observable<String?>
       
-      vm.forwardSignalWhileActive(input).subscribe( next: { value in
+      vm.forwardSignalWhileActive(input).subscribe( onNext: { value in
         values.append(value!)
-      }, error: { _ in }, completed: {
+      }, onError: { _ in }, onCompleted: {
         completed = true
       })
       
@@ -114,9 +114,9 @@ class RxViewModelSpec: QuickSpec {
       let subject = ReplaySubject<String>.create(bufferSize: 5)
       subject.on(.Next("0"))
       
-      vm.throttleSignalWhileInactive(subject).subscribe( next: { value in
+      vm.throttleSignalWhileInactive(subject).subscribe( onNext: { value in
         values.append(value)
-      }, error: { _ in  }, completed: {
+      }, onError: { _ in  }, onCompleted: {
         completed = true
       })
       

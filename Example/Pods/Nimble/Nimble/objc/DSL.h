@@ -21,6 +21,10 @@ NIMBLE_EXPORT id<NMBMatcher> NMB_equal(id expectedValue);
 NIMBLE_SHORT(id<NMBMatcher> equal(id expectedValue),
              NMB_equal(expectedValue));
 
+NIMBLE_EXPORT id<NMBMatcher> NMB_haveCount(id expectedValue);
+NIMBLE_SHORT(id<NMBMatcher> haveCount(id expectedValue),
+             NMB_haveCount(expectedValue));
+
 NIMBLE_EXPORT NMBObjCBeCloseToMatcher *NMB_beCloseTo(NSNumber *expectedValue);
 NIMBLE_SHORT(NMBObjCBeCloseToMatcher *beCloseTo(id expectedValue),
              NMB_beCloseTo(expectedValue));
@@ -108,6 +112,8 @@ NIMBLE_SHORT(id<NMBMatcher> allPass(id matcher),
 // and action arguments. See https://github.com/Quick/Quick/pull/185 for details.
 typedef void (^NMBWaitUntilTimeoutBlock)(NSTimeInterval timeout, void (^action)(void (^)(void)));
 typedef void (^NMBWaitUntilBlock)(void (^action)(void (^)(void)));
+
+NIMBLE_EXPORT void NMB_failWithMessage(NSString *msg, NSString *file, NSUInteger line);
 
 NIMBLE_EXPORT NMBWaitUntilTimeoutBlock NMB_waitUntilTimeoutBuilder(NSString *file, NSUInteger line);
 NIMBLE_EXPORT NMBWaitUntilBlock NMB_waitUntilBuilder(NSString *file, NSUInteger line);

@@ -38,10 +38,10 @@ public struct ControlProperty<PropertyType> : ControlPropertyType {
     public typealias E = PropertyType
     
     let source: Observable<PropertyType>
-    let observer: ObserverOf<PropertyType>
+    let observer: AnyObserver<PropertyType>
     
-    init(source: Observable<PropertyType>, observer: ObserverOf<PropertyType>) {
-        self.source = source
+    init(source: Observable<PropertyType>, observer: AnyObserver<PropertyType>) {
+        self.source = source.subscribeOn(ConcurrentMainScheduler.sharedInstance)
         self.observer = observer
     }
     
@@ -58,6 +58,7 @@ public struct ControlProperty<PropertyType> : ControlPropertyType {
     /**
     - returns: `Observable` interface.
     */
+    @warn_unused_result(message="http://git.io/rxs.uo")
     public func asObservable() -> Observable<E> {
         return self.source
     }
@@ -65,6 +66,7 @@ public struct ControlProperty<PropertyType> : ControlPropertyType {
     /**
     - returns: `ControlProperty` interface.
     */
+    @warn_unused_result(message="http://git.io/rxs.uo")
     public func asControlProperty() -> ControlProperty<E> {
         return self
     }

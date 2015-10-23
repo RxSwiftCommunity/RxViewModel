@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import Foundation
 #if !RX_NO_MODULE
 import RxSwift
@@ -17,8 +19,8 @@ extension UILabel {
     /**
     Bindable sink for `text` property.
     */
-    public var rx_text: ObserverOf<String> {
-        return ObserverOf { [weak self] event in
+    public var rx_text: AnyObserver<String> {
+        return AnyObserver { [weak self] event in
             MainScheduler.ensureExecutingOnScheduler()
             
             switch event {
@@ -34,3 +36,5 @@ extension UILabel {
     }
     
 }
+
+#endif

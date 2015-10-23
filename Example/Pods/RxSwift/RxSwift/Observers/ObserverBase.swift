@@ -11,7 +11,6 @@ import Foundation
 class ObserverBase<ElementType> : Disposable, ObserverType {
     typealias E = ElementType
     
-    var lock = SpinLock()
     var isStopped: Int32 = 0
     
     init() {
@@ -23,19 +22,18 @@ class ObserverBase<ElementType> : Disposable, ObserverType {
             if isStopped == 0 {
                 onCore(event)
             }
-        case .Error: fallthrough
-        case .Completed:
+        case .Error, .Completed:
            
             if !OSAtomicCompareAndSwap32(0, 1, &isStopped) {
                 return
             }
             
-            self.onCore(event)
+            onCore(event)
         }
     }
     
     func onCore(event: Event<E>) {
-        return abstractMethod()
+        abstractMethod()
     }
     
     func dispose() {

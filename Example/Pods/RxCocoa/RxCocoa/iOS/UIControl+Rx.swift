@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import Foundation
 #if !RX_NO_MODULE
 import RxSwift
@@ -17,8 +19,8 @@ extension UIControl {
     /**
     Bindable sink for `enabled` property.
     */
-    public var rx_enabled: ObserverOf<Bool> {
-        return ObserverOf { [weak self] event in
+    public var rx_enabled: AnyObserver<Bool> {
+        return AnyObserver { [weak self] event in
             MainScheduler.ensureExecutingOnScheduler()
             
             switch event {
@@ -39,10 +41,15 @@ extension UIControl {
     - parameter controlEvents: Filter for observed event types.
     */
     public func rx_controlEvents(controlEvents: UIControlEvents) -> ControlEvent<Void> {
-        let source: Observable<Void> = AnonymousObservable { observer in
+        let source: Observable<Void> = AnonymousObservable { [weak self] observer in
             MainScheduler.ensureExecutingOnScheduler()
-            
-            let controlTarget = ControlTarget(control: self, controlEvents: controlEvents) {
+
+            guard let control = self else {
+                observer.on(.Completed)
+                return NopDisposable.instance
+            }
+
+            let controlTarget = ControlTarget(control: control, controlEvents: controlEvents) {
                 control in
                 observer.on(.Next())
             }
@@ -56,11 +63,15 @@ extension UIControl {
     }
     
     func rx_value<T>(getter getter: () -> T, setter: T -> Void) -> ControlProperty<T> {
-        let source: Observable<T> = AnonymousObservable { observer in
-            
+        let source: Observable<T> = AnonymousObservable { [weak self] observer in
+            guard let control = self else {
+                observer.on(.Completed)
+                return NopDisposable.instance
+            }
+
             observer.on(.Next(getter()))
-            
-            let controlTarget = ControlTarget(control: self, controlEvents: UIControlEvents.EditingChanged.union(.ValueChanged)) { control in
+
+            let controlTarget = ControlTarget(control: control, controlEvents: [.EditingChanged, .ValueChanged]) { control in
                 observer.on(.Next(getter()))
             }
             
@@ -69,9 +80,9 @@ extension UIControl {
             }
         }.takeUntil(rx_deallocated)
         
-        return ControlProperty<T>(source: source, observer: ObserverOf { event in
+        return ControlProperty<T>(source: source, observer: AnyObserver { event in
             MainScheduler.ensureExecutingOnScheduler()
-            
+
             switch event {
             case .Next(let value):
                 setter(value)
@@ -85,3 +96,5 @@ extension UIControl {
     }
 
 }
+
+#endif

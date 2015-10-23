@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E3D8FFBF1F638033435D655C621035C2"
+               BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
                BuildableName = "RxViewModel.framework"
                BlueprintName = "RxViewModel"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3D8FFBF1F638033435D655C621035C2"
+            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -64,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3D8FFBF1F638033435D655C621035C2"
+            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -82,7 +82,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E3D8FFBF1F638033435D655C621035C2"
+            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">

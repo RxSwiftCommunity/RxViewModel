@@ -38,7 +38,7 @@ returns `true`. Completion and errors are always forwarded immediately.
 */
 extension ObservableType {
   public func throttle(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> Observable<E> {
-    return create { (o: ObserverOf<E>) -> Disposable in
+    return create { (o: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
       let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Default)
       let nextDisposable = SerialDisposable()

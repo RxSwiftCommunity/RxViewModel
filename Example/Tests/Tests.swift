@@ -13,6 +13,7 @@ import RxViewModel
 
 class RxViewModelSpec: QuickSpec {
   var viewModel: RxViewModel?
+  let disposable = DisposeBag()
   
   override func spec() {
     beforeEach {
@@ -45,7 +46,7 @@ class RxViewModelSpec: QuickSpec {
         expect(model).to(equal(vm))
         
         nextSteps++
-      }
+      }.addDisposableTo(self.disposable)
       
       expect(nextSteps).to(equal(0))
       
@@ -84,7 +85,7 @@ class RxViewModelSpec: QuickSpec {
         values.append(value!)
       }, onError: { _ in }, onCompleted: {
         completed = true
-      })
+      }).addDisposableTo(self.disposable)
       
       var expectedValues = ["1", "2"]
       expect(values).to(equal(expectedValues))
@@ -118,7 +119,7 @@ class RxViewModelSpec: QuickSpec {
         values.append(value)
       }, onError: { _ in  }, onCompleted: {
         completed = true
-      })
+      }).addDisposableTo(self.disposable)
       
       var expectedValues = ["0"]
       expect(values).to(equal(expectedValues))

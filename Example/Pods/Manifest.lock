@@ -1,16 +1,16 @@
 PODS:
-  - Nimble (2.0.0)
-  - Quick (0.7.0)
+  - Nimble (3.0.0)
+  - Quick (0.8.0)
   - RxCocoa (2.0.0-beta.1):
     - RxSwift (~> 2.0.0-beta)
   - RxSwift (2.0.0-beta.1)
-  - RxViewModel (2.1.5):
-    - RxCocoa (~> 2.0.0-alpha.3)
-    - RxSwift (~> 2.0.0-alpha.3)
+  - RxViewModel (2.2.0):
+    - RxCocoa (~> 2.0.0-beta.1)
+    - RxSwift (~> 2.0.0-beta.1)
 
 DEPENDENCIES:
-  - Nimble (~> 2.0.0)
-  - Quick (~> 0.7.0)
+  - Nimble
+  - Quick
   - RxViewModel (from `../`)
 
 EXTERNAL SOURCES:
@@ -18,10 +18,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Nimble: 472e75466819eb8c06299233e87c694a9b51328a
-  Quick: 906d8aa995ee0afa96f1f7f01170f40fccfa5898
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
   RxCocoa: a3c35a39c3b4e8175f271bd3a28be8ca52f97c93
   RxSwift: a9b0f4d876eac130cda0ae2f3fba627be3baf3ef
-  RxViewModel: 37ab7ac46afbe708add6cc2685f9f577ac4de6f1
+  RxViewModel: 85828fd5ab9dbfa35d410b4f8f462b5d5aa0454d
 
 COCOAPODS: 0.39.0

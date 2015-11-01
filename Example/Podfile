@@ -2,8 +2,5 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 pod "RxViewModel", :path => "../"
-
-target 'RxViewModel_Tests' do
-  pod 'Nimble', '~> 2.0.0'
-  pod 'Quick', '~> 0.7.0'
-end
+pod 'Nimble'
+pod 'Quick'

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5A7C134CE55D1970D355E1BA /* Pods_RxViewModel_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F20E1DFEAEEFC44CE91E4F4 /* Pods_RxViewModel_Tests.framework */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		9A4A2BA4E16DE1FDB837F15B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF7976818D35CFBD65599DA8 /* Pods.framework */; };
 /* End PBXBuildFile section */
@@ -31,7 +30,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A4A2BA4E16DE1FDB837F15B /* Pods.framework in Frameworks */,
-				5A7C134CE55D1970D355E1BA /* Pods_RxViewModel_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,7 +180,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RxViewModel_Tests/Pods-RxViewModel_Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3B32E276864ED8DE0A42EB66 /* Copy Pods Resources */ = {
@@ -197,7 +195,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RxViewModel_Tests/Pods-RxViewModel_Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		74F4425F80A70ACF54C96776 /* Check Pods Manifest.lock */ = {

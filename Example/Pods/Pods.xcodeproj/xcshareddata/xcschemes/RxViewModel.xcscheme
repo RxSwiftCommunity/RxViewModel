@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0710"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
+               BlueprintIdentifier = "F4779D35375DFEABDC23D841BC9E74C3"
                BuildableName = "RxViewModel.framework"
                BlueprintName = "RxViewModel"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
+            BlueprintIdentifier = "F4779D35375DFEABDC23D841BC9E74C3"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -64,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
+            BlueprintIdentifier = "F4779D35375DFEABDC23D841BC9E74C3"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -82,7 +82,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2DD1D2D4237B4B4A253381D503A5AEFC"
+            BlueprintIdentifier = "F4779D35375DFEABDC23D841BC9E74C3"
             BuildableName = "RxViewModel.framework"
             BlueprintName = "RxViewModel"
             ReferencedContainer = "container:Pods.xcodeproj">

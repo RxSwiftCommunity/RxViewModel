@@ -43,7 +43,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Simply add the following line to your Podfile:
 
 ```ruby
-pod "RxViewModel", "~> 2.1.0"
+pod "RxViewModel", "~> 2.3.1"
 ```
 
 And then run:
@@ -57,7 +57,7 @@ pod install
 Just add the following to your [`Cartfile`](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile)
 
 ```swift
-github "esttorhe/RxViewModel", ~> 2.1.0
+github "esttorhe/RxViewModel", ~> 2.3.1
 ```
 
 And run:

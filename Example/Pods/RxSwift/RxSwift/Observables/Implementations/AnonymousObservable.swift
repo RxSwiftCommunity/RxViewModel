@@ -14,44 +14,44 @@ class AnonymousObservableSink<O: ObserverType> : Sink<O>, ObserverType {
     typealias Parent = AnonymousObservable<E>
     
     // state
-    var isStopped: Int32 = 0
+    private var _isStopped: Int32 = 0
 
-    override init(observer: O, cancel: Disposable) {
-        super.init(observer: observer, cancel: cancel)
+    override init(observer: O) {
+        super.init(observer: observer)
     }
     
     func on(event: Event<E>) {
         switch event {
         case .Next:
-            if isStopped == 1 {
+            if _isStopped == 1 {
                 return
             }
-            self.observer?.on(event)
+            forwardOn(event)
         case .Error, .Completed:
-            if OSAtomicCompareAndSwap32(0, 1, &isStopped) {
-                self.observer?.on(event)
+            if OSAtomicCompareAndSwap32(0, 1, &_isStopped) {
+                self.forwardOn(event)
                 self.dispose()
             }
         }
     }
     
     func run(parent: Parent) -> Disposable {
-        return parent.subscribeHandler(AnyObserver(self))
+        return parent._subscribeHandler(AnyObserver(self))
     }
 }
 
-public class AnonymousObservable<Element> : Producer<Element> {
-    public typealias SubscribeHandler = (AnyObserver<Element>) -> Disposable
+class AnonymousObservable<Element> : Producer<Element> {
+    typealias SubscribeHandler = (AnyObserver<Element>) -> Disposable
 
-    public let subscribeHandler: SubscribeHandler
-    
-    public init(_ subscribeHandler: SubscribeHandler) {
-        self.subscribeHandler = subscribeHandler
+    let _subscribeHandler: SubscribeHandler
+
+    init(_ subscribeHandler: SubscribeHandler) {
+        _subscribeHandler = subscribeHandler
     }
     
-    public override func run<O : ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = AnonymousObservableSink(observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run(self)
+    override func run<O : ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = AnonymousObservableSink(observer: observer)
+        sink.disposable = sink.run(self)
+        return sink
     }
 }

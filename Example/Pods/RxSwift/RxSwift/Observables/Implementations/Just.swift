@@ -9,14 +9,14 @@
 import Foundation
 
 class Just<Element> : Producer<Element> {
-    let element: Element
+    private let _element: Element
     
     init(element: Element) {
-        self.element = element
+        _element = element
     }
     
-    override func run<O : ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        observer.on(.Next(element))
+    override func subscribe<O : ObserverType where O.E == Element>(observer: O) -> Disposable {
+        observer.on(.Next(_element))
         observer.on(.Completed)
         return NopDisposable.instance
     }

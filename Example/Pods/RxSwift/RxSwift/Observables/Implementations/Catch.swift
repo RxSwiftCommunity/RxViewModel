@@ -14,22 +14,20 @@ class CatchSinkProxy<O: ObserverType> : ObserverType {
     typealias E = O.E
     typealias Parent = CatchSink<O>
     
-    let parent: Parent
+    private let _parent: Parent
     
     init(parent: Parent) {
-        self.parent = parent
+        _parent = parent
     }
     
     func on(event: Event<E>) {
-        parent.observer?.on(event)
+        _parent.forwardOn(event)
         
         switch event {
         case .Next:
             break
-        case .Error:
-            parent.dispose()
-        case .Completed:
-            parent.dispose()
+        case .Error, .Completed:
+            _parent.dispose()
         }
     }
 }
@@ -38,40 +36,40 @@ class CatchSink<O: ObserverType> : Sink<O>, ObserverType {
     typealias E = O.E
     typealias Parent = Catch<E>
     
-    let parent: Parent
-    let subscription = SerialDisposable()
+    private let _parent: Parent
+    private let _subscription = SerialDisposable()
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
-        super.init(observer: observer, cancel: cancel)
+    init(parent: Parent, observer: O) {
+        _parent = parent
+        super.init(observer: observer)
     }
     
     func run() -> Disposable {
         let d1 = SingleAssignmentDisposable()
-        subscription.disposable = d1
-        d1.disposable = parent.source.subscribeSafe(self)
-        
-        return subscription
+        _subscription.disposable = d1
+        d1.disposable = _parent._source.subscribe(self)
+
+        return _subscription
     }
     
     func on(event: Event<E>) {
         switch event {
         case .Next:
-            observer?.on(event)
+            forwardOn(event)
         case .Completed:
-            observer?.on(event)
-            self.dispose()
+            forwardOn(event)
+            dispose()
         case .Error(let error):
             do {
-                let catchSequence = try parent.handler(error)
+                let catchSequence = try _parent._handler(error)
 
                 let observer = CatchSinkProxy(parent: self)
                 
-                subscription.disposable = catchSequence.subscribeSafe(observer)
+                _subscription.disposable = catchSequence.subscribe(observer)
             }
             catch let e {
-                observer?.on(.Error(e))
-                self.dispose()
+                forwardOn(.Error(e))
+                dispose()
             }
         }
     }
@@ -80,18 +78,18 @@ class CatchSink<O: ObserverType> : Sink<O>, ObserverType {
 class Catch<Element> : Producer<Element> {
     typealias Handler = (ErrorType) throws -> Observable<Element>
     
-    let source: Observable<Element>
-    let handler: Handler
+    private let _source: Observable<Element>
+    private let _handler: Handler
     
     init(source: Observable<Element>, handler: Handler) {
-        self.source = source
-        self.handler = handler
+        _source = source
+        _handler = handler
     }
     
-    override func run<O: ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = CatchSink(parent: self, observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run()
+    override func run<O: ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = CatchSink(parent: self, observer: observer)
+        sink.disposable = sink.run()
+        return sink
     }
 }
 
@@ -101,31 +99,31 @@ class CatchSequenceSink<S: SequenceType, O: ObserverType where S.Generator.Eleme
     typealias Element = O.E
     typealias Parent = CatchSequence<S>
     
-    var lastError: ErrorType?
+    private var _lastError: ErrorType?
     
-    override init(observer: O, cancel: Disposable) {
-        super.init(observer: observer, cancel: cancel)
+    override init(observer: O) {
+        super.init(observer: observer)
     }
     
     override func on(event: Event<Element>) {
         switch event {
         case .Next:
-            observer?.on(event)
+            forwardOn(event)
         case .Error(let error):
-            self.lastError = error
-            self.scheduleMoveNext()
+            _lastError = error
+            scheduleMoveNext()
         case .Completed:
-            self.observer?.on(event)
-            self.dispose()
+            forwardOn(event)
+            dispose()
         }
     }
     
     override func done() {
-        if let lastError = self.lastError {
-            observer?.on(.Error(lastError))
+        if let lastError = _lastError {
+            forwardOn(.Error(lastError))
         }
         else {
-            observer?.on(.Completed)
+            forwardOn(.Completed)
         }
         
         self.dispose()
@@ -150,9 +148,9 @@ class CatchSequence<S: SequenceType where S.Generator.Element : ObservableConver
         self.sources = sources
     }
     
-    override func run<O : ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = CatchSequenceSink<S, O>(observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run(self.sources.generate())
+    override func run<O : ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = CatchSequenceSink<S, O>(observer: observer)
+        sink.disposable = sink.run(self.sources.generate())
+        return sink
     }
 }

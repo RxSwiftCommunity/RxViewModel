@@ -8,114 +8,97 @@
 
 import Foundation
 
-class ThrottleSink<O: ObserverType, Scheduler: SchedulerType> : Sink<O>, ObserverType {
+class ThrottleSink<O: ObserverType, Scheduler: SchedulerType>
+    : Sink<O>
+    , ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias Element = O.E
     typealias ParentType = Throttle<Element, Scheduler>
     
-    let parent: ParentType
+    private let _parent: ParentType
     
-    let lock = NSRecursiveLock()
+    let _lock = NSRecursiveLock()
     
     // state
-    var id = 0 as UInt64
-    var value: Element? = nil
+    private var _id = 0 as UInt64
+    private var _value: Element? = nil
     
     let cancellable = SerialDisposable()
     
-    init(parent: ParentType, observer: O, cancel: Disposable) {
-        self.parent = parent
+    init(parent: ParentType, observer: O) {
+        _parent = parent
         
-        super.init(observer: observer, cancel: cancel)
+        super.init(observer: observer)
     }
     
     func run() -> Disposable {
-        let subscription = parent.source.subscribeSafe(self)
+        let subscription = _parent._source.subscribe(self)
         
-        return CompositeDisposable(subscription, cancellable)
+        return StableCompositeDisposable.create(subscription, cancellable)
     }
 
     func on(event: Event<Element>) {
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<Element>) {
         switch event {
-        case .Next:
-            break
-        case .Error, .Completed:
-            cancellable.dispose()
-        }
-       
-        let latestId = self.lock.calculateLocked { () -> UInt64 in
-            let observer = self.observer
+        case .Next(let element):
+            _id = _id &+ 1
+            let currentId = _id
+            _value = element
+
             
-            let oldValue = self.value
-            
-            self.id = self.id &+ 1
-            
-            switch event {
-            case .Next(let element):
-                self.value = element
-            case .Error:
-                self.value = nil
-                observer?.on(event)
-                self.dispose()
-            case .Completed:
-                self.value = nil
-                if let value = oldValue {
-                    observer?.on(.Next(value))
-                }
-                observer?.on(.Completed)
-                self.dispose()
-            }
-            
-            return id
-        }
-        
-        
-        switch event {
-        case .Next(_):
+            let scheduler = _parent._scheduler
+            let dueTime = _parent._dueTime
+
             let d = SingleAssignmentDisposable()
             self.cancellable.disposable = d
-            
-            let scheduler = self.parent.scheduler
-            let dueTime = self.parent.dueTime
-            
-            let disposeTimer = scheduler.scheduleRelative(latestId, dueTime: dueTime) { (id) in
-                self.propagate()
-                return NopDisposable.instance
+            d.disposable = scheduler.scheduleRelative(currentId, dueTime: dueTime, action: self.propagate)
+        case .Error:
+            _value = nil
+            forwardOn(event)
+            dispose()
+        case .Completed:
+            if let value = _value {
+                _value = nil
+                forwardOn(.Next(value))
             }
-            
-            d.disposable = disposeTimer
-        default: break
+            forwardOn(.Completed)
+            dispose()
         }
     }
     
-    func propagate() {
-        let originalValue: Element? = self.lock.calculateLocked {
-            let originalValue = self.value
-            self.value = nil
-            return originalValue
-        }
-        
-        if let value = originalValue {
-            observer?.on(.Next(value))
-        }
+    func propagate(currentId: UInt64) -> Disposable {
+        _lock.lock(); defer { _lock.unlock() } // {
+            let originalValue = _value
+
+            if let value = originalValue where _id == currentId {
+                _value = nil
+                forwardOn(.Next(value))
+            }
+        // }
+        return NopDisposable.instance
     }
 }
 
 class Throttle<Element, Scheduler: SchedulerType> : Producer<Element> {
     
-    let source: Observable<Element>
-    let dueTime: Scheduler.TimeInterval
-    let scheduler: Scheduler
+    private let _source: Observable<Element>
+    private let _dueTime: Scheduler.TimeInterval
+    private let _scheduler: Scheduler
     
     init(source: Observable<Element>, dueTime: Scheduler.TimeInterval, scheduler: Scheduler) {
-        self.source = source
-        self.dueTime = dueTime
-        self.scheduler = scheduler
+        _source = source
+        _dueTime = dueTime
+        _scheduler = scheduler
     }
     
-    override func run<O: ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = ThrottleSink(parent: self, observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run()
+    override func run<O: ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = ThrottleSink(parent: self, observer: observer)
+        sink.disposable = sink.run()
+        return sink
     }
     
 }

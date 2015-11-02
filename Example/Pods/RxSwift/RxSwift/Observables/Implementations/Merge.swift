@@ -10,95 +10,114 @@ import Foundation
 
 // sequential
 
-class MergeSinkIter<S: ObservableConvertibleType, O: ObserverType where O.E == S.E> : ObserverType {
+class MergeSinkIter<S: ObservableConvertibleType, O: ObserverType where O.E == S.E>
+    : ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias E = O.E
     typealias DisposeKey = Bag<Disposable>.KeyType
     typealias Parent = MergeSink<S, O>
     
-    let parent: Parent
-    let disposeKey: DisposeKey
-    
+    private let _parent: Parent
+    private let _disposeKey: DisposeKey
+
+    var _lock: NSRecursiveLock {
+        return _parent._lock
+    }
+
     init(parent: Parent, disposeKey: DisposeKey) {
-        self.parent = parent
-        self.disposeKey = disposeKey
+        _parent = parent
+        _disposeKey = disposeKey
     }
     
     func on(event: Event<E>) {
-        parent.lock.performLocked {
-            switch event {
-            case .Next:
-                parent.observer?.on(event)
-            case .Error:
-                parent.observer?.on(event)
-                parent.dispose()
-            case .Completed:
-                parent.group.removeDisposable(disposeKey)
-                
-                if parent.stopped && parent.group.count == 1 {
-                    parent.observer?.on(.Completed)
-                    parent.dispose()
-                }
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
+        switch event {
+        case .Next:
+            _parent.forwardOn(event)
+        case .Error:
+            _parent.forwardOn(event)
+            _parent.dispose()
+        case .Completed:
+            _parent._group.removeDisposable(_disposeKey)
+            
+            if _parent._stopped && _parent._group.count == 1 {
+                _parent.forwardOn(.Completed)
+                _parent.dispose()
             }
         }
     }
 }
 
-class MergeSink<S: ObservableConvertibleType, O: ObserverType where O.E == S.E> : Sink<O>, ObserverType {
+class MergeSink<S: ObservableConvertibleType, O: ObserverType where O.E == S.E>
+    : Sink<O>
+    , ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias E = S
     typealias Parent = Merge<S>
     
-    let parent: Parent
+    private let _parent: Parent
     
-    let lock = NSRecursiveLock()
+    let _lock = NSRecursiveLock()
     
     // state
-    var stopped = false
+    private var _stopped = false
     
-    let group = CompositeDisposable()
-    let sourceSubscription = SingleAssignmentDisposable()
+    private let _group = CompositeDisposable()
+    private let _sourceSubscription = SingleAssignmentDisposable()
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
+    init(parent: Parent, observer: O) {
+        _parent = parent
         
-        super.init(observer: observer, cancel: cancel)
+        super.init(observer: observer)
     }
     
     func run() -> Disposable {
-        group.addDisposable(sourceSubscription)
+        _group.addDisposable(_sourceSubscription)
         
-        let disposable = self.parent.sources.subscribeSafe(self)
-        sourceSubscription.disposable = disposable
-        
-        return group
+        let disposable = _parent._sources.subscribe(self)
+        _sourceSubscription.disposable = disposable
+
+        return _group
     }
     
     func on(event: Event<E>) {
-        switch event {
-        case .Next(let value):
+        if case .Next(let value) = event {
             let innerSubscription = SingleAssignmentDisposable()
-            let maybeKey = group.addDisposable(innerSubscription)
+            let maybeKey = _group.addDisposable(innerSubscription)
             
             if let key = maybeKey {
                 let observer = MergeSinkIter(parent: self, disposeKey: key)
-                let disposable = value.asObservable().subscribeSafe(observer)
+                let disposable = value.asObservable().subscribe(observer)
                 innerSubscription.disposable = disposable
             }
+
+            return
+        }
+
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
+        switch event {
+        case .Next:
+            rxFatalError("Next should have been handled")
         case .Error(let error):
-            lock.performLocked {
-                observer?.on(.Error(error))
-                self.dispose()
-            }
+            forwardOn(.Error(error))
+            dispose()
         case .Completed:
-            lock.performLocked {
-                self.stopped = true
-                
-                if group.count == 1 {
-                    observer?.on(.Completed)
-                    self.dispose()
-                }
-                else {
-                    sourceSubscription.dispose()
-                }
+            _stopped = true
+            
+            if _group.count == 1 {
+                forwardOn(.Completed)
+                dispose()
+            }
+            else {
+                _sourceSubscription.dispose()
             }
         }
     }
@@ -106,77 +125,90 @@ class MergeSink<S: ObservableConvertibleType, O: ObserverType where O.E == S.E> 
 
 // concurrent
 
-class MergeConcurrentSinkIter<S: ObservableConvertibleType, O: ObserverType where S.E == O.E> : ObserverType {
+class MergeConcurrentSinkIter<S: ObservableConvertibleType, O: ObserverType where S.E == O.E>
+    : ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias E = O.E
     typealias DisposeKey = Bag<Disposable>.KeyType
     typealias Parent = MergeConcurrentSink<S, O>
     
-    let parent: Parent
-    let disposeKey: DisposeKey
+    private let _parent: Parent
+    private let _disposeKey: DisposeKey
+
+    var _lock: NSRecursiveLock {
+        return _parent._lock
+    }
     
     init(parent: Parent, disposeKey: DisposeKey) {
-        self.parent = parent
-        self.disposeKey = disposeKey
+        _parent = parent
+        _disposeKey = disposeKey
     }
     
     func on(event: Event<E>) {
-        parent.lock.performLocked {
-            switch event {
-            case .Next:
-                parent.observer?.on(event)
-            case .Error:
-                parent.observer?.on(event)
-                self.parent.dispose()
-            case .Completed:
-                parent.group.removeDisposable(disposeKey)
-                let queue = parent.queue
-                if queue.value.count > 0 {
-                    let s = queue.value.dequeue()
-                    self.parent.subscribe(s, group: parent.group)
-                }
-                else {
-                    parent.activeCount = parent.activeCount - 1
-                    
-                    if parent.stopped && parent.activeCount == 0 {
-                        parent.observer?.on(.Completed)
-                        self.parent.dispose()
-                    }
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
+        switch event {
+        case .Next:
+            _parent.forwardOn(event)
+        case .Error:
+            _parent.forwardOn(event)
+            _parent.dispose()
+        case .Completed:
+            _parent._group.removeDisposable(_disposeKey)
+            let queue = _parent._queue
+            if queue.value.count > 0 {
+                let s = queue.value.dequeue()
+                _parent.subscribe(s, group: _parent._group)
+            }
+            else {
+                _parent._activeCount = _parent._activeCount - 1
+                
+                if _parent._stopped && _parent._activeCount == 0 {
+                    _parent.forwardOn(.Completed)
+                    _parent.dispose()
                 }
             }
         }
     }
 }
 
-class MergeConcurrentSink<S: ObservableConvertibleType, O: ObserverType where S.E == O.E> : Sink<O>, ObserverType {
+class MergeConcurrentSink<S: ObservableConvertibleType, O: ObserverType where S.E == O.E>
+    : Sink<O>
+    , ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias E = S
     typealias Parent = Merge<S>
     typealias QueueType = Queue<S>
     
-    let parent: Parent
+    private let _parent: Parent
     
-    let lock = NSRecursiveLock()
-    
+    let _lock = NSRecursiveLock()
+
     // state
-    var stopped = false
-    var activeCount = 0
-    var queue = RxMutableBox(QueueType(capacity: 2))
+    private var _stopped = false
+    private var _activeCount = 0
+    private var _queue = RxMutableBox(QueueType(capacity: 2))
     
-    let sourceSubscription = SingleAssignmentDisposable()
-    let group = CompositeDisposable()
+    private let _sourceSubscription = SingleAssignmentDisposable()
+    private let _group = CompositeDisposable()
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
+    init(parent: Parent, observer: O) {
+        _parent = parent
         
-        group.addDisposable(sourceSubscription)
-        super.init(observer: observer, cancel: cancel)
+        _group.addDisposable(_sourceSubscription)
+        super.init(observer: observer)
     }
     
     func run() -> Disposable {
-        group.addDisposable(sourceSubscription)
+        _group.addDisposable(_sourceSubscription)
         
-        let disposable = self.parent.sources.subscribeSafe(self)
-        sourceSubscription.disposable = disposable
-        return group
+        let disposable = _parent._sources.subscribe(self)
+        _sourceSubscription.disposable = disposable
+        return _group
     }
     
     func subscribe(innerSource: E, group: CompositeDisposable) {
@@ -187,68 +219,67 @@ class MergeConcurrentSink<S: ObservableConvertibleType, O: ObserverType where S.
         if let key = key {
             let observer = MergeConcurrentSinkIter(parent: self, disposeKey: key)
             
-            let disposable = innerSource.asObservable().subscribeSafe(observer)
+            let disposable = innerSource.asObservable().subscribe(observer)
             subscription.disposable = disposable
         }
     }
     
     func on(event: Event<E>) {
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
         switch event {
         case .Next(let value):
-            let subscribe = lock.calculateLocked { () -> Bool in
-                if activeCount < self.parent.maxConcurrent {
-                    self.activeCount += 1
-                    return true
-                }
-                else {
-                    queue.value.enqueue(value)
-                    return false
-                }
+            let subscribe: Bool
+            if _activeCount < _parent._maxConcurrent {
+                _activeCount += 1
+                subscribe = true
             }
-            
+            else {
+                _queue.value.enqueue(value)
+                subscribe = false
+            }
+
             if subscribe {
-                self.subscribe(value, group: group)
+                self.subscribe(value, group: _group)
             }
         case .Error(let error):
-            lock.performLocked {
-                observer?.on(.Error(error))
-                self.dispose()
-            }
+            forwardOn(.Error(error))
+            dispose()
         case .Completed:
-            lock.performLocked {
-                if activeCount == 0 {
-                    observer?.on(.Completed)
-                    self.dispose()
-                }
-                else {
-                    sourceSubscription.dispose()
-                }
-                    
-                stopped = true
+            if _activeCount == 0 {
+                forwardOn(.Completed)
+                dispose()
             }
+            else {
+                _sourceSubscription.dispose()
+            }
+                
+            _stopped = true
         }
     }
 }
 
 class Merge<S: ObservableConvertibleType> : Producer<S.E> {
-    let sources: Observable<S>
-    let maxConcurrent: Int
+    private let _sources: Observable<S>
+    private let _maxConcurrent: Int
     
     init(sources: Observable<S>, maxConcurrent: Int) {
-        self.sources = sources
-        self.maxConcurrent = maxConcurrent
+        _sources = sources
+        _maxConcurrent = maxConcurrent
     }
     
-    override func run<O: ObserverType where O.E == S.E>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        if maxConcurrent > 0 {
-            let sink = MergeConcurrentSink(parent: self, observer: observer, cancel: cancel)
-            setSink(sink)
-            return sink.run()
+    override func run<O: ObserverType where O.E == S.E>(observer: O) -> Disposable {
+        if _maxConcurrent > 0 {
+            let sink = MergeConcurrentSink(parent: self, observer: observer)
+            sink.disposable = sink.run()
+            return sink
         }
         else {
-            let sink = MergeSink(parent: self, observer: observer, cancel: cancel)
-            setSink(sink)
-            return sink.run()
+            let sink = MergeSink(parent: self, observer: observer)
+            sink.disposable = sink.run()
+            return sink
         }
     }
 }

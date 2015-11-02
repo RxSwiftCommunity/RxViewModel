@@ -12,27 +12,27 @@ class DeferredSink<O: ObserverType> : Sink<O>, ObserverType {
     typealias E = O.E
     typealias Parent = Deferred<E>
     
-    let parent: Parent
+    private let _parent: Parent
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
-        super.init(observer: observer, cancel: cancel)
+    init(parent: Parent, observer: O) {
+        _parent = parent
+        super.init(observer: observer)
     }
     
     func run() -> Disposable {
         do {
-            let result = try parent.eval()
-            return result.subscribeSafe(self)
+            let result = try _parent.eval()
+            return result.subscribe(self)
         }
         catch let e {
-            observer?.on(.Error(e))
-            self.dispose()
+            forwardOn(.Error(e))
+            dispose()
             return NopDisposable.instance
         }
     }
     
     func on(event: Event<E>) {
-        observer?.on(event)
+        forwardOn(event)
         
         switch event {
         case .Next:
@@ -48,19 +48,19 @@ class DeferredSink<O: ObserverType> : Sink<O>, ObserverType {
 class Deferred<Element> : Producer<Element> {
     typealias Factory = () throws -> Observable<Element>
     
-    let observableFactory : Factory
+    private let _observableFactory : Factory
     
     init(observableFactory: Factory) {
-        self.observableFactory = observableFactory
+        _observableFactory = observableFactory
     }
     
-    override func run<O: ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = DeferredSink(parent: self, observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run()
+    override func run<O: ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = DeferredSink(parent: self, observer: observer)
+        sink.disposable = sink.run()
+        return sink
     }
     
     func eval() throws -> Observable<Element> {
-        return try observableFactory()
+        return try _observableFactory()
     }
 }

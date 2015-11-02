@@ -8,43 +8,43 @@
 
 import Foundation
 
-class TakeUntilSinkOther<ElementType, Other, O: ObserverType where O.E == ElementType> : ObserverType {
+class TakeUntilSinkOther<ElementType, Other, O: ObserverType where O.E == ElementType>
+    : ObserverType
+    , LockOwnerType
+    , SynchronizedOnType {
     typealias Parent = TakeUntilSink<ElementType, Other, O>
     typealias E = Other
     
-    let parent: Parent
-    
-    let singleAssignmentDisposable = SingleAssignmentDisposable()
-    
-    var disposable: Disposable {
-        get {
-            abstractMethod()
-        }
-        set(value) {
-            singleAssignmentDisposable.disposable = value
-        }
+    private let _parent: Parent
+
+    var _lock: NSRecursiveLock {
+        return _parent._lock
     }
     
+    private let _subscription = SingleAssignmentDisposable()
+    
     init(parent: Parent) {
-        self.parent = parent
+        _parent = parent
 #if TRACE_RESOURCES
         OSAtomicIncrement32(&resourceCount)
 #endif
     }
     
     func on(event: Event<E>) {
-        parent.lock.performLocked {
-            switch event {
-            case .Next:
-                parent.observer?.on(.Completed)
-                parent.dispose()
-            case .Error(let e):
-                parent.observer?.on(.Error(e))
-                parent.dispose()
-            case .Completed:
-                parent.open = true
-                singleAssignmentDisposable.dispose()
-            }
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
+        switch event {
+        case .Next:
+            _parent.forwardOn(.Completed)
+            _parent.dispose()
+        case .Error(let e):
+            _parent.forwardOn(.Error(e))
+            _parent.dispose()
+        case .Completed:
+            _parent._open = true
+            _subscription.dispose()
         }
     }
     
@@ -55,72 +55,66 @@ class TakeUntilSinkOther<ElementType, Other, O: ObserverType where O.E == Elemen
 #endif
 }
 
-class TakeUntilSink<ElementType, Other, O: ObserverType where O.E == ElementType> : Sink<O>, ObserverType {
+class TakeUntilSink<ElementType, Other, O: ObserverType where O.E == ElementType>
+    : Sink<O>
+    , LockOwnerType
+    , ObserverType
+    , SynchronizedOnType {
     typealias E = ElementType
     typealias Parent = TakeUntil<E, Other>
     
-    let parent: Parent
+    private let _parent: Parent
  
-    let lock = NSRecursiveLock()
+    let _lock = NSRecursiveLock()
     
     // state
-    var open = false
+    private var _open = false
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
-        super.init(observer: observer, cancel: cancel)
+    init(parent: Parent, observer: O) {
+        _parent = parent
+        super.init(observer: observer)
     }
     
     func on(event: Event<E>) {
+        synchronizedOn(event)
+    }
+
+    func _synchronized_on(event: Event<E>) {
         switch event {
         case .Next:
-            if open {
-                observer?.on(event)
-            }
-            else {
-                lock.performLocked {
-                    observer?.on(event)
-                }
-            }
-            break
+            forwardOn(event)
         case .Error:
-            lock.performLocked {
-                observer?.on(event)
-                self.dispose()
-            }
-            break
+            forwardOn(event)
+            dispose()
         case .Completed:
-            lock.performLocked {
-                observer?.on(event)
-                self.dispose()
-            }
-            break
+            forwardOn(event)
+            dispose()
         }
     }
     
     func run() -> Disposable {
         let otherObserver = TakeUntilSinkOther(parent: self)
-        let otherSubscription = parent.other.subscribeSafe(otherObserver)
-        otherObserver.disposable = otherSubscription
-        let sourceSubscription = parent.source.subscribeSafe(self)
+        let otherSubscription = _parent._other.subscribe(otherObserver)
+        otherObserver._subscription.disposable = otherSubscription
+        let sourceSubscription = _parent._source.subscribe(self)
         
-        return CompositeDisposable(sourceSubscription, otherSubscription)
+        return StableCompositeDisposable.create(sourceSubscription, otherObserver._subscription)
     }
 }
 
 class TakeUntil<Element, Other>: Producer<Element> {
     
-    let source: Observable<Element>
-    let other: Observable<Other>
+    private let _source: Observable<Element>
+    private let _other: Observable<Other>
     
     init(source: Observable<Element>, other: Observable<Other>) {
-        self.source = source
-        self.other = other
+        _source = source
+        _other = other
     }
     
-    override func run<O : ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = TakeUntilSink(parent: self, observer: observer, cancel: cancel)
-        setSink(sink)
-        return sink.run()
+    override func run<O : ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = TakeUntilSink(parent: self, observer: observer)
+        sink.disposable = sink.run()
+        return sink
     }
 }

@@ -12,24 +12,24 @@ class DoSink<O: ObserverType> : Sink<O>, ObserverType {
     typealias Element = O.E
     typealias Parent = Do<Element>
     
-    let parent: Parent
+    private let _parent: Parent
     
-    init(parent: Parent, observer: O, cancel: Disposable) {
-        self.parent = parent
-        super.init(observer: observer, cancel: cancel)
+    init(parent: Parent, observer: O) {
+        _parent = parent
+        super.init(observer: observer)
     }
     
     func on(event: Event<Element>) {
         do {
-            try parent.eventHandler(event)
-            observer?.on(event)
+            try _parent._eventHandler(event)
+            forwardOn(event)
             if event.isStopEvent {
-                self.dispose()
+                dispose()
             }
         }
         catch let error {
-            observer?.on(.Error(error))
-            self.dispose()
+            forwardOn(.Error(error))
+            dispose()
         }
     }
 }
@@ -37,19 +37,17 @@ class DoSink<O: ObserverType> : Sink<O>, ObserverType {
 class Do<Element> : Producer<Element> {
     typealias EventHandler = Event<Element> throws -> Void
     
-    let source: Observable<Element>
-    let eventHandler: EventHandler
+    private let _source: Observable<Element>
+    private let _eventHandler: EventHandler
     
     init(source: Observable<Element>, eventHandler: EventHandler) {
-        self.source = source
-        self.eventHandler = eventHandler
+        _source = source
+        _eventHandler = eventHandler
     }
     
-    override func run<O: ObserverType where O.E == Element>(observer: O, cancel: Disposable, setSink: (Disposable) -> Void) -> Disposable {
-        let sink = DoSink(parent: self, observer: observer, cancel: cancel)
-        
-        setSink(sink)
-        
-        return self.source.subscribeSafe(sink)
+    override func run<O: ObserverType where O.E == Element>(observer: O) -> Disposable {
+        let sink = DoSink(parent: self, observer: observer)
+        sink.disposable = _source.subscribe(sink)
+        return sink
     }
 }

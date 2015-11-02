@@ -4,7 +4,7 @@ PODS:
   - RxCocoa (2.0.0-beta.2):
     - RxSwift (~> 2.0.0-beta)
   - RxSwift (2.0.0-beta.2)
-  - RxViewModel (2.3.0):
+  - RxViewModel (2.3.1):
     - RxCocoa (~> 2.0.0-beta.2)
     - RxSwift (~> 2.0.0-beta.2)
 
@@ -22,6 +22,6 @@ SPEC CHECKSUMS:
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
   RxCocoa: ee39aa3ab24a8dde3832669f8e1e2c7652925e0c
   RxSwift: 795720c22352cf1f62669ef3695b5df7e195103b
-  RxViewModel: b779ac80e34c33c66665072ddb0b23fa2a1ce56a
+  RxViewModel: 1a649843997c9d7dec253bcf946933502e8e5b0c
 
 COCOAPODS: 0.39.0

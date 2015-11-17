@@ -21,7 +21,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func filter(predicate: (E) throws -> Bool)
         -> Observable<E> {
-        return Filter(source: self.asObservable(), predicate: predicate)
+        return Filter(source: asObservable(), predicate: predicate)
     }
 }
 
@@ -73,7 +73,7 @@ extension ObservableType {
             return empty()
         }
         else {
-            return TakeCount(source: self.asObservable(), count: count)
+            return TakeCount(source: asObservable(), count: count)
         }
     }
 }
@@ -93,7 +93,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func takeLast(count: Int)
         -> Observable<E> {
-        return TakeLast(source: self.asObservable(), count: count)
+        return TakeLast(source: asObservable(), count: count)
     }
 }
 
@@ -111,7 +111,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func skip(count: Int)
         -> Observable<E> {
-        return SkipCount(source: self.asObservable(), count: count)
+        return SkipCount(source: asObservable(), count: count)
     }
 }
 
@@ -127,7 +127,7 @@ extension ObservableType {
     */
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func skipWhile(predicate: (E) throws -> Bool) -> Observable<E> {
-        return SkipWhile(source: self.asObservable(), predicate: predicate)
+        return SkipWhile(source: asObservable(), predicate: predicate)
     }
    
     /**
@@ -139,7 +139,7 @@ extension ObservableType {
     */
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func skipWhileWithIndex(predicate: (E, Int) throws -> Bool) -> Observable<E> {
-        return SkipWhile(source: self.asObservable(), predicate: predicate)
+        return SkipWhile(source: asObservable(), predicate: predicate)
     }
 }
 
@@ -156,7 +156,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func map<R>(selector: E throws -> R)
         -> Observable<R> {
-        return Map(source: self.asObservable(), selector: selector)
+        return self.asObservable().composeMap(selector)
     }
 
     /**
@@ -168,7 +168,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func mapWithIndex<R>(selector: (E, Int) throws -> R)
         -> Observable<R> {
-        return Map(source: self.asObservable(), selector: selector)
+        return MapWithIndex(source: asObservable(), selector: selector)
     }
 }
     
@@ -185,7 +185,7 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func flatMap<O: ObservableConvertibleType>(selector: (E) throws -> O)
         -> Observable<O.E> {
-        return FlatMap(source: self.asObservable(), selector: selector)
+        return FlatMap(source: asObservable(), selector: selector)
     }
 
     /**
@@ -197,11 +197,48 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func flatMapWithIndex<O: ObservableConvertibleType>(selector: (E, Int) throws -> O)
         -> Observable<O.E> {
-        return FlatMap(source: self.asObservable(), selector: selector)
+        return FlatMapWithIndex(source: asObservable(), selector: selector)
     }
 }
 
-// elementAt
+// MARK: flatMapFirst
+
+extension ObservableType {
+
+    /**
+    Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
+    
+    - parameter selector: A transform function to apply to each element.
+    - returns: An observable sequence whose elements are the result of invoking the one-to-many transform function on each element of the input sequence.
+    */
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func flatMapFirst<O: ObservableConvertibleType>(selector: (E) throws -> O)
+        -> Observable<O.E> {
+        return FlatMapFirst(source: asObservable(), selector: selector)
+    }
+}
+
+// MARK: flatMapLatest
+
+extension ObservableType {
+    /**
+     Projects each element of an observable sequence into a new sequence of observable sequences and then
+     transforms an observable sequence of observable sequences into an observable sequence producing values only from the most recent observable sequence.
+     
+     It is a combination of `map` + `switchLatest` operator
+
+     - parameter selector: A transform function to apply to each element.
+     - returns: An observable sequence whose elements are the result of invoking the transform function on each element of source producing an 
+        Observable of Observable sequences and that at any point in time produces the elements of the most recent inner observable sequence that has been received.
+     */
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func flatMapLatest<O: ObservableConvertibleType>(selector: (E) throws -> O)
+        -> Observable<O.E> {
+            return FlatMapLatest(source: asObservable(), selector: selector)
+    }
+}
+
+// MARK: elementAt
 
 extension ObservableType {
     
@@ -214,6 +251,37 @@ extension ObservableType {
     @warn_unused_result(message="http://git.io/rxs.uo")
     public func elementAt(index: Int)
         -> Observable<E> {
-            return ElementAt(source: self.asObservable(), index: index, throwOnEmpty: true)
+        return ElementAt(source: asObservable(), index: index, throwOnEmpty: true)
     }
+}
+
+// MARK: single
+
+extension ObservableType {
+    
+    /**
+    The single operator is similar to first, but throws a `RxError.NoElements` or `RxError.MoreThanOneElement`
+    if the source Observable does not emit exactly one item before successfully completing.
+    
+    - returns: An observable sequence that emits a single item or throws an exception if more (or none) of them are emitted.
+    */
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func single()
+        -> Observable<E> {
+        return SingleAsync(source: asObservable())
+    }
+    
+    /**
+    The single operator is similar to first, but throws a `RxError.NoElements` or `RxError.MoreThanOneElement`
+    if the source Observable does not emit exactly one item before successfully completing.
+    
+    - parameter predicate: A function to test each source element for a condition.
+    - returns: An observable sequence that emits a single item or throws an exception if more (or none) of them are emitted.
+    */
+    @warn_unused_result(message="http://git.io/rxs.uo")
+    public func single(predicate: (E) throws -> Bool)
+        -> Observable<E> {
+        return SingleAsync(source: asObservable(), predicate: predicate)
+    }
+
 }

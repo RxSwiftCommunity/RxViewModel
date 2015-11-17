@@ -190,13 +190,12 @@ Writing all of this and properly testing it would be tedious. This is that same 
   searchTextField.rx_text
     .throttle(0.3, MainScheduler.sharedInstance)
     .distinctUntilChanged()
-    .map { query in
+    .flatMapLatest { query in
         API.getSearchResults(query)
             .retry(3)
             .startWith([]) // clears results on new search term
             .catchErrorJustReturn([])
     }
-    .switchLatest()
     .subscribeNext { results in
       // bind to ui
     }
@@ -480,7 +479,7 @@ $ pod install
 Add this to `Cartfile`
 
 ```
-git "git@github.com:ReactiveX/RxSwift.git" "2.0.0-beta.2"
+github "ReactiveX/RxSwift" "2.0.0-beta.3"
 ```
 
 ```

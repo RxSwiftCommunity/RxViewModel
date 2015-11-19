@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RxViewModel"
-  s.version          = "2.4.0"
+  s.version          = "2.4.1"
   s.summary          = "`RxViewModel` is the marriage between `MVVM` and `Rx` extensions. A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`."
   s.description      = <<-DESC
 `RxViewModel` is the marriage between `MVVM` and `Rx` extensions
@@ -12,10 +12,10 @@ Given the fact that there's no `Swift` branch and the lack of interest in the pr
 
 Long story short: a blatant «imitation» of `ReactiveViewModel `using `RxCocoa`.
                        DESC
-  s.homepage         = "https://github.com/esttorhe/RxViewModel"
+  s.homepage         = "https://github.com/RxSwiftCommunity/RxViewModel"
   s.license          = 'MIT'
   s.author           = { "esttorhe" => "me@estebantorr.es" }
-  s.source           = { :git => "https://github.com/esttorhe/RxViewModel.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/RxSwiftCommunity/RxViewModel.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/esttorhe'
 
   s.ios.deployment_target  = '8.0'

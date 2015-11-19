@@ -1,6 +1,6 @@
 # RxViewModel
 
-[![Circle CI](https://circleci.com/gh/esttorhe/RxViewModel/tree/master.svg?style=svg)](https://circleci.com/gh/esttorhe/RxViewModel/tree/master)
+[![Circle CI](https://circleci.com/gh/RxSwiftCommunity/RxViewModel/tree/master.svg?style=svg)](https://circleci.com/gh/RxSwiftCommunity/RxViewModel/tree/master)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![License](https://img.shields.io/cocoapods/l/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
@@ -57,7 +57,7 @@ pod install
 Just add the following to your [`Cartfile`](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile)
 
 ```swift
-github "esttorhe/RxViewModel", ~> 2.3.1
+github "esttorhe/RxViewModel"
 ```
 
 And run:

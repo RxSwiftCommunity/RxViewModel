@@ -43,7 +43,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Simply add the following line to your Podfile:
 
 ```ruby
-pod "RxViewModel""
+pod "RxViewModel"
 ```
 
 And then run:

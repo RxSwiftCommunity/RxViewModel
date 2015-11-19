@@ -102,7 +102,7 @@ func observeWeaklyKeyPathFor(
     
     let property = class_getProperty(object_getClass(target), propertyName);
     if property == nil {
-        return failWith(rxError(.KeyPathInvalid, "Object \(target) doesn't have property named `\(propertyName)`"))
+        return failWith(RxCocoaError.InvalidPropertyName(object: target, propertyName: propertyName))
     }
     let propertyAttributes = property_getAttributes(property);
     
@@ -112,7 +112,7 @@ func observeWeaklyKeyPathFor(
     
     // KVO recursion for value changes
     return propertyObservable
-        .map { (nextTarget: AnyObject?) -> Observable<AnyObject?> in
+        .flatMapLatest { (nextTarget: AnyObject?) -> Observable<AnyObject?> in
             if nextTarget == nil {
                return just(nil)
             }
@@ -121,7 +121,7 @@ func observeWeaklyKeyPathFor(
             let strongTarget: AnyObject? = weakTarget
             
             if nextObject == nil {
-                return failWith(rxError(.KeyPathInvalid, "Observed \(nextTarget) as property `\(propertyName)` on `\(strongTarget)` which is not `NSObject`."))
+                return failWith(RxCocoaError.InvalidObjectOnKeyPath(object: nextTarget!, sourceObject: strongTarget ?? NSNull(), propertyName: propertyName))
             }
 
             // if target is alive, then send change
@@ -142,7 +142,6 @@ func observeWeaklyKeyPathFor(
                 return nextElementsObservable
             }
         }
-        .switchLatest()
 }
 #endif
 

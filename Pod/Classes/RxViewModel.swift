@@ -55,7 +55,7 @@ public class RxViewModel: NSObject {
   public override init() {
     super.init()
     
-    let observable = self.rx_observe("_active") as Observable<Bool?>
+    let observable = self.rx_observe(Bool.self, "_active") as Observable<Bool?>
     /// Start observing changes on our underlying `_active` property.
     observable.subscribeNext { active in
         /// If we have an active subject and the flag is true send ourselves
@@ -123,7 +123,7 @@ public class RxViewModel: NSObject {
   an error at any point, the returned signal will error out as well.
   */
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
-    let signal = self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>
+    let signal = self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>
     
     return create { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
@@ -177,7 +177,7 @@ public class RxViewModel: NSObject {
 //    observable.replay(1)
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = (self.rx_observe("_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: AnyObserver<T>) -> Disposable in
+    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: AnyObserver<T>) -> Disposable in
       observable.subscribeCompleted {
         defer { result.dispose() }
         

@@ -22,6 +22,7 @@ test:
       tee $CIRCLE_ARTIFACTS/xcode_raw.log |
       xcpretty --color --report junit --output $CIRCLE_TEST_REPORTS/xcode/results.xml
 deployment:
-  branch: master
-  commands:
-    - curl -s https://codecov.io/bash
+  development:
+    branch: master
+    commands:
+      - curl -s https://codecov.io/bash

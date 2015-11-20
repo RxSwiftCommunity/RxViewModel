@@ -24,4 +24,4 @@ test:
 deployment:
   branch: master
   commands:
-    curl -s https://codecov.io/bash
+    - curl -s https://codecov.io/bash

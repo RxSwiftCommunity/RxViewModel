@@ -3,7 +3,7 @@
 //  Rx
 //
 //  Created by Krunoslav Zaher on 2/28/15.
-//  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
+//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
 import Foundation
@@ -58,7 +58,7 @@ public struct AnyObserver<Element> : ObserverType {
 
      - returns: type erased observer.
      */
-    func asObserver() -> AnyObserver<E> {
+    public func asObserver() -> AnyObserver<E> {
         return self
     }
 }
@@ -69,7 +69,7 @@ extension ObserverType {
     
     - returns: type erased observer.
     */
-    func asObserver() -> AnyObserver<E> {
+    public func asObserver() -> AnyObserver<E> {
         return AnyObserver(self)
     }
 }

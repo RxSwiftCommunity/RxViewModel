@@ -78,7 +78,7 @@ public class RxViewModel: NSObject {
   */
   public var didBecomeActive: Observable<RxViewModel> {
     get {
-      return deferred { [weak self] () -> Observable<RxViewModel> in
+      return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.activeSubject == nil {
             weakSelf.activeSubject = ReplaySubject.create(bufferSize: 1)
@@ -98,7 +98,7 @@ public class RxViewModel: NSObject {
   */
   public var didBecomeInactive: Observable<RxViewModel> {
     get {
-      return deferred { [weak self] () -> Observable<RxViewModel> in
+      return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.inactiveSubject == nil {
             weakSelf.inactiveSubject = ReplaySubject.create(bufferSize: 1)
@@ -125,7 +125,7 @@ public class RxViewModel: NSObject {
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
     let signal = self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>
     
-    return create { (o: AnyObserver<T>) -> Disposable in
+    return Observable.create { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
       var disposeKey: Bag<Disposable>.KeyType?
@@ -177,7 +177,7 @@ public class RxViewModel: NSObject {
 //    observable.replay(1)
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(create { (o: AnyObserver<T>) -> Disposable in
+    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
       observable.subscribeCompleted {
         defer { result.dispose() }
         
@@ -185,7 +185,7 @@ public class RxViewModel: NSObject {
       }
     })
 
-    let _ = combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
+    let _ = Observable.combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
       .throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
       return active == false
     }.subscribe(onNext: { (value:(Bool?, T)) in

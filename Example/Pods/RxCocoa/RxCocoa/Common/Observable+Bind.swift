@@ -16,14 +16,43 @@ extension ObservableType {
     /**
     Creates new subscription and sends elements to observer.
     
-    In this form it's equivalent to `subscribe` method, but it communicates intent better.
+    In this form it's equivalent to `subscribe` method, but it communicates intent better, and enables
+    writing more consistent binding code.
     
     - parameter observer: Observer that receives events.
-    - returns: Disposable object that can be used to unsubscribe the observer from the subject.
+    - returns: Disposable object that can be used to unsubscribe the observer.
     */
     @warn_unused_result(message="http://git.io/rxs.ud")
     public func bindTo<O: ObserverType where O.E == E>(observer: O) -> Disposable {
         return self.subscribe(observer)
+    }
+
+    /**
+    Creates new subscription and sends elements to variable.
+
+    In case error occurs in debug mode, `fatalError` will be raised.
+    In case error occurs in release mode, `error` will be logged.
+
+    - parameter variable: Target variable for sequence elements.
+    - returns: Disposable object that can be used to unsubscribe the observer.
+    */
+    @warn_unused_result(message="http://git.io/rxs.ud")
+    public func bindTo(variable: Variable<E>) -> Disposable {
+        return subscribe { e in
+            switch e {
+            case let .Next(element):
+                variable.value = element
+            case let .Error(error):
+                let error = "Binding error to variable: \(error)"
+            #if DEBUG
+                rxFatalError(error)
+            #else
+                print(error)
+            #endif
+            case .Completed:
+                break
+            }
+        }
     }
     
     /**
@@ -56,13 +85,23 @@ extension ObservableType {
     
     
     /**
-    Subscribes an element handler to an observable sequence.
+    Subscribes an element handler to an observable sequence. 
+
+    In case error occurs in debug mode, `fatalError` will be raised.
+    In case error occurs in release mode, `error` will be logged.
     
     - parameter onNext: Action to invoke for each element in the observable sequence.
     - returns: Subscription object used to unsubscribe from the observable sequence.
     */
     @warn_unused_result(message="http://git.io/rxs.ud")
     public func bindNext(onNext: E -> Void) -> Disposable {
-        return subscribeNext(onNext)
+        return subscribe(onNext: onNext, onError: { error in
+            let error = "Binding error to variable: \(error)"
+            #if DEBUG
+                rxFatalError(error)
+            #else
+                print(error)
+            #endif
+        })
     }
 }

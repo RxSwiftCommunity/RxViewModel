@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RxViewModel"
-  s.version          = "2.4.1"
+  s.version          = "3.0.0"
   s.summary          = "`RxViewModel` is the marriage between `MVVM` and `Rx` extensions. A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`."
   s.description      = <<-DESC
 `RxViewModel` is the marriage between `MVVM` and `Rx` extensions
@@ -25,7 +25,7 @@ Long story short: a blatant «imitation» of `ReactiveViewModel `using `RxCocoa`
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.dependency 'RxCocoa', '~> 2.0.0-beta.3'
-  s.dependency 'RxSwift', '~> 2.0.0-beta.3'
+  s.dependency 'RxCocoa', '~> 2.0.0'
+  s.dependency 'RxSwift', '~> 2.0.0'
   s.frameworks = 'Foundation'
 end

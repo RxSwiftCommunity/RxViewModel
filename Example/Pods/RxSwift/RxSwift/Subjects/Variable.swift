@@ -3,7 +3,7 @@
 //  Rx
 //
 //  Created by Krunoslav Zaher on 3/28/15.
-//  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
+//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
 import Foundation
@@ -11,9 +11,11 @@ import Foundation
 /**
 Variable is a wrapper for `BehaviorSubject`.
 
-Unlike `BehaviorSubject` it can't terminate with error.
+Unlike `BehaviorSubject` it can't terminate with error, and when variable is deallocated
+ it will complete it's observable sequence (`asObservable`).
 */
-public class Variable<Element> : ObservableType {
+public class Variable<Element> {
+
     public typealias E = Element
     
     private let _subject: BehaviorSubject<Element>
@@ -55,21 +57,13 @@ public class Variable<Element> : ObservableType {
     }
     
     /**
-    Subscribes an observer to sequence of variable values.
-    
-    Immediately upon subscription current value is sent to the observer.
-    
-    - parameter observer: Observer to subscribe to variable values.
-    - returns: Disposable object that can be used to unsubscribe the observer from the variable.
-    */
-    public func subscribe<O: ObserverType where O.E == E>(observer: O) -> Disposable {
-        return _subject.subscribe(observer)
-    }
-    
-    /**
     - returns: Canonical interface for push style sequence
     */
     public func asObservable() -> Observable<E> {
         return _subject
+    }
+
+    deinit {
+        _subject.on(.Completed)
     }
 }

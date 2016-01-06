@@ -38,9 +38,9 @@ returns `true`. Completion and errors are always forwarded immediately.
 */
 extension ObservableType {
   public func throttle(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> Observable<E> {
-    return create { (o: AnyObserver<E>) -> Disposable in
+    return Observable.create { (o: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
-      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueuePriority: .Default)
+      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Default)
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue:E?
@@ -79,7 +79,8 @@ extension ObservableType {
         nextValue = $0
         
         let flush = flushNext
-        let d = timer(interval, scheduler).subscribeNext { _ in
+        let d = Observable<Int64>.timer(interval, scheduler: scheduler)
+          .subscribeNext{ _ in
           flush(true)
         }
         

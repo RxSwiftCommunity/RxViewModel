@@ -3,7 +3,7 @@
 //  RxSwift
 //
 //  Created by Krunoslav Zaher on 7/5/15.
-//  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
+//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
 import Foundation
@@ -38,22 +38,28 @@ public class ConcurrentDispatchQueueScheduler: SchedulerType {
     }
     
     /**
-    Convenience init for scheduler that wraps one of the global concurrent dispatch queues.
-    
-    - parameter globalConcurrentQueuePriority: Target global dispatch queue.
-    */
-    public convenience init(globalConcurrentQueuePriority: DispatchQueueSchedulerPriority) {
-        var priority: Int = 0
-        switch globalConcurrentQueuePriority {
-        case .High:
-            priority = DISPATCH_QUEUE_PRIORITY_HIGH
+     Convenience init for scheduler that wraps one of the global concurrent dispatch queues.
+     
+     - parameter globalConcurrentQueueQOS: Target global dispatch queue, by quality of service class.
+     */
+    @available(iOS 8, OSX 10.10, *)
+    public convenience init(globalConcurrentQueueQOS: DispatchQueueSchedulerQOS) {
+        let priority: qos_class_t
+        switch globalConcurrentQueueQOS {
+        case .UserInteractive:
+            priority = QOS_CLASS_USER_INTERACTIVE
+        case .UserInitiated:
+            priority = QOS_CLASS_USER_INITIATED
         case .Default:
-            priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        case .Low:
-            priority = DISPATCH_QUEUE_PRIORITY_LOW
+            priority = QOS_CLASS_DEFAULT
+        case .Utility:
+            priority = QOS_CLASS_UTILITY
+        case .Background:
+            priority = QOS_CLASS_BACKGROUND
         }
         self.init(queue: dispatch_get_global_queue(priority, UInt(0)))
     }
+
     
     class func convertTimeIntervalToDispatchInterval(timeInterval: NSTimeInterval) -> Int64 {
         return Int64(timeInterval * Double(NSEC_PER_SEC))

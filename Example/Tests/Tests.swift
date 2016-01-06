@@ -74,7 +74,7 @@ class RxViewModelSpec: QuickSpec {
       var values = [String]()
       var completed = false
       
-      let input = create { o -> Disposable in
+      let input = Observable.create { o -> Disposable in
         o.on(.Next("1"))
         o.on(.Next("2"))
         

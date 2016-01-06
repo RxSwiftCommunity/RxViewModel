@@ -3,7 +3,7 @@
 //  RxCocoa
 //
 //  Created by Yuta ToKoRo on 7/19/15.
-//  Copyright (c) 2015 Krunoslav Zaher. All rights reserved.
+//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
 #if os(iOS) || os(tvOS)
@@ -14,6 +14,8 @@ import UIKit
 import RxSwift
 #endif
 
+    
+    
 extension UITextView {
     
     /**
@@ -21,7 +23,7 @@ extension UITextView {
     
     - returns: Instance of delegate proxy that wraps `delegate`.
     */
-    override func rx_createDelegateProxy() -> RxScrollViewDelegateProxy {
+    public override func rx_createDelegateProxy() -> RxScrollViewDelegateProxy {
         return RxTextViewDelegateProxy(parentObject: self)
     }
     
@@ -29,16 +31,22 @@ extension UITextView {
     Reactive wrapper for `text` property.
     */
     public var rx_text: ControlProperty<String> {
-        let source: Observable<String> = deferred { [weak self] in
+        let source: Observable<String> = Observable.deferred { [weak self] in
             let text = self?.text ?? ""
-            return (self?.rx_delegate.observe("textViewDidChange:") ?? empty())
-                .map { a in
-                    return (a[0] as? UITextView)?.text ?? ""
+            
+            let textChanged = self?.textStorage
+                .rx_didProcessEditingRangeChangeInLength
+                .map { _ in
+                    return self?.textStorage.string ?? ""
                 }
+                ?? Observable.empty()
+            
+            return textChanged
                 .startWith(text)
-            }
+                .distinctUntilChanged()
+        }
         
-        return ControlProperty(source: source, observer: AnyObserver { [weak self] event in
+        return ControlProperty(values: source, valueSink: AnyObserver { [weak self] event in
             switch event {
             case .Next(let value):
                 self?.text = value

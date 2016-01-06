@@ -1,16 +1,16 @@
 {
   "name": "RxViewModel",
-  "version": "2.3.1",
+  "version": "3.0.0",
   "summary": "`RxViewModel` is the marriage between `MVVM` and `Rx` extensions. A blatant «imitation» of `ReactiveViewModel` using `RxCocoa`.",
   "description": "`RxViewModel` is the marriage between `MVVM` and `Rx` extensions\n\nSince [`ReactiveViewModel`](https://github.com/ReactiveCocoa/ReactiveViewModel) project felt on stagnation and there's not `Swift` or `Swift 2.0` implementation we found the need to implement something like this on `Swift`.\n\nGiven the fact that there's no `Swift` branch and the lack of interest in the project we felt it was better to give `RxSwift`/`RxCocoa` a chance and instead use it as the base for this reactive view model approach.\n\nLong story short: a blatant «imitation» of `ReactiveViewModel `using `RxCocoa`.",
-  "homepage": "https://github.com/esttorhe/RxViewModel",
+  "homepage": "https://github.com/RxSwiftCommunity/RxViewModel",
   "license": "MIT",
   "authors": {
     "esttorhe": "me@estebantorr.es"
   },
   "source": {
-    "git": "https://github.com/esttorhe/RxViewModel.git",
-    "tag": "2.3.1"
+    "git": "https://github.com/RxSwiftCommunity/RxViewModel.git",
+    "tag": "3.0.0"
   },
   "social_media_url": "https://twitter.com/esttorhe",
   "platforms": {
@@ -23,10 +23,10 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "RxCocoa": [
-      "~> 2.0.0-beta.3"
+      "~> 2.0.0"
     ],
     "RxSwift": [
-      "~> 2.0.0-beta.3"
+      "~> 2.0.0"
     ]
   },
   "frameworks": "Foundation"

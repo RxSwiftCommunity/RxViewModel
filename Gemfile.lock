@@ -7,7 +7,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.3.8)
+    addressable (2.4.0)
     claide (0.9.1)
     clamp (0.6.5)
     cocoapods (0.39.0)
@@ -48,15 +48,14 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     fuzzy_match (2.0.4)
-    github_api (0.12.4)
-      addressable (~> 2.3)
+    github_api (0.13.1)
+      addressable (~> 2.4.0)
       descendants_tracker (~> 0.0.4)
       faraday (~> 0.8, < 0.10)
       hashie (>= 3.4)
       multi_json (>= 1.7.5, < 2.0)
-      nokogiri (~> 1.6.6)
       oauth2
-    github_changelog_generator (1.9.0)
+    github_changelog_generator (1.10.0)
       colorize (~> 0.7)
       github_api (~> 0.12)
     hashie (3.4.3)
@@ -64,16 +63,13 @@ GEM
     json (1.8.3)
     jwt (1.5.2)
     label (1.0.0)
-    mini_portile (0.6.2)
-    minitest (5.8.2)
-    molinillo (0.4.0)
+    minitest (5.8.3)
+    molinillo (0.4.1)
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nap (1.0.0)
     netrc (0.7.8)
-    nokogiri (1.6.6.3)
-      mini_portile (~> 0.6.0)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -104,4 +100,4 @@ DEPENDENCIES
   synx
 
 BUNDLED WITH
-   1.10.6
+   1.11.2

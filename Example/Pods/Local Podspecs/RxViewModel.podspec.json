@@ -15,7 +15,7 @@
   "social_media_url": "https://twitter.com/esttorhe",
   "platforms": {
     "ios": "8.0",
-    "osx": "10.9",
+    "osx": "10.10",
     "tvos": "9.0",
     "watchos": "2.0"
   },
@@ -23,10 +23,10 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "RxCocoa": [
-      "~> 2.0.0"
+      "~> 2.1.0"
     ],
     "RxSwift": [
-      "~> 2.0.0"
+      "~> 2.1.0"
     ]
   },
   "frameworks": "Foundation"

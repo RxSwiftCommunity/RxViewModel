@@ -5,5 +5,5 @@ xcodeproj: Example/RxViewModel.xcodeproj
 source_directory: Pods/RxViewModel
 output_directory: ./
 ignore:
-  - Example/Tests/**/*
-  - Example/Pods/Nimble/**/*
+  - Example/Tests/*
+  - Example/Pods/*

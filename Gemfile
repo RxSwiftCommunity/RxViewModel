@@ -17,3 +17,6 @@ gem 'synx'
 # Script, that automatically generate changelog from your tags, issues, labels and pull
 # requests.
 gem 'github_changelog_generator'
+
+# Test coverage reports for Xcode projects
+gem 'slather'

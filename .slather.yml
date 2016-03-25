@@ -1,0 +1,9 @@
+# .slather.yml
+
+coverage_service: cobertura_xml
+xcodeproj: Example/RxViewModel.xcodeproj
+source_directory: Pod/RxViewModel
+output_directory: ./
+ignore:
+  - Example/Tests/*
+  - Example/Pods/*

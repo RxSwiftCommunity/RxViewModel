@@ -2,6 +2,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 inhibit_all_warnings!
 
+plugin 'slather'
+
 pod "RxViewModel", :path => "../"
 pod 'Nimble'
 pod 'Quick'

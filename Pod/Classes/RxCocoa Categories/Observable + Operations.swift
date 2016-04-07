@@ -37,8 +37,8 @@ import RxSwift
 returns `true`. Completion and errors are always forwarded immediately.
 */
 extension ObservableType {
-  public func throttle(interval: NSTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> Observable<E> {
-    return Observable.create { (o: AnyObserver<E>) -> Disposable in
+  public func throttle(interval: RxTimeInterval, valuesPassingTest predicate:(E) -> Bool) -> Observable<E> {
+    return Observable.create()  { (o: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
       let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Default)
       let nextDisposable = SerialDisposable()
@@ -51,7 +51,7 @@ extension ObservableType {
         Disposes the «last» `next` subscription if there was a previous value it gets
         flushed to the observable `o`.
         
-        - parameter send: 	`Bool` flag indicating where or not the `next` value should be
+        - parameter send:   `Bool` flag indicating where or not the `next` value should be
         «flushed» to the `observable` `o` or not.
         */
         func flushNext(send: Bool) -> Void  {
@@ -79,9 +79,9 @@ extension ObservableType {
         nextValue = $0
         
         let flush = flushNext
-        let d = Observable<Int64>.timer(interval, scheduler: scheduler)
-          .subscribeNext{ _ in
-          flush(true)
+        let d = Observable<Int>.timer(interval, scheduler: scheduler)
+          .subscribeNext { _ in
+            flush(true)
         }
         
         disposable.addDisposable(d)

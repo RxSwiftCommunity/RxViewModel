@@ -19,7 +19,7 @@ user-presentable.
 */
 public class RxViewModel: NSObject {
   // MARK: Constants
-  let ThrottleTime: NSTimeInterval = 2
+  let ThrottleTime: RxTimeInterval = 2
   
   // MARK: Properties
   /// Scope dispose to avoid leaking
@@ -125,7 +125,7 @@ public class RxViewModel: NSObject {
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
     let signal = self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>
     
-    return Observable.create { (o: AnyObserver<T>) -> Disposable in
+    return Observable.create()  { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
       var disposeKey: Bag<Disposable>.KeyType?
@@ -174,10 +174,9 @@ public class RxViewModel: NSObject {
   is deallocated.
   */
   public func throttleSignalWhileInactive<T>(observable: Observable<T>) -> Observable<T> {
-//    observable.replay(1)
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
+    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(Observable.create() { (o: AnyObserver<T>) -> Disposable in
       observable.subscribeCompleted {
         defer { result.dispose() }
         
@@ -188,7 +187,7 @@ public class RxViewModel: NSObject {
     let _ = Observable.combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
       .throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
       return active == false
-    }.subscribe(onNext: { (value:(Bool?, T)) in
+    }.subscribe( onNext: { (value:(Bool?, T)) in
       result.on(.Next(value.1))
     }, onError: { _ in }, onCompleted: {
       result.on(.Completed)

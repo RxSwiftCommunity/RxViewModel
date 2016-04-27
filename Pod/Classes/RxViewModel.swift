@@ -11,7 +11,6 @@ import Foundation
 
 // Dependencies
 import RxSwift
-import RxCocoa
 
 /**
 Implements behaviors that drive the UI, and/or adapts a domain model to be 
@@ -44,8 +43,16 @@ public class RxViewModel: NSObject {
       if newValue == _active { return }
       
       _active = newValue
+      self.activeObservable.on(.Next(_active))
     }
   }
+   
+   // Private
+   private lazy var activeObservable: BehaviorSubject<Bool?> = {
+      let ao = BehaviorSubject(value: Bool?(self.active))
+      
+      return ao
+   }()
   
   // MARK: Life cycle
   
@@ -55,7 +62,7 @@ public class RxViewModel: NSObject {
   public override init() {
     super.init()
     
-    let observable = self.rx_observe(Bool.self, "_active") as Observable<Bool?>
+   let observable = self.activeObservable
     /// Start observing changes on our underlying `_active` property.
     observable.subscribeNext { active in
         /// If we have an active subject and the flag is true send ourselves
@@ -123,7 +130,7 @@ public class RxViewModel: NSObject {
   an error at any point, the returned signal will error out as well.
   */
   public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
-    let signal = self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>
+    let signal = self.activeObservable
     
     return Observable.create { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
@@ -177,7 +184,7 @@ public class RxViewModel: NSObject {
 //    observable.replay(1)
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = (self.rx_observe(Bool.self, "_active", options: [.Initial, .New]) as Observable<Bool?>).takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
+    let activeSignal = self.activeObservable.takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
       observable.subscribeCompleted {
         defer { result.dispose() }
         

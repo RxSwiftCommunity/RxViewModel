@@ -10,7 +10,6 @@
 import Foundation
 
 // Dependecies
-import RxCocoa
 import RxSwift
 
 /**

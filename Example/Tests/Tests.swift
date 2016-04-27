@@ -140,7 +140,7 @@ class RxViewModelSpec: QuickSpec {
       expect(completed).to(beFalsy())
       
       expectedValues = ["0", "1", "3"]
-      expect(values).toEventually(equal(expectedValues), timeout: 2.2, pollInterval: 2.0)
+      expect(values).toEventually(equal(expectedValues), timeout: 2.2, pollInterval: 1.0)
       expect(completed).to(beFalsy())
       
       // After reactivating, we should still get this event.

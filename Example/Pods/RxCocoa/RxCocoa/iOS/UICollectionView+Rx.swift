@@ -27,10 +27,13 @@ extension UICollectionView {
     */
     public func rx_itemsWithCellFactory<S: SequenceType, O: ObservableType where O.E == S>
         (source: O)
-        (cellFactory: (UICollectionView, Int, S.Generator.Element) -> UICollectionViewCell)
+        -> (cellFactory: (UICollectionView, Int, S.Generator.Element) -> UICollectionViewCell)
         -> Disposable {
-        let dataSource = RxCollectionViewReactiveArrayDataSourceSequenceWrapper<S>(cellFactory: cellFactory)
-        return self.rx_itemsWithDataSource(dataSource)(source: source)
+        return { cellFactory in
+            let dataSource = RxCollectionViewReactiveArrayDataSourceSequenceWrapper<S>(cellFactory: cellFactory)
+            return self.rx_itemsWithDataSource(dataSource)(source: source)
+        }
+        
     }
     
     /**
@@ -44,17 +47,21 @@ extension UICollectionView {
     */
     public func rx_itemsWithCellIdentifier<S: SequenceType, Cell: UICollectionViewCell, O : ObservableType where O.E == S>
         (cellIdentifier: String, cellType: Cell.Type = Cell.self)
-        (source: O)
-        (configureCell: (Int, S.Generator.Element, Cell) -> Void)
+        -> (source: O)
+        -> (configureCell: (Int, S.Generator.Element, Cell) -> Void)
         -> Disposable {
-        let dataSource = RxCollectionViewReactiveArrayDataSourceSequenceWrapper<S> { (cv, i, item) in
-            let indexPath = NSIndexPath(forItem: i, inSection: 0)
-            let cell = cv.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! Cell
-            configureCell(i, item, cell)
-            return cell
+        return { source in
+            return { configureCell in
+                let dataSource = RxCollectionViewReactiveArrayDataSourceSequenceWrapper<S> { (cv, i, item) in
+                    let indexPath = NSIndexPath(forItem: i, inSection: 0)
+                    let cell = cv.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! Cell
+                    configureCell(i, item, cell)
+                    return cell
+                }
+                    
+                return self.rx_itemsWithDataSource(dataSource)(source: source)
+            }
         }
-        
-        return self.rx_itemsWithDataSource(dataSource)(source: source)
     }
     
     /**
@@ -66,13 +73,15 @@ extension UICollectionView {
     */
     public func rx_itemsWithDataSource<DataSource: protocol<RxCollectionViewDataSourceType, UICollectionViewDataSource>, S: SequenceType, O: ObservableType where DataSource.Element == S, O.E == S>
         (dataSource: DataSource)
-        (source: O)
+        -> (source: O)
         -> Disposable  {
-        return source.subscribeProxyDataSourceForObject(self, dataSource: dataSource, retainDataSource: false) { [weak self] (_: RxCollectionViewDataSourceProxy, event) -> Void in
-            guard let collectionView = self else {
-                return
+        return { source in
+            return source.subscribeProxyDataSourceForObject(self, dataSource: dataSource, retainDataSource: false) { [weak self] (_: RxCollectionViewDataSourceProxy, event) -> Void in
+                guard let collectionView = self else {
+                    return
+                }
+                dataSource.collectionView(collectionView, observedEvent: event)
             }
-            dataSource.collectionView(collectionView, observedEvent: event)
         }
     }
 }
@@ -103,9 +112,7 @@ extension UICollectionView {
     For more information take a look at `DelegateProxyType` protocol documentation.
     */
     public var rx_dataSource: DelegateProxy {
-        get {
-            return proxyForObject(RxCollectionViewDataSourceProxy.self, self)
-        }
+        return proxyForObject(RxCollectionViewDataSourceProxy.self, self)
     }
     
     /**
@@ -126,7 +133,7 @@ extension UICollectionView {
     Reactive wrapper for `delegate` message `collectionView:didSelectItemAtIndexPath:`.
     */
     public var rx_itemSelected: ControlEvent<NSIndexPath> {
-        let source = rx_delegate.observe("collectionView:didSelectItemAtIndexPath:")
+        let source = rx_delegate.observe(#selector(UICollectionViewDelegate.collectionView(_:didSelectItemAtIndexPath:)))
             .map { a in
                 return a[1] as! NSIndexPath
             }
@@ -138,7 +145,7 @@ extension UICollectionView {
      Reactive wrapper for `delegate` message `collectionView:didSelectItemAtIndexPath:`.
      */
     public var rx_itemDeselected: ControlEvent<NSIndexPath> {
-        let source = rx_delegate.observe("collectionView:didDeselectItemAtIndexPath:")
+        let source = rx_delegate.observe(#selector(UICollectionViewDelegate.collectionView(_:didDeselectItemAtIndexPath:)))
             .map { a in
                 return a[1] as! NSIndexPath
         }
@@ -214,7 +221,7 @@ extension UICollectionView {
      */
     public var rx_didUpdateFocusInContextWithAnimationCoordinator: ControlEvent<(context: UIFocusUpdateContext, animationCoordinator: UIFocusAnimationCoordinator)> {
         
-        let source = rx_delegate.observe("collectionView:didUpdateFocusInContext:withAnimationCoordinator:")
+        let source = rx_delegate.observe(#selector(UICollectionViewDelegate.collectionView(_:didUpdateFocusInContext:withAnimationCoordinator:)))
             .map { a -> (context: UIFocusUpdateContext, animationCoordinator: UIFocusAnimationCoordinator) in
                 let context = a[1] as! UIFocusUpdateContext
                 let animationCoordinator = a[2] as! UIFocusAnimationCoordinator

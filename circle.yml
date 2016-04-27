@@ -1,6 +1,6 @@
 machine:
   xcode:
-    version: "7.0"
+    version: "7.3"
 dependencies:
   pre:
     - rm -rf Example/Podfile.lock
@@ -15,7 +15,7 @@ test:
         CODE_SIGN_IDENTITY=
         PROVISIONING_PROFILE=
         -sdk iphonesimulator
-        -destination 'platform=iOS Simulator,OS=9.0,name=iPhone 6'
+        -destination 'platform=iOS Simulator,OS=9.2,name=iPhone 6'
         -workspace Example/RxViewModel.xcworkspace
         -scheme "RxViewModel_Tests"
         -enableCodeCoverage YES

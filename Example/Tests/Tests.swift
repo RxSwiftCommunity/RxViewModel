@@ -45,7 +45,7 @@ class RxViewModelSpec: QuickSpec {
       vm.didBecomeActive.subscribeNext { model in
         expect(model).to(equal(vm))
         
-        nextSteps++
+        nextSteps += 1
       }.addDisposableTo(self.disposable)
       
       expect(nextSteps).to(equal(0))

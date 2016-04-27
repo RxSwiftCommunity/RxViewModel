@@ -1,1 +1,1 @@
-../../../Nimble/Nimble/objc/NMBExceptionCapture.h
+../../../Nimble/Sources/Nimble/Adapters/ObjectiveC/NMBExceptionCapture.h

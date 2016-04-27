@@ -35,7 +35,14 @@ extension UITextView {
             let text = self?.text ?? ""
             
             let textChanged = self?.textStorage
+                // This project uses text storage notifications because
+                // that's the only way to catch autocorrect changes
+                // in all cases. Other suggestions are welcome.
                 .rx_didProcessEditingRangeChangeInLength
+                // This observe on is here because text storage
+                // will emit event while process is not completely done,
+                // so rebinding a value will cause an exception to be thrown.
+                .observeOn(MainScheduler.asyncInstance)
                 .map { _ in
                     return self?.textStorage.string ?? ""
                 }
@@ -45,17 +52,12 @@ extension UITextView {
                 .startWith(text)
                 .distinctUntilChanged()
         }
+
+        let bindingObserver = UIBindingObserver(UIElement: self) { (textView, text: String) in
+            textView.text = text
+        }
         
-        return ControlProperty(values: source, valueSink: AnyObserver { [weak self] event in
-            switch event {
-            case .Next(let value):
-                self?.text = value
-            case .Error(let error):
-                bindingErrorToInterface(error)
-            case .Completed:
-                break
-            }
-        })
+        return ControlProperty(values: source, valueSink: bindingObserver)
     }
     
 }

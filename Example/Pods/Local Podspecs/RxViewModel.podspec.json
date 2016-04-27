@@ -23,10 +23,10 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "RxCocoa": [
-      "~> 2.1.0"
+      "~> 2.3.0"
     ],
     "RxSwift": [
-      "~> 2.1.0"
+      "~> 2.3.0"
     ]
   },
   "frameworks": "Foundation"

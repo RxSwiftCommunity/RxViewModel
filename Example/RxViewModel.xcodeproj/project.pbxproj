@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		9A4A2BA4E16DE1FDB837F15B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF7976818D35CFBD65599DA8 /* Pods.framework */; };
+		9A4A2BA4E16DE1FDB837F15B /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF7976818D35CFBD65599DA8 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */

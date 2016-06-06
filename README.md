@@ -1,7 +1,7 @@
 # RxViewModel
 
 [![codecov.io](https://codecov.io/github/RxSwiftCommunity/RxViewModel/coverage.svg?branch=master)](https://codecov.io/github/RxSwiftCommunity/RxViewModel?branch=master)
-[![Circle CI](https://circleci.com/gh/RxSwiftCommunity/RxViewModel/tree/master.svg?style=svg)](https://circleci.com/gh/RxSwiftCommunity/RxViewModel/tree/master)
+[![Build Status](https://travis-ci.org/RxSwiftCommunity/RxViewModel.svg?branch=master)](https://travis-ci.org/RxSwiftCommunity/RxViewModel)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)
 [![License](https://img.shields.io/cocoapods/l/RxViewModel.svg?style=flat)](http://cocoapods.org/pods/RxViewModel)

@@ -1,5 +1,6 @@
 bootstrap:
-	bundle install --path="vendor/bundle"
+	gem install bundler --no-doc --no-ri
+	bundle install --path=".vendor/bundle"
 	bundle exec pod install --project-directory=Example/
 
 bundle: 

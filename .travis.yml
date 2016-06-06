@@ -1,0 +1,41 @@
+language: objective-c
+osx_image: xcode7.3
+
+before_install:
+  - rm -rf Example/Podfile.lock
+  - rm -rf Example/Pods
+
+install:
+  - make bootstrap
+
+env:
+  global:
+    - LC_CTYPE=en_US.UTF-8
+    - LANG=en_US.UTF-8
+    - IOS_SDK=iphonesimulator9.3
+    - SCHEME="RxViewModel_Tests"
+  matrix:
+    - DESTINATION="OS=9.3,name=iPhone 6"     SCHEME="$SCHEME"     SDK="$IOS_SDK"     ACTION="test"
+
+script:
+  - set -o pipefail
+  - xcodebuild -version
+  - xcodebuild -showsdks
+  - xcodebuild
+   -sdk iphonesimulator
+   -destination "platform=iOS Simulator,OS=9.3,name=iPhone 6"
+   -workspace Example/RxViewModel.xcworkspace
+   -scheme "$SCHEME"
+   -enableCodeCoverage YES
+   clean test
+   CODE_SIGNING_REQUIRED=NO
+   CODE_SIGN_IDENTITY=
+   PROVISIONING_PROFILE=
+   ONLY_ACTIVE_ARCH=YES
+   GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
+   GCC_GENERATE_TEST_COVERAGE_FILES=YES |
+      bundle exec xcpretty --color --report junit
+
+after_success:
+  - bundle exec slather
+  - bash <(curl -s https://codecov.io/bash) -J RxViewModel

@@ -80,6 +80,7 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     rack (1.6.4)
+    rouge (1.11.0)
     slather (2.0.0)
       clamp (~> 0.6)
       nokogiri (~> 1.6.3)
@@ -95,6 +96,8 @@ GEM
       activesupport (>= 3)
       claide (~> 0.9.1)
       colored (~> 1.2)
+    xcpretty (0.2.2)
+      rouge (~> 1.8)
 
 PLATFORMS
   ruby
@@ -106,6 +109,7 @@ DEPENDENCIES
   label
   slather
   synx
+  xcpretty
 
 BUNDLED WITH
-   1.11.2
+   1.12.4

@@ -20,3 +20,6 @@ gem 'github_changelog_generator'
 
 # Test coverage reports for Xcode projects
 gem 'slather'
+
+# xcodebuild formatter done right
+gem 'xcpretty'

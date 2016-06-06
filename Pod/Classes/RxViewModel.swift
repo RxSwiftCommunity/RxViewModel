@@ -23,13 +23,7 @@ public class RxViewModel: NSObject {
   // MARK: Properties
   /// Scope dispose to avoid leaking
   var disposeBag = DisposeBag()
-  
-  /// The subject for active «signals»
-  private var activeSubject: PublishSubject<RxViewModel>?
-  
-  /// The subject for the inactive «signals»
-  private var inactiveSubject: PublishSubject<RxViewModel>?
-  
+    
   /// Underlying variable that we'll listen to for changes
   private dynamic var _active: Bool = false
   
@@ -61,23 +55,6 @@ public class RxViewModel: NSObject {
   */
   public override init() {
     super.init()
-    
-   let observable = self.activeObservable
-    /// Start observing changes on our underlying `_active` property.
-    observable.subscribeNext { [weak self] active in
-        guard let weakSelf = self else { return }
-        
-        /// If we have an active subject and the flag is true send ourselves
-        /// as the next value in the stream to the active subject; else send
-        /// ourselves to the inactive one.
-        if let actSub = weakSelf.activeSubject
-          where active == true {
-            actSub.on(.Next(weakSelf))
-        } else if let inactSub = weakSelf.inactiveSubject
-          where active == false {
-            inactSub.on(.Next(weakSelf))
-        }
-    }.addDisposableTo(disposeBag)
   }
   
   /**
@@ -85,40 +62,24 @@ public class RxViewModel: NSObject {
   
   Will send messages only to *new* & *different* values.
   */
-  public var didBecomeActive: Observable<RxViewModel> {
-    get {
-      return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
-        if let weakSelf = self
-          where weakSelf.activeSubject == nil {
-            weakSelf.activeSubject = PublishSubject()
-            
-            return weakSelf.activeSubject!
-        }
-        
-        return self!.activeSubject!
-      }
-    }
-  }
+  public lazy var didBecomeActive: Observable<RxViewModel> = { [unowned self] in
+    return self.activeObservable
+        .filter { $0 == true }
+        .map { _ in return self }
+        .shareReplayLatestWhileConnected()
+  }()
   
   /**
   Rx `Observable` for the `active` flag. (when it becomes `false`).
   
   Will send messages only to *new* & *different* values.
   */
-  public var didBecomeInactive: Observable<RxViewModel> {
-    get {
-      return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
-        if let weakSelf = self
-          where weakSelf.inactiveSubject == nil {
-            weakSelf.inactiveSubject = PublishSubject()
-            
-            return weakSelf.inactiveSubject!
-        }
-        
-        return self!.inactiveSubject!
-      }
-    }
-  }
+  public lazy var didBecomeInactive: Observable<RxViewModel> = { [unowned self] in
+    return self.activeObservable
+        .filter { $0 == false }
+        .map { _ in return self }
+        .shareReplayLatestWhileConnected()
+  }()
   
   /**
   Subscribes (or resubscribes) to the given signal whenever

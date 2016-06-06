@@ -6,7 +6,6 @@ import Nimble
 
 // Required Frameworks
 import RxSwift
-import RxCocoa
 
 // Framework To Be Test
 import RxViewModel

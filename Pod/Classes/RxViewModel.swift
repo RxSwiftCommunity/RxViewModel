@@ -64,16 +64,18 @@ public class RxViewModel: NSObject {
     
    let observable = self.activeObservable
     /// Start observing changes on our underlying `_active` property.
-    observable.subscribeNext { active in
+    observable.subscribeNext { [weak self] active in
+        guard let weakSelf = self else { return }
+        
         /// If we have an active subject and the flag is true send ourselves
         /// as the next value in the stream to the active subject; else send
         /// ourselves to the inactive one.
-        if let actSub = self.activeSubject
+        if let actSub = weakSelf.activeSubject
           where active == true {
-            actSub.on(.Next(self))
-        } else if let inactSub = self.inactiveSubject
+            actSub.on(.Next(weakSelf))
+        } else if let inactSub = weakSelf.inactiveSubject
           where active == false {
-            inactSub.on(.Next(self))
+            inactSub.on(.Next(weakSelf))
         }
     }.addDisposableTo(disposeBag)
   }

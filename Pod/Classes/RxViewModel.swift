@@ -25,10 +25,10 @@ public class RxViewModel: NSObject {
   var disposeBag = DisposeBag()
   
   /// The subject for active «signals»
-  private var activeSubject: ReplaySubject<RxViewModel>?
+  private var activeSubject: PublishSubject<RxViewModel>?
   
   /// The subject for the inactive «signals»
-  private var inactiveSubject: ReplaySubject<RxViewModel>?
+  private var inactiveSubject: PublishSubject<RxViewModel>?
   
   /// Underlying variable that we'll listen to for changes
   private dynamic var _active: Bool = false
@@ -90,7 +90,7 @@ public class RxViewModel: NSObject {
       return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.activeSubject == nil {
-            weakSelf.activeSubject = ReplaySubject.create(bufferSize: 1)
+            weakSelf.activeSubject = PublishSubject()
             
             return weakSelf.activeSubject!
         }
@@ -110,7 +110,7 @@ public class RxViewModel: NSObject {
       return Observable.deferred { [weak self] () -> Observable<RxViewModel> in
         if let weakSelf = self
           where weakSelf.inactiveSubject == nil {
-            weakSelf.inactiveSubject = ReplaySubject.create(bufferSize: 1)
+            weakSelf.inactiveSubject = PublishSubject()
             
             return weakSelf.inactiveSubject!
         }

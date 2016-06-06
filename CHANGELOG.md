@@ -1,5 +1,8 @@
 # Change Log
 
+## [3.1.3](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.3) (2016-06-06)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.2...3.1.3)
+
 ## [3.1.2](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.2) (2016-06-06)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.1...3.1.2)
 

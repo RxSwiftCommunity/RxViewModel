@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/RxSwiftCommunity/RxViewModel/tree/HEAD)
-
-[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.1...HEAD)
+## [3.1.2](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.2) (2016-06-06)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.1...3.1.2)
 
 **Implemented enhancements:**
 
@@ -28,20 +27,20 @@
 **Merged pull requests:**
 
 - \[WIP\] Fixing the coverage data [\#21](https://github.com/RxSwiftCommunity/RxViewModel/pull/21) ([esttorhe](https://github.com/esttorhe))
+- Bumped to support RxSwift 2.1.0 [\#19](https://github.com/RxSwiftCommunity/RxViewModel/pull/19) ([esttorhe](https://github.com/esttorhe))
 
-## [3.0.1](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.0.1) (2016-02-04)
+## [3.0.1](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.0.1) (2016-01-28)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.0.0...3.0.1)
 
 **Merged pull requests:**
 
-- Bumped to support RxSwift 2.1.0 [\#19](https://github.com/RxSwiftCommunity/RxViewModel/pull/19) ([esttorhe](https://github.com/esttorhe))
+- Bumped minimum OSX version [\#18](https://github.com/RxSwiftCommunity/RxViewModel/pull/18) ([esttorhe](https://github.com/esttorhe))
 
 ## [3.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.0.0) (2016-01-06)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/push...3.0.0)
 
 **Merged pull requests:**
 
-- Bumped minimum OSX version [\#18](https://github.com/RxSwiftCommunity/RxViewModel/pull/18) ([esttorhe](https://github.com/esttorhe))
 - RxSwift 2 [\#15](https://github.com/RxSwiftCommunity/RxViewModel/pull/15) ([esttorhe](https://github.com/esttorhe))
 
 ## [push](https://github.com/RxSwiftCommunity/RxViewModel/tree/push) (2016-01-06)

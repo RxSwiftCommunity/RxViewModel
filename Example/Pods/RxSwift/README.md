@@ -3,7 +3,6 @@
 
 [![Travis CI](https://travis-ci.org/ReactiveX/RxSwift.svg?branch=master)](https://travis-ci.org/ReactiveX/RxSwift) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS%20%7C%20watchOS%20%7C%20Linux%28experimental%29-333333.svg) ![pod](https://img.shields.io/cocoapods/v/RxSwift.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-
 Xcode 7.3 Swift 2.2 required
 
 ## About Rx
@@ -40,7 +39,7 @@ KVO observing, async operations and streams are all unified under [abstraction o
 
 ###### ... hack around
 
-* with example app. [Running Example App](Documentation/ExampleApp.md)
+* with the example app. [Running Example App](Documentation/ExampleApp.md)
 * with operators in playgrounds. [Playgrounds](Documentation/Playgrounds.md)
 
 ###### ... interact
@@ -65,7 +64,111 @@ KVO observing, async operations and streams are all unified under [abstraction o
 * Does this exist for Android? [RxJava](https://github.com/ReactiveX/RxJava)
 * Where is all of this going, what is the future, what about reactive architectures, how do you design entire apps this way? [Cycle.js](https://github.com/cyclejs/cycle-core) - this is javascript, but [RxJS](https://github.com/Reactive-Extensions/RxJS) is javascript version of Rx.
 
-##### References
+## Usage
+
+<table>
+  <tr>
+    <th width="30%">Here's an example</th>
+    <th width="30%">In Action</th>
+  </tr>
+  <tr>
+    <td>Define search for GitHub repositories ...</td>
+    <th rowspan="9"><img src="https://raw.githubusercontent.com/kzaher/rxswiftcontent/master/GithubSearch.gif"></th>
+  </tr>
+  <tr>
+    <td><div class="highlight highlight-source-swift"><pre>
+let searchResults = searchBar.rx_text
+    .throttle(0.3, scheduler: MainScheduler.instance)
+    .distinctUntilChanged()
+    .flatMapLatest { query -> Observable<[Repository]> in
+        if query.isEmpty {
+            return Observable.just([])
+        }
+
+        return searchGitHub(query)
+            .catchErrorJustReturn([])
+    }
+    .observeOn(MainScheduler.instance)</pre></div></td>
+  </tr>
+  <tr>
+    <td>... then bind the results to your tableview</td>
+  </tr>
+  <tr>
+    <td width="30%"><div class="highlight highlight-source-swift"><pre>
+searchResults
+    .bindTo(tableView.rx_itemsWithCellIdentifier("Cell")) {
+        (index, repository: Repository, cell) in
+        cell.textLabel?.text = repository.name
+        cell.detailTextLabel?.text = repository.url
+    }
+    .addDisposableTo(disposeBag)</pre></div></td>
+  </tr>
+</table>
+
+
+## Installation
+
+Rx doesn't contain any external dependencies.
+
+These are currently the supported options:
+
+### Manual
+
+Open Rx.xcworkspace, choose `RxExample` and hit run. This method will build everything and run the sample app
+
+### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+
+**:warning: IMPORTANT! For tvOS support, CocoaPods `0.39` is required. :warning:**
+
+```
+# Podfile
+use_frameworks!
+
+target 'YOUR_TARGET_NAME' do
+    pod 'RxSwift',    '~> 2.0'
+    pod 'RxCocoa',    '~> 2.0'
+end
+
+# RxTests and RxBlocking make the most sense in the context of unit/integration tests
+target 'YOUR_TESTING_TARGET' do
+    pod 'RxBlocking', '~> 2.0'
+    pod 'RxTests',    '~> 2.0'
+end
+```
+
+Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
+
+```
+$ pod install
+```
+
+### [Carthage](https://github.com/Carthage/Carthage)
+
+**Xcode 7.1 required**
+
+Add this to `Cartfile`
+
+```
+github "ReactiveX/RxSwift" ~> 2.0
+```
+
+```
+$ carthage update
+```
+
+### Manually using git submodules
+
+* Add RxSwift as a submodule
+
+```
+$ git submodule add git@github.com:ReactiveX/RxSwift.git
+```
+
+* Drag `Rx.xcodeproj` into Project Navigator
+* Go to `Project > Targets > Build Phases > Link Binary With Libraries`, click `+` and select `RxSwift-[Platform]` and `RxCocoa-[Platform]` targets
+
+
+## References
 
 * [http://reactivex.io/](http://reactivex.io/)
 * [Reactive Extensions GitHub (GitHub)](https://github.com/Reactive-Extensions)

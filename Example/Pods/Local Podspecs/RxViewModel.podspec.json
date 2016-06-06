@@ -23,7 +23,7 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "RxSwift": [
-      "~> 2.4"
+      "~> 2.5"
     ]
   },
   "frameworks": "Foundation"

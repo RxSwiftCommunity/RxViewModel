@@ -66,7 +66,6 @@ public class RxViewModel: NSObject {
     return self.activeObservable
         .filter { $0 == true }
         .map { _ in return self }
-        .shareReplayLatestWhileConnected()
   }()
   
   /**
@@ -78,7 +77,6 @@ public class RxViewModel: NSObject {
     return self.activeObservable
         .filter { $0 == false }
         .map { _ in return self }
-        .shareReplayLatestWhileConnected()
   }()
   
   /**

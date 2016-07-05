@@ -1,9 +1,13 @@
 language: objective-c
 osx_image: xcode7.3
+rvm:
+  - "2.3.1"
 
-before_install:
-  - rm -rf Example/Podfile.lock
-  - rm -rf Example/Pods
+#before_install:
+#  - rm -rf Example/Podfile.lock
+#  - rm -rf Example/Pods
+#  - rm -rf _Pods.xcodeproj
+#  - rm -rf Example/RxViewModel.xcworkspace
 
 install:
   - make bootstrap
@@ -35,6 +39,7 @@ script:
    GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
    GCC_GENERATE_TEST_COVERAGE_FILES=YES |
       bundle exec xcpretty --color --report junit
+  - bundle exec danger
 
 after_success:
   - bundle exec slather

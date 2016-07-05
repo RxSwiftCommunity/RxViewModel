@@ -4,6 +4,8 @@ inhibit_all_warnings!
 
 plugin 'slather'
 
-pod "RxViewModel", :path => "../"
-pod 'Nimble'
-pod 'Quick'
+target :RxViewModel_Tests do
+  pod "RxViewModel", :path => "../"
+  pod 'Nimble'
+  pod 'Quick'
+end

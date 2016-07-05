@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
+ruby '2.3.1'
 
 # The Cocoa library package manager.
-gem 'cocoapods', '0.39.0'
+gem 'cocoapods'
 
 # Label labels the gems in your Gemfile
 gem 'label'
@@ -23,3 +24,10 @@ gem 'slather'
 
 # xcodebuild formatter done right
 gem 'xcpretty'
+
+# Automate your PR etiquette.
+gem 'danger', '~> 0.8.5'
+
+# A toolkit of support libraries and Ruby core extensions extracted from the Rails
+# framework.
+gem 'activesupport'

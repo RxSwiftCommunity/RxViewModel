@@ -54,6 +54,8 @@ GEM
       octokit (~> 4.2)
       redcarpet (~> 3.3)
       terminal-table (~> 1)
+    danger-swiftlint (0.1.1)
+      danger
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     escape (0.0.4)
@@ -76,7 +78,6 @@ GEM
     i18n (0.7.0)
     jwt (1.5.4)
     label (1.0.0)
-    mini_portile2 (2.1.0)
     minitest (5.9.0)
     molinillo (0.4.5)
     multi_json (1.12.1)
@@ -84,9 +85,6 @@ GEM
     multipart-post (2.0.0)
     nap (1.1.0)
     netrc (0.7.8)
-    nokogiri (1.6.8)
-      mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -95,7 +93,6 @@ GEM
       rack (~> 1.2)
     octokit (4.3.0)
       sawyer (~> 0.7.0, >= 0.5.3)
-    pkg-config (1.1.7)
     rack (1.6.4)
     rake (11.2.2)
     redcarpet (3.3.4)
@@ -103,10 +100,6 @@ GEM
     sawyer (0.7.0)
       addressable (>= 2.3.5, < 2.5)
       faraday (~> 0.8, < 0.10)
-    slather (2.2.1)
-      clamp (~> 0.6)
-      nokogiri (~> 1.6.3)
-      xcodeproj (~> 1.1)
     synx (0.2.1)
       clamp (~> 0.6)
       colorize (~> 0.7)
@@ -130,9 +123,9 @@ DEPENDENCIES
   cocoapods
   cocoapods-deintegrate
   danger (~> 0.8.5)
+  danger-swiftlint
   github_changelog_generator
   label
-  slather
   synx
   xcpretty
 

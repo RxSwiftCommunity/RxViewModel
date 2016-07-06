@@ -19,14 +19,14 @@ gem 'synx'
 # requests.
 gem 'github_changelog_generator'
 
-# Test coverage reports for Xcode projects
-gem 'slather'
-
 # xcodebuild formatter done right
 gem 'xcpretty'
 
 # Automate your PR etiquette.
 gem 'danger', '~> 0.8.5'
+
+# A Danger plugin for linting Swift with SwiftLint.
+gem 'danger-swiftlint'
 
 # A toolkit of support libraries and Ruby core extensions extracted from the Rails
 # framework.

@@ -10,10 +10,12 @@ opt_in_rules:
   - force_unwrapping
 
 included:
-  - Pod/Classes
+  - "Source"
 
 excluded:
-  - Example
+  - Demo
+  - Pods
+  - Carthage
 
 function_body_length:
   warning: 50

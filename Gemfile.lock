@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/paweldudek/danger-swiftlint
+  revision: 693daa326f99ebf3b1517ab13f6a954b6d4620d4
+  branch: master
+  specs:
+    danger-swiftlint (0.1.0)
+      danger
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -54,8 +62,6 @@ GEM
       octokit (~> 4.2)
       redcarpet (~> 3.3)
       terminal-table (~> 1)
-    danger-swiftlint (0.1.1)
-      danger
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     escape (0.0.4)
@@ -123,9 +129,10 @@ DEPENDENCIES
   cocoapods
   cocoapods-deintegrate
   danger (~> 0.8.5)
-  danger-swiftlint
+  danger-swiftlint!
   github_changelog_generator
   label
+  rake
   synx
   xcpretty
 

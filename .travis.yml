@@ -8,9 +8,9 @@ env:
     - LC_CTYPE=en_US.UTF-8
     - LANG=en_US.UTF-8
   matrix:
-    - OS=iOS
-    - OS=macOS
-    - OS=tvOS
+    - OS=ios
+    - OS=macos
+    - OS=tvos
 
 before_install:
   - brew install swiftlint
@@ -21,7 +21,7 @@ install:
   - rake bootstrap
 
 script:
-  - bundle exec rake test:$OS
+  - bundle exec rake test[$OS]
 
 after_success:
   - bundle exec danger

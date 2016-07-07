@@ -78,22 +78,8 @@ task :clean do
   xcodebuild_in_demo_dir 'clean', :ios
 end
 
-namespace "test" do
-  desc 'Build, then run tests for iOS.'
-  task :iOS do
-    xcodebuild_in_demo_dir 'build test', :ios, xcprety_args: '--test'
-    sh "killall Simulator"
-  end
-
-  desc 'Build, then run tests for macOS.'
-  task :macOS do
-    xcodebuild_in_demo_dir 'build test', :macos, xcprety_args: '--test'
-    sh "killall Simulator"
-  end
-
-  desc 'Build, then run tests for tvOS.'
-  task :tvOS do
-    xcodebuild_in_demo_dir 'build test', :tvos, xcprety_args: '--test'
-    sh "killall Simulator"
-  end
+desc 'Build, then run tests for passed in os.'
+task :test, [:os] do |t, args|
+  xcodebuild_in_demo_dir 'build test', args.os.to_sym, xcprety_args: '--test'
+  sh "killall Simulator"
 end

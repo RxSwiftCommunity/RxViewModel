@@ -34,3 +34,6 @@ gem 'activesupport'
 
 # Rake is a Make-like program implemented in Ruby
 gem 'rake'
+
+# Travis CI client
+gem 'travis'

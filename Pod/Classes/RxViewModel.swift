@@ -18,7 +18,7 @@ user-presentable.
 */
 public class RxViewModel: NSObject {
   // MARK: Constants
-  let ThrottleTime: NSTimeInterval = 2
+  let throttleTime: NSTimeInterval = 2
   
   // MARK: Properties
   /// Scope dispose to avoid leaking
@@ -154,9 +154,9 @@ public class RxViewModel: NSObject {
     })
 
     let _ = Observable.combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
-      .throttle(ThrottleTime) { (active: Bool?, value: T) -> Bool in
+      .throttle(throttleTime) { (active: Bool?, value: T) -> Bool in
       return active == false
-    }.subscribe(onNext: { (value:(Bool?, T)) in
+    }.subscribe(onNext: { (value: (Bool?, T)) in
       result.on(.Next(value.1))
     }, onError: { _ in }, onCompleted: {
       result.on(.Completed)

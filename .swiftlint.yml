@@ -1,0 +1,19 @@
+disabled_rules:
+  - line_length
+  - type_name
+  - valid_docs
+  - trailing_newline
+  - trailing_whitespace
+
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+
+included:
+  - Pod/Classes
+
+excluded:
+  - Example
+
+function_body_length:
+  warning: 50

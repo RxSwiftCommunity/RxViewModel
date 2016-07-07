@@ -22,3 +22,6 @@ fail("Please provide a summary in the Pull Request description", sticky: true) i
 
 # Warn when there is a big PR
 warn("Big PR") if lines_of_code > 500
+
+# Run SwiftLint
+swiftlint.lint_files

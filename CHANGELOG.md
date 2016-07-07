@@ -1,5 +1,18 @@
 # Change Log
 
+## [Unreleased](https://github.com/RxSwiftCommunity/RxViewModel/tree/HEAD)
+
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.3...HEAD)
+
+**Implemented enhancements:**
+
+- Fix the CI [\#28](https://github.com/RxSwiftCommunity/RxViewModel/issues/28)
+- Configured Danger [\#34](https://github.com/RxSwiftCommunity/RxViewModel/pull/34) ([esttorhe](https://github.com/esttorhe))
+
+**Fixed bugs:**
+
+- RxViewModel is depending on an old version of RxCocoa [\#29](https://github.com/RxSwiftCommunity/RxViewModel/issues/29)
+
 ## [3.1.3](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.3) (2016-06-06)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.2...3.1.3)
 

@@ -1,0 +1,23 @@
+codecov:
+  branch: master
+comment:
+  layout: "header, changes, diff, sunburst"
+coverage:
+  ignore:
+  - Pods/.*
+  - Applications/Xcode.app/.*
+  - vendor/.*
+  - Carthage/.*
+  - .*Tests.m
+  - .*Tests.swift
+  - '# Add the folders containing your unit tests'
+  - '# This ensures any test utility classes you create are also ignored'
+  - Example/Tests/*
+  - Example/Pods/*
+  - Example/Build/*
+  status:
+    patch: false
+notify:
+  webhook:
+    default:
+      url: https://codecov.io/webhooks/github

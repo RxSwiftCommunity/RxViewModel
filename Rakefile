@@ -90,5 +90,4 @@ end
 desc 'Build, then run tests for passed in os.'
 task :test, [:os] do |t, args|
   xcodebuild_in_demo_dir args.os.to_sym, xcprety_args: '--test'
-  sh "killall Simulator"
 end

@@ -26,8 +26,14 @@ gem 'xcpretty'
 gem 'danger', '~> 0.8.5'
 
 # A Danger plugin for linting Swift with SwiftLint.
-gem 'danger-swiftlint'
+gem 'danger-swiftlint', :git => 'https://github.com/paweldudek/danger-swiftlint', :branch => 'master'
 
 # A toolkit of support libraries and Ruby core extensions extracted from the Rails
 # framework.
 gem 'activesupport'
+
+# Rake is a Make-like program implemented in Ruby
+gem 'rake'
+
+# Travis CI client
+gem 'travis'

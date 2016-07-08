@@ -1,6 +1,0 @@
-framework module RxViewModel {
-  umbrella header "RxViewModel-umbrella.h"
-
-  export *
-  module * { export * }
-}

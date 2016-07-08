@@ -1,0 +1,54 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+use_frameworks!
+
+# Test Libraries
+def test_pods
+  pod 'Quick'
+  pod 'Nimble'
+end
+
+def library
+  pod 'RxViewModel', :path => "../"
+end
+
+target 'Demo' do
+  platform :ios, '8.0'
+  library
+
+  target 'RxViewModelTests-iOS' do
+      platform :ios, '8.0'
+      inherit! :search_paths
+
+      test_pods
+  end
+end
+
+target 'RxViewModelTests-tvOS' do
+    platform :tvos, '9.0'
+    library
+
+    test_pods
+end
+
+target 'RxViewModelTests-macOS' do
+    platform :osx, '10.10'
+    library
+
+    test_pods
+end
+
+# Hack to fix testability until cocoapods gets an update
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if config.name == 'Debug'
+        config.build_settings['ENABLE_TESTABILITY'] = 'YES'
+
+        if target.name.include? "RxViewModel-"
+          config.build_settings['CLANG_ENABLE_CODE_COVERAGE'] = 'YES'
+        end
+      end
+    end
+  end
+end

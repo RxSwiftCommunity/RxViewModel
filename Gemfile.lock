@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/paweldudek/danger-swiftlint
+  revision: 693daa326f99ebf3b1517ab13f6a954b6d4620d4
+  branch: master
+  specs:
+    danger-swiftlint (0.1.0)
+      danger
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,6 +15,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    backports (3.6.8)
     claide (1.0.0)
     clamp (0.6.5)
     cocoapods (1.0.1)
@@ -54,15 +63,25 @@ GEM
       octokit (~> 4.2)
       redcarpet (~> 3.3)
       terminal-table (~> 1)
-    danger-swiftlint (0.1.1)
-      danger
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     escape (0.0.4)
+    ethon (0.9.0)
+      ffi (>= 1.3.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.10.0)
+      faraday (>= 0.7.4, < 0.10)
+    ffi (1.9.13)
     fourflusher (0.3.2)
     fuzzy_match (2.0.4)
+    gh (0.14.0)
+      addressable
+      backports
+      faraday (~> 0.8)
+      multi_json (~> 1.0)
+      net-http-persistent (>= 2.7)
+      net-http-pipeline
     git (1.3.0)
     github_api (0.14.3)
       addressable (~> 2.4.0)
@@ -75,15 +94,21 @@ GEM
       github_api (~> 0.12)
       rake (>= 10.0)
     hashie (3.4.4)
+    highline (1.7.8)
     i18n (0.7.0)
+    json (2.0.1)
     jwt (1.5.4)
     label (1.0.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     minitest (5.9.0)
     molinillo (0.4.5)
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nap (1.1.0)
+    net-http-persistent (2.9.4)
+    net-http-pipeline (1.0.1)
     netrc (0.7.8)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -93,6 +118,9 @@ GEM
       rack (~> 1.2)
     octokit (4.3.0)
       sawyer (~> 0.7.0, >= 0.5.3)
+    pusher-client (0.6.2)
+      json
+      websocket (~> 1.0)
     rack (1.6.4)
     rake (11.2.2)
     redcarpet (3.3.4)
@@ -106,8 +134,20 @@ GEM
       xcodeproj (~> 1.0)
     terminal-table (1.6.0)
     thread_safe (0.3.5)
+    travis (1.8.2)
+      backports
+      faraday (~> 0.9)
+      faraday_middleware (~> 0.9, >= 0.9.1)
+      gh (~> 0.13)
+      highline (~> 1.6)
+      launchy (~> 2.1)
+      pusher-client (~> 0.4)
+      typhoeus (~> 0.6, >= 0.6.8)
+    typhoeus (0.8.0)
+      ethon (>= 0.8.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    websocket (1.2.3)
     xcodeproj (1.1.0)
       activesupport (>= 3)
       claide (>= 1.0.0, < 2.0)
@@ -123,10 +163,12 @@ DEPENDENCIES
   cocoapods
   cocoapods-deintegrate
   danger (~> 0.8.5)
-  danger-swiftlint
+  danger-swiftlint!
   github_changelog_generator
   label
+  rake
   synx
+  travis
   xcpretty
 
 RUBY VERSION

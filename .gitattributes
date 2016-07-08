@@ -1,8 +1,13 @@
 .bundle/* linguist-vendored
-circle.yml linguist-vendored
-Makefile linguist-vendored
+codecov.yml linguist-vendored
+.travis.yml linguist-vendored
+.swiftlint.yml linguist-vendored
+.ruby-version linguist-vendored
+Cartfile linguist-vendored
+Cartfile.* linguist-vendored
+Dangerfile linguist-vendored
+Rakefile linguist-vendored
 Gemfile linguist-vendored
 Gemfile.* linguist-vendored
-.ruby-version linguist-vendored
-Example/Podfile linguist-vendored
+Demo/Podfile linguist-vendored
 RxViewModel.podspec linguist-vendored

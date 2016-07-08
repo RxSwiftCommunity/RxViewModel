@@ -30,6 +30,14 @@ def sdks
   }
 end
 
+def actions
+  return {
+    ios: 'build test',
+    macos: 'test',
+    tvos: 'test'
+  }
+end
+
 def devices
   return {
     ios: "name='iPhone 6s'",
@@ -38,10 +46,11 @@ def devices
   }
 end
 
-def xcodebuild_in_demo_dir(tasks, platform, xcprety_args: '')
+def xcodebuild_in_demo_dir(platform, xcprety_args: '')
   sdk = sdks[platform]
   scheme = schemes[platform]
   destination = devices[platform]
+  tasks = actions[platform]
 
   Dir.chdir('Demo') do
     sh "set -o pipefail && xcodebuild -workspace '#{workspace}' -scheme '#{scheme}' -configuration '#{configuration}' -sdk #{sdk} -destination #{destination} #{tasks} | bundle exec xcpretty -c #{xcprety_args}"
@@ -80,6 +89,6 @@ end
 
 desc 'Build, then run tests for passed in os.'
 task :test, [:os] do |t, args|
-  xcodebuild_in_demo_dir 'build test', args.os.to_sym, xcprety_args: '--test'
+  xcodebuild_in_demo_dir args.os.to_sym, xcprety_args: '--test'
   sh "killall Simulator"
 end

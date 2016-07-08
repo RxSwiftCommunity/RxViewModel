@@ -12,9 +12,9 @@ coverage:
   - .*Tests.swift
   - '# Add the folders containing your unit tests'
   - '# This ensures any test utility classes you create are also ignored'
-  - Example/Tests/*
-  - Example/Pods/*
-  - Example/Build/*
+  - Demo/Tests/*
+  - Demo/Pods/*
+  - Demo/Build/*
   status:
     patch: false
 notify:

@@ -58,7 +58,7 @@ def xcodebuild_in_demo_dir(platform, xcprety_args: '')
 end
 
 def pods()
-  sh "bundle exec pod install --project-directory=Demo"
+  sh "bundle exec pod install --project-directory=Demo --repo-update"
 end
 
 def run(command)
@@ -68,7 +68,7 @@ end
 desc 'Bootstrap'
 task :bootstrap do
   # Added for now because Travis was failing to find RxSwift ~> 2.5"
-  sh "bundle exec pod repo update"
+  #sh "bundle exec pod repo update"
   pods()
 end
 

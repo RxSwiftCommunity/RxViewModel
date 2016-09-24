@@ -5,7 +5,7 @@ use_frameworks!
 # Test Libraries
 def test_pods
   pod 'Quick'
-  pod 'Nimble'
+  pod 'Nimble', '~> 5.0.0'
 end
 
 def library
@@ -17,24 +17,21 @@ target 'Demo' do
   library
 
   target 'RxViewModelTests-iOS' do
-      platform :ios, '8.0'
-      inherit! :search_paths
-
-      test_pods
+    platform :ios, '8.0'
+    library
+    test_pods
   end
 end
 
 target 'RxViewModelTests-tvOS' do
     platform :tvos, '9.0'
     library
-
     test_pods
 end
 
 target 'RxViewModelTests-macOS' do
     platform :osx, '10.10'
     library
-
     test_pods
 end
 

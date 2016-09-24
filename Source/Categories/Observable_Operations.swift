@@ -36,16 +36,16 @@ import RxSwift
 returns `true`. Completion and errors are always forwarded immediately.
 */
 extension ObservableType {
-  public func throttle(interval: NSTimeInterval, valuesPassingTest predicate: (E) -> Bool) -> Observable<E> {
+  public func throttle(interval: TimeInterval, valuesPassingTest predicate: @escaping (E) -> Bool) -> Observable<E> {
     return Observable.create { (o: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
-      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .Default)
+      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .default)
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue: E?
       let parent = self.asObservable()
       
-      let subscriptionDisposable = parent.subscribeNext {
+      let subscriptionDisposable = parent.subscribe(onNext: {
         /**
         Disposes the «last» `next` subscription if there was a previous value it gets
         flushed to the observable `o`.
@@ -53,23 +53,23 @@ extension ObservableType {
         - parameter send: 	`Bool` flag indicating where or not the `next` value should be
         «flushed» to the `observable` `o` or not.
         */
-        func flushNext(send: Bool) -> Void {
+        func flushNext(_ send: Bool) -> Void {
           nextDisposable.dispose()
           
-          guard let nV = nextValue where hasNextValue == true && send == true
+          guard let nV = nextValue, hasNextValue == true && send == true
             else { return }
           
           nextValue = nil
           hasNextValue = false
           
-          o.on(.Next(nV))
+          o.on(.next(nV))
         }
         
         let shouldThrottle = predicate($0)
         flushNext(false)
         
         if !shouldThrottle {
-          o.on(.Next($0))
+          o.on(.next($0))
           
           return
         }
@@ -84,7 +84,7 @@ extension ObservableType {
         }
         
         disposable.addDisposable(d)
-      }
+      })
       
       disposable.addDisposable(subscriptionDisposable)
       

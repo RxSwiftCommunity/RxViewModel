@@ -16,7 +16,7 @@ import RxSwift
 Implements behaviors that drive the UI, and/or adapts a domain model to be 
 user-presentable.
 */
-public class RxViewModel: NSObject {
+open class RxViewModel: NSObject {
   // MARK: Constants
   let throttleTime: TimeInterval = 2
   

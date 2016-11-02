@@ -96,7 +96,7 @@ open class RxViewModel: NSObject {
     return Observable.create { (o: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
-      var disposeKey: Bag<Disposable>.KeyType?
+      var disposeKey: CompositeDisposable.DisposeKey?
     
       let activeDisposable = signal.subscribe( onNext: { active in
         if active == true {
@@ -106,12 +106,12 @@ open class RxViewModel: NSObject {
               o.on(.error(error))
             }, onCompleted: {})
           
-          if let sd = signalDisposable { disposeKey = disposable.addDisposable(sd) }
+          if let sd = signalDisposable { disposeKey = disposable.insert(sd) }
         } else {
           if let sd = signalDisposable {
             sd.dispose()
             if let dk = disposeKey {
-              disposable.removeDisposable(dk)
+              disposable.remove(for: dk)
             }
           }
         }
@@ -121,7 +121,7 @@ open class RxViewModel: NSObject {
         o.on(.completed)
       })
       
-      disposable.addDisposable(activeDisposable)
+      disposable.insert(activeDisposable)
       
       return disposable
     }
@@ -146,11 +146,11 @@ open class RxViewModel: NSObject {
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
     let activeSignal = self.activeObservable.takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
-      observable.subscribeCompleted {
+      observable.subscribe(onCompleted: {
         defer { result.dispose() }
         
         result.on(.completed)
-      }
+      })
     })
     
     let combined = Observable.combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }

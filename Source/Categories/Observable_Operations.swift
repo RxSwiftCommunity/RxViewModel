@@ -39,7 +39,7 @@ extension ObservableType {
   public func throttle(interval: TimeInterval, valuesPassingTest predicate: @escaping (E) -> Bool) -> Observable<E> {
     return Observable.create { (o: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
-      let scheduler = ConcurrentDispatchQueueScheduler(globalConcurrentQueueQOS: .default)
+      let scheduler = ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global())
       let nextDisposable = SerialDisposable()
       var hasNextValue = false
       var nextValue: E?
@@ -79,14 +79,14 @@ extension ObservableType {
         
         let flush = flushNext
         let d = Observable<Int64>.timer(interval, scheduler: scheduler)
-          .subscribeNext { _ in
-          flush(true)
-        }
+          .subscribe(onNext: { _ in
+            flush(true)
+          })
         
-        disposable.addDisposable(d)
+        disposable.insert(d)
       })
       
-      disposable.addDisposable(subscriptionDisposable)
+      disposable.insert(subscriptionDisposable)
       
       return disposable
     }

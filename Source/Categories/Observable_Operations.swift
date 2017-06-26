@@ -37,7 +37,7 @@ returns `true`. Completion and errors are always forwarded immediately.
 */
 extension ObservableType {
   public func throttle(_ interval: TimeInterval, valuesPassingTest predicate: @escaping (E) -> Bool) -> Observable<E> {
-    return Observable.create { (o: AnyObserver<E>) -> Disposable in
+    return Observable.create { (obs: AnyObserver<E>) -> Disposable in
       let disposable = CompositeDisposable()
       let scheduler = ConcurrentDispatchQueueScheduler(qos: .default)
       let nextDisposable = SerialDisposable()
@@ -53,7 +53,7 @@ extension ObservableType {
         - parameter send: 	`Bool` flag indicating where or not the `next` value should be
         «flushed» to the `observable` `o` or not.
         */
-        func flushNext(_ send: Bool) -> Void {
+        func flushNext(_ send: Bool) {
           nextDisposable.dispose()
           
           guard let nV = nextValue, hasNextValue, send else { return }
@@ -61,14 +61,14 @@ extension ObservableType {
           nextValue = nil
           hasNextValue = false
 
-          o.on(.next(nV))
+          obs.on(.next(nV))
         }
         
         let shouldThrottle = predicate($0)
         flushNext(false)
         
         if !shouldThrottle {
-          o.on(.next($0))
+          obs.on(.next($0))
           
           return
         }
@@ -85,7 +85,6 @@ extension ObservableType {
         _ = disposable.insert(d)
       })
 
-        
       _ = disposable.insert(subscriptionDisposable)
       
       return disposable

@@ -81,7 +81,8 @@ class RxViewModelSpec: QuickSpec {
       } as Observable<String?>
       
       vm.forwardSignalWhileActive(input).subscribe(onNext: { value in
-        values.append(value!)
+        guard let value = value else { return }
+        values.append(value)
       }, onError: { _ in }, onCompleted: {
         completed = true
       }).disposed(by: self.disposable)
@@ -114,11 +115,13 @@ class RxViewModelSpec: QuickSpec {
       let subject = ReplaySubject<String>.create(bufferSize: 5)
       subject.on(.next("0"))
       
-      vm.throttleSignalWhileInactive(subject).subscribe( onNext: { value in
-        values.append(value)
-      }, onError: { _ in  }, onCompleted: {
-        completed = true
-      }).disposed(by: self.disposable)
+      vm.throttleSignalWhileInactive(subject)
+        .observeOn(MainScheduler.instance)
+        .subscribe(onNext: { value in
+            values.append(value)
+        }, onError: { _ in  }, onCompleted: {
+            completed = true
+        }).disposed(by: self.disposable)
       
       var expectedValues = ["0"]
       expect(values).to(equal(expectedValues))

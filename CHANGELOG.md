@@ -1,6 +1,7 @@
 # Change Log
 
 ## [Unreleased](https://github.com/RxSwiftCommunity/RxViewModel/tree/HEAD)
+- Support for Swift 3 & 4 [\#45](https://github.com/RxSwiftCommunity/RxViewModel/pull/45) ([freak4pc](https://github.com/freak4pc))
 
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.3...HEAD)
 

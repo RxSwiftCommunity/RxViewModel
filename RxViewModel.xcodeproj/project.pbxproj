@@ -117,6 +117,7 @@
 				TargetAttributes = {
 					1168B9AF1D2E081800784841 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -265,6 +266,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = es.estebantorr.RxViewModel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -282,6 +284,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = es.estebantorr.RxViewModel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

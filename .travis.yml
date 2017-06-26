@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode7.3
+osx_image: xcode8.3
 rvm:
   - "2.3.1"
 
@@ -11,9 +11,6 @@ env:
     - OS=ios
     - OS=macos
     - OS=tvos
-
-before_install:
-  - brew install swiftlint
 
 install:
   - gem install bundler --no-doc --no-ri

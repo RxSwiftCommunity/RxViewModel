@@ -1,9 +1,35 @@
 # Change Log
 
 ## [Unreleased](https://github.com/RxSwiftCommunity/RxViewModel/tree/HEAD)
-- Support for Swift 3 & 4 [\#45](https://github.com/RxSwiftCommunity/RxViewModel/pull/45) ([freak4pc](https://github.com/freak4pc))
 
-[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.3...HEAD)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.0.0...HEAD)
+
+**Closed issues:**
+
+- Update Swift 3 [\#44](https://github.com/RxSwiftCommunity/RxViewModel/issues/44)
+
+## [4.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/4.0.0) (2017-06-27)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.4...4.0.0)
+
+**Implemented enhancements:**
+
+- Better Carthage support [\#16](https://github.com/RxSwiftCommunity/RxViewModel/issues/16)
+
+**Fixed bugs:**
+
+- throttleSignalWhileInactive is sending events while the receiver is inactive [\#33](https://github.com/RxSwiftCommunity/RxViewModel/issues/33)
+
+**Closed issues:**
+
+- Retain cycle [\#31](https://github.com/RxSwiftCommunity/RxViewModel/issues/31)
+
+**Merged pull requests:**
+
+- Support for Swift 3 \(and Xcode 9.2 beta 2\) 🎉 [\#45](https://github.com/RxSwiftCommunity/RxViewModel/pull/45) ([freak4pc](https://github.com/freak4pc))
+- Better performance when boostraping [\#37](https://github.com/RxSwiftCommunity/RxViewModel/pull/37) ([esttorhe](https://github.com/esttorhe))
+
+## [3.1.4](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.4) (2016-07-08)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.3...3.1.4)
 
 **Implemented enhancements:**
 
@@ -13,6 +39,11 @@
 **Fixed bugs:**
 
 - RxViewModel is depending on an old version of RxCocoa [\#29](https://github.com/RxSwiftCommunity/RxViewModel/issues/29)
+
+**Merged pull requests:**
+
+- Restructures the project. [\#36](https://github.com/RxSwiftCommunity/RxViewModel/pull/36) ([esttorhe](https://github.com/esttorhe))
+- Adds swiftlint support [\#35](https://github.com/RxSwiftCommunity/RxViewModel/pull/35) ([esttorhe](https://github.com/esttorhe))
 
 ## [3.1.3](https://github.com/RxSwiftCommunity/RxViewModel/tree/3.1.3) (2016-06-06)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.2...3.1.3)

@@ -26,7 +26,7 @@ def sdks
   return {
     ios: 'iphonesimulator',
     macos: 'macosx',
-    tvos: 'appletvsimulator9.2'
+    tvos: 'appletvsimulator10.2'
   }
 end
 

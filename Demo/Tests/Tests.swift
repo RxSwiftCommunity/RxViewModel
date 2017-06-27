@@ -41,11 +41,11 @@ class RxViewModelSpec: QuickSpec {
       }
       
       var nextSteps = 0
-      vm.didBecomeActive.subscribeNext { model in
+      vm.didBecomeActive.subscribe(onNext: { model in
         expect(model).to(equal(vm))
         
         nextSteps += 1
-      }.addDisposableTo(self.disposable)
+      }).disposed(by: self.disposable)
       
       expect(nextSteps).to(equal(0))
       
@@ -74,17 +74,18 @@ class RxViewModelSpec: QuickSpec {
       var completed = false
       
       let input = Observable.create { o -> Disposable in
-        o.on(.Next("1"))
-        o.on(.Next("2"))
+        o.on(.next("1"))
+        o.on(.next("2"))
         
-        return AnonymousDisposable {}
+        return Disposables.create { }
       } as Observable<String?>
       
-      vm.forwardSignalWhileActive(input).subscribe( onNext: { value in
-        values.append(value!)
+      vm.forwardSignalWhileActive(input).subscribe(onNext: { value in
+        guard let value = value else { return }
+        values.append(value)
       }, onError: { _ in }, onCompleted: {
         completed = true
-      }).addDisposableTo(self.disposable)
+      }).disposed(by: self.disposable)
       
       var expectedValues = ["1", "2"]
       expect(values).to(equal(expectedValues))
@@ -112,19 +113,21 @@ class RxViewModelSpec: QuickSpec {
       var values = [String]()
       var completed = false
       let subject = ReplaySubject<String>.create(bufferSize: 5)
-      subject.on(.Next("0"))
+      subject.on(.next("0"))
       
-      vm.throttleSignalWhileInactive(subject).subscribe( onNext: { value in
-        values.append(value)
-      }, onError: { _ in  }, onCompleted: {
-        completed = true
-      }).addDisposableTo(self.disposable)
+      vm.throttleSignalWhileInactive(subject)
+        .observeOn(MainScheduler.instance)
+        .subscribe(onNext: { value in
+            values.append(value)
+        }, onError: { _ in  }, onCompleted: {
+            completed = true
+        }).disposed(by: self.disposable)
       
       var expectedValues = ["0"]
       expect(values).to(equal(expectedValues))
       expect(completed).to(beFalsy())
       
-      subject.on(.Next("1"))
+      subject.on(.next("1"))
       expectedValues = ["0", "1"]
       expect(values).to(equal(expectedValues))
       expect(completed).to(beFalsy())
@@ -132,8 +135,8 @@ class RxViewModelSpec: QuickSpec {
       vm.active = false
       
       // Since the VM is inactive, these events should be throttled.
-      subject.on(.Next("2"))
-      subject.on(.Next("3"))
+      subject.on(.next("2"))
+      subject.on(.next("3"))
       
       expect(values).to(equal(expectedValues))
       expect(completed).to(beFalsy())
@@ -143,7 +146,7 @@ class RxViewModelSpec: QuickSpec {
       expect(completed).to(beFalsy())
       
       // After reactivating, we should still get this event.
-      subject.on(.Next("4"))
+      subject.on(.next("4"))
       vm.active = true
       
       expectedValues = ["0", "1", "3", "4"]
@@ -151,13 +154,13 @@ class RxViewModelSpec: QuickSpec {
       expect(completed).to(beFalsy())
       
       // And now new events should be instant.
-      subject.on(.Next("5"))
+      subject.on(.next("5"))
       
       expectedValues = ["0", "1", "3", "4", "5"]
       expect(values).to(equal(expectedValues))
       expect(completed).to(beFalsy())
       
-      subject.on(.Completed)
+      subject.on(.completed)
       
       expect(values).to(equal(expectedValues))
       expect(completed).to(beTruthy())

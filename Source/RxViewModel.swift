@@ -18,7 +18,7 @@ user-presentable.
 */
 public class RxViewModel: NSObject {
   // MARK: Constants
-  let throttleTime: NSTimeInterval = 2
+  let throttleTime: TimeInterval = 2
   
   // MARK: Properties
   /// Scope dispose to avoid leaking
@@ -37,7 +37,7 @@ public class RxViewModel: NSObject {
       if newValue == _active { return }
       
       _active = newValue
-      self.activeObservable.on(.Next(_active))
+      self.activeObservable.on(.next(_active))
     }
   }
    
@@ -90,38 +90,38 @@ public class RxViewModel: NSObject {
   `signal`, and completes when the receiver is deallocated. If `signal` sends
   an error at any point, the returned signal will error out as well.
   */
-  public func forwardSignalWhileActive<T>(observable: Observable<T>) -> Observable<T> {
+  public func forwardSignalWhileActive<T>(_ observable: Observable<T>) -> Observable<T> {
     let signal = self.activeObservable
     
-    return Observable.create { (o: AnyObserver<T>) -> Disposable in
+    return Observable.create { (obs: AnyObserver<T>) -> Disposable in
       let disposable = CompositeDisposable()
       var signalDisposable: Disposable? = nil
-      var disposeKey: Bag<Disposable>.KeyType?
+      var disposeKey: CompositeDisposable.DisposeKey?
     
       let activeDisposable = signal.subscribe( onNext: { active in
         if active == true {
           signalDisposable = observable.subscribe( onNext: { value in
-            o.on(.Next(value))
+            obs.on(.next(value))
             }, onError: { error in
-              o.on(.Error(error))
+              obs.on(.error(error))
             }, onCompleted: {})
           
-          if let sd = signalDisposable { disposeKey = disposable.addDisposable(sd) }
+          if let sd = signalDisposable { disposeKey = disposable.insert(sd) }
         } else {
           if let sd = signalDisposable {
             sd.dispose()
             if let dk = disposeKey {
-              disposable.removeDisposable(dk)
+                disposable.remove(for: dk)
             }
           }
         }
       }, onError: { error in
-        o.on(.Error(error))
+        obs.on(.error(error))
       }, onCompleted: {
-        o.on(.Completed)
+        obs.on(.completed)
       })
-      
-      disposable.addDisposable(activeDisposable)
+
+      _ = disposable.insert(activeDisposable)
       
       return disposable
     }
@@ -141,25 +141,24 @@ public class RxViewModel: NSObject {
   receiver is inactive), and completes when `observable` completes or the receiver
   is deallocated.
   */
-  public func throttleSignalWhileInactive<T>(observable: Observable<T>) -> Observable<T> {
-//    observable.replay(1)
+  public func throttleSignalWhileInactive<T>(_ observable: Observable<T>) -> Observable<T> {
     let result = ReplaySubject<T>.create(bufferSize: 1)
     
-    let activeSignal = self.activeObservable.takeUntil(Observable.create { (o: AnyObserver<T>) -> Disposable in
-      observable.subscribeCompleted {
+    let activeSignal = self.activeObservable.takeUntil(Observable.create { (_: AnyObserver<T>) -> Disposable in
+      observable.subscribe(onCompleted: {
         defer { result.dispose() }
         
-        result.on(.Completed)
-      }
+        result.on(.completed)
+      })
     })
 
-    let _ = Observable.combineLatest(activeSignal, observable) { (active, o) -> (Bool?, T) in (active, o) }
-      .throttle(throttleTime) { (active: Bool?, value: T) -> Bool in
+    _ = Observable.combineLatest(activeSignal, observable) { (active, obs) -> (Bool?, T) in (active, obs) }
+      .throttle(throttleTime) { (active: Bool?, _: T) -> Bool in
       return active == false
     }.subscribe(onNext: { (value: (Bool?, T)) in
-      result.on(.Next(value.1))
+      result.on(.next(value.1))
     }, onError: { _ in }, onCompleted: {
-      result.on(.Completed)
+      result.on(.completed)
     })
 
     return result

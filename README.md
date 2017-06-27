@@ -58,7 +58,7 @@ pod install
 Just add the following to your [`Cartfile`](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile)
 
 ```swift
-github "esttorhe/RxViewModel"
+github "RxSwiftCommunity/RxViewModel"
 ```
 
 And run:
@@ -85,7 +85,7 @@ __Esteban Torres__
 
 ## License
 
-RxViewModel is available under the MIT license. See the LICENSE file for more info.
+`RxViewModel` is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 [rvm]:https://github.com/ReactiveCocoa/ReactiveViewModel
 [rxcocoa]:https://github.com/ReactiveX/RxSwift

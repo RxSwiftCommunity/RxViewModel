@@ -1,12 +1,19 @@
 # Change Log
 
-## [Unreleased](https://github.com/RxSwiftCommunity/RxViewModel/tree/HEAD)
+## [4.1.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/4.1.0) (2017-07-10)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.0.0...4.1.0)
 
-[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.0.0...HEAD)
+**Fixed bugs:**
+
+- Carthage fails to build [\#46](https://github.com/RxSwiftCommunity/RxViewModel/issues/46)
 
 **Closed issues:**
 
 - Update Swift 3 [\#44](https://github.com/RxSwiftCommunity/RxViewModel/issues/44)
+
+**Merged pull requests:**
+
+- 🐛 Fixes \#46 Carthage build [\#47](https://github.com/RxSwiftCommunity/RxViewModel/pull/47) ([esttorhe](https://github.com/esttorhe))
 
 ## [4.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/4.0.0) (2017-06-27)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/3.1.4...4.0.0)

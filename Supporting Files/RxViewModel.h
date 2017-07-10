@@ -6,7 +6,7 @@
 //  Copyright © 2016 Esteban Torres. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for RxViewModel.
 FOUNDATION_EXPORT double RxViewModelVersionNumber;

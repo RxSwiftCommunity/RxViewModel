@@ -1,5 +1,12 @@
 # Change Log
 
+## [5.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.0) (2017-07-25)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.1.0...5.0.0)
+
+**Merged pull requests:**
+
+- 🐛 Marks `RxViewModel` as `open` [\#51](https://github.com/RxSwiftCommunity/RxViewModel/pull/51) ([esttorhe](https://github.com/esttorhe))
+
 ## [4.1.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/4.1.0) (2017-07-10)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.0.0...4.1.0)
 

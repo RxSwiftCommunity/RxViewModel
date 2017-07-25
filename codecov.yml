@@ -1,7 +1,9 @@
 codecov:
-  branch: master
+  notify:
+    require_ci_to_pass: yes
 comment:
   layout: "header, changes, diff, sunburst"
+
 coverage:
   ignore:
   - Pods/.*
@@ -12,12 +14,10 @@ coverage:
   - .*Tests.swift
   - '# Add the folders containing your unit tests'
   - '# This ensures any test utility classes you create are also ignored'
-  - Demo/Tests/*
-  - Demo/Pods/*
-  - Demo/Build/*
+  - Demo/Demo/Tests/*
+  - Demo/Demo/Pods/*
+  - Demo/Demo/Build/*
+  - Demo/Demo/*
   status:
     patch: false
-notify:
-  webhook:
-    default:
-      url: https://codecov.io/webhooks/github
+

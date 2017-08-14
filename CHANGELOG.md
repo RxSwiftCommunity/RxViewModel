@@ -1,5 +1,12 @@
 # Change Log
 
+## [5.0.1](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.1) (2017-08-15)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.0.0...5.0.1)
+
+**Merged pull requests:**
+
+- Loosen RxSwift to `~> 3.5` instead of `~> 3.5.0` [\#55](https://github.com/RxSwiftCommunity/RxViewModel/pull/55) ([freak4pc](https://github.com/freak4pc))
+
 ## [5.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.0) (2017-07-25)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.1.0...5.0.0)
 

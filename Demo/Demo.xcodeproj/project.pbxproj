@@ -14,6 +14,8 @@
 		1168B9841D2DFF2A00784841 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1168B9821D2DFF2A00784841 /* LaunchScreen.storyboard */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		756AB5D36CB62D8D8D00E574 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608598474474AC13A4FBC8DB /* Pods_Demo.framework */; };
+		BDC046301FA23F7000318A5F /* RxViewModelTests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC0462F1FA23F7000318A5F /* RxViewModelTests_macOS.swift */; };
+		BDC0463C1FA23FA200318A5F /* RxViewModelTests_tvOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC0463B1FA23FA200318A5F /* RxViewModelTests_tvOS.swift */; };
 		FC2CB4759C6F69C41BA694B9 /* Pods_RxViewModelTests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BD04E8E3AF540328D99E40 /* Pods_RxViewModelTests_iOS.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,12 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		608598474474AC13A4FBC8DB /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76CB79D2A06C5E6F100B20FF /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		BDC0462D1FA23F7000318A5F /* RxViewModelTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RxViewModelTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC0462F1FA23F7000318A5F /* RxViewModelTests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxViewModelTests_macOS.swift; sourceTree = "<group>"; };
+		BDC046311FA23F7000318A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDC046391FA23FA200318A5F /* RxViewModelTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RxViewModelTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC0463B1FA23FA200318A5F /* RxViewModelTests_tvOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxViewModelTests_tvOS.swift; sourceTree = "<group>"; };
+		BDC0463D1FA23FA200318A5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +71,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC2CB4759C6F69C41BA694B9 /* Pods_RxViewModelTests_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC0462A1FA23F7000318A5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC046361FA23FA200318A5F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +110,8 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				1168B9781D2DFF2A00784841 /* Demo */,
+				BDC0462E1FA23F7000318A5F /* RxViewModelTests-macOS */,
+				BDC0463A1FA23FA200318A5F /* RxViewModelTests-tvOS */,
 				607FACD11AFB9204008FA782 /* Products */,
 				D98112AE03625A0DC869A987 /* Frameworks */,
 				CABAF4C0CD41289F3BFD1000 /* Pods */,
@@ -99,6 +123,8 @@
 			children = (
 				607FACE51AFB9204008FA782 /* RxViewModelTests-iOS.xctest */,
 				1168B9771D2DFF2A00784841 /* Demo.app */,
+				BDC0462D1FA23F7000318A5F /* RxViewModelTests-macOS.xctest */,
+				BDC046391FA23FA200318A5F /* RxViewModelTests-tvOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,6 +154,24 @@
 				20BB4B877D91281887264223 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		BDC0462E1FA23F7000318A5F /* RxViewModelTests-macOS */ = {
+			isa = PBXGroup;
+			children = (
+				BDC0462F1FA23F7000318A5F /* RxViewModelTests_macOS.swift */,
+				BDC046311FA23F7000318A5F /* Info.plist */,
+			);
+			path = "RxViewModelTests-macOS";
+			sourceTree = "<group>";
+		};
+		BDC0463A1FA23FA200318A5F /* RxViewModelTests-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				BDC0463B1FA23FA200318A5F /* RxViewModelTests_tvOS.swift */,
+				BDC0463D1FA23FA200318A5F /* Info.plist */,
+			);
+			path = "RxViewModelTests-tvOS";
 			sourceTree = "<group>";
 		};
 		CABAF4C0CD41289F3BFD1000 /* Pods */ = {
@@ -194,13 +238,47 @@
 			productReference = 607FACE51AFB9204008FA782 /* RxViewModelTests-iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BDC0462C1FA23F7000318A5F /* RxViewModelTests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDC046341FA23F7000318A5F /* Build configuration list for PBXNativeTarget "RxViewModelTests-macOS" */;
+			buildPhases = (
+				BDC046291FA23F7000318A5F /* Sources */,
+				BDC0462A1FA23F7000318A5F /* Frameworks */,
+				BDC0462B1FA23F7000318A5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RxViewModelTests-macOS";
+			productName = "RxViewModelTests-macOS";
+			productReference = BDC0462D1FA23F7000318A5F /* RxViewModelTests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BDC046381FA23FA200318A5F /* RxViewModelTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDC0463E1FA23FA200318A5F /* Build configuration list for PBXNativeTarget "RxViewModelTests-tvOS" */;
+			buildPhases = (
+				BDC046351FA23FA200318A5F /* Sources */,
+				BDC046361FA23FA200318A5F /* Frameworks */,
+				BDC046371FA23FA200318A5F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RxViewModelTests-tvOS";
+			productName = "RxViewModelTests-tvOS";
+			productReference = BDC046391FA23FA200318A5F /* RxViewModelTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
@@ -212,6 +290,14 @@
 						CreatedOnToolsVersion = 6.3.1;
 						LastSwiftMigration = 0900;
 						TestTargetID = 1168B9761D2DFF2A00784841;
+					};
+					BDC0462C1FA23F7000318A5F = {
+						CreatedOnToolsVersion = 9.0.1;
+						ProvisioningStyle = Automatic;
+					};
+					BDC046381FA23FA200318A5F = {
+						CreatedOnToolsVersion = 9.0.1;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -230,6 +316,8 @@
 			targets = (
 				1168B9761D2DFF2A00784841 /* Demo */,
 				607FACE41AFB9204008FA782 /* RxViewModelTests-iOS */,
+				BDC0462C1FA23F7000318A5F /* RxViewModelTests-macOS */,
+				BDC046381FA23FA200318A5F /* RxViewModelTests-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -246,6 +334,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		607FACE31AFB9204008FA782 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC0462B1FA23F7000318A5F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC046371FA23FA200318A5F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -378,6 +480,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC046291FA23F7000318A5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDC046301FA23F7000318A5F /* RxViewModelTests_macOS.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDC046351FA23FA200318A5F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDC0463C1FA23FA200318A5F /* RxViewModelTests_tvOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +697,98 @@
 			};
 			name = Release;
 		};
+		BDC046321FA23F7000318A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "RxViewModelTests-macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ayastrebov.iconstest.RxViewModelTests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		BDC046331FA23F7000318A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "RxViewModelTests-macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ayastrebov.iconstest.RxViewModelTests-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
+		BDC0463F1FA23FA200318A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "RxViewModelTests-tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ayastrebov.iconstest.RxViewModelTests-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		BDC046401FA23FA200318A5F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "RxViewModelTests-tvOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ayastrebov.iconstest.RxViewModelTests-tvOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -605,6 +815,24 @@
 			buildConfigurations = (
 				607FACF31AFB9204008FA782 /* Debug */,
 				607FACF41AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDC046341FA23F7000318A5F /* Build configuration list for PBXNativeTarget "RxViewModelTests-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDC046321FA23F7000318A5F /* Debug */,
+				BDC046331FA23F7000318A5F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDC0463E1FA23FA200318A5F /* Build configuration list for PBXNativeTarget "RxViewModelTests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDC0463F1FA23FA200318A5F /* Debug */,
+				BDC046401FA23FA200318A5F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

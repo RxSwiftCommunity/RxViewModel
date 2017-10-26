@@ -25,6 +25,20 @@ target 'Demo' do
   end
 end
 
+target 'RxViewModelTests-tvOS' do
+    platform :tvos, '9.0'
+    library
+    
+    test_pods
+end
+
+target 'RxViewModelTests-macOS' do
+    platform :osx, '10.10'
+    library
+    
+    test_pods
+end
+
 post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.new_shell_script_build_phase.shell_script = "mkdir -p $PODS_CONFIGURATION_BUILD_DIR/#{target.name}"

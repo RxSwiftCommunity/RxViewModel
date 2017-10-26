@@ -14,27 +14,24 @@ def library
 end
 
 target 'Demo' do
-  platform :ios, '8.0'
+  platform :ios, '9.0'
   library
 
   target 'RxViewModelTests-iOS' do
-      platform :ios, '8.0'
+      platform :ios, '9.0'
       inherit! :search_paths
 
       test_pods
   end
 end
 
-target 'RxViewModelTests-tvOS' do
-    platform :tvos, '9.0'
-    library
-
-    test_pods
-end
-
-target 'RxViewModelTests-macOS' do
-    platform :osx, '10.10'
-    library
-
-    test_pods
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.new_shell_script_build_phase.shell_script = "mkdir -p $PODS_CONFIGURATION_BUILD_DIR/#{target.name}"
+        target.build_configurations.each do |config|
+            config.build_settings['SWIFT_VERSION'] = '4.0'
+            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+            config.build_settings['CONFIGURATION_BUILD_DIR'] = '$PODS_CONFIGURATION_BUILD_DIR'
+        end
+    end
 end

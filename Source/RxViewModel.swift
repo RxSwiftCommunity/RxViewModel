@@ -28,7 +28,7 @@ open class RxViewModel: NSObject {
   private dynamic var _active: Bool = false
   
   /// Public «active» variable
-  public dynamic var active: Bool {
+  @objc public dynamic var active: Bool {
     get { return _active }
     set {
       // Skip KVO notifications when the property hasn't actually changed. This is

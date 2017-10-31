@@ -1,11 +1,33 @@
 # Change Log
 
-## [5.0.1](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.1) (2017-08-15)
-[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.0.0...5.0.1)
+## [5.1.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.1.0) (2017-10-31)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.0.1...5.1.0)
+
+**Fixed bugs:**
+
+- Update podspec on cocoapods repo [\#53](https://github.com/RxSwiftCommunity/RxViewModel/issues/53)
+
+**Closed issues:**
+
+- Update with RXSwift 4 [\#58](https://github.com/RxSwiftCommunity/RxViewModel/issues/58)
+- Unable to use when inherited [\#52](https://github.com/RxSwiftCommunity/RxViewModel/issues/52)
 
 **Merged pull requests:**
 
-- Loosen RxSwift to `~> 3.5` instead of `~> 3.5.0` [\#55](https://github.com/RxSwiftCommunity/RxViewModel/pull/55) ([freak4pc](https://github.com/freak4pc))
+- - fix build error [\#61](https://github.com/RxSwiftCommunity/RxViewModel/pull/61) ([AYastrebov](https://github.com/AYastrebov))
+- Support Swift 4 [\#60](https://github.com/RxSwiftCommunity/RxViewModel/pull/60) ([esttorhe](https://github.com/esttorhe))
+
+## [5.0.1](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.1) (2017-08-15)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.0.0...5.0.1)
+
+**Fixed bugs:**
+
+- Can't use RxSwift 3.6.1 [\#54](https://github.com/RxSwiftCommunity/RxViewModel/issues/54)
+- You should make RxViewModel class "open" [\#50](https://github.com/RxSwiftCommunity/RxViewModel/issues/50)
+
+**Merged pull requests:**
+
+- Loosen RxSwift to `~\> 3.5` instead of `~\> 3.5.0` [\#55](https://github.com/RxSwiftCommunity/RxViewModel/pull/55) ([freak4pc](https://github.com/freak4pc))
 
 ## [5.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.0.0) (2017-07-25)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/4.1.0...5.0.0)

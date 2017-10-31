@@ -25,7 +25,7 @@ open class RxViewModel: NSObject {
   var disposeBag = DisposeBag()
     
   /// Underlying variable that we'll listen to for changes
-  private dynamic var _active: Bool = false
+  @objc private dynamic var _active: Bool = false
   
   /// Public «active» variable
   @objc public dynamic var active: Bool {

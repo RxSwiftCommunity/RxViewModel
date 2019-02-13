@@ -22,7 +22,7 @@ open class RxViewModel: NSObject {
   
   // MARK: Properties
   /// Scope dispose to avoid leaking
-  var disposeBag = DisposeBag()
+  public private(set) var disposeBag = DisposeBag()
     
   /// Underlying variable that we'll listen to for changes
   @objc private dynamic var _active: Bool = false

@@ -37,3 +37,6 @@ gem 'rake'
 
 # Travis CI client
 gem 'travis'
+
+# Ruby FFI
+gem "ffi", ">= 1.9.24"

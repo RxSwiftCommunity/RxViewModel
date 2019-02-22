@@ -13,7 +13,7 @@ env:
     - OS=tvos
 
 install:
-  - gem install bundler --no-doc --no-ri
+  - gem install bundler
   - bundle install --path="./.vendor/bundle"
   - rake bootstrap
 

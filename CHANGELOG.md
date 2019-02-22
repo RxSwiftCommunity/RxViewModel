@@ -1,5 +1,12 @@
 # Change Log
 
+## [6.0.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/6.0.0) (2019-02-22)
+[Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.1.0...6.0.0)
+
+**Closed issues:**
+
+- Unable to use when inherited [\#52](https://github.com/RxSwiftCommunity/RxViewModel/issues/52)
+
 ## [5.1.0](https://github.com/RxSwiftCommunity/RxViewModel/tree/5.1.0) (2017-10-31)
 [Full Changelog](https://github.com/RxSwiftCommunity/RxViewModel/compare/5.0.1...5.1.0)
 
@@ -10,7 +17,6 @@
 **Closed issues:**
 
 - Update with RXSwift 4 [\#58](https://github.com/RxSwiftCommunity/RxViewModel/issues/58)
-- Unable to use when inherited [\#52](https://github.com/RxSwiftCommunity/RxViewModel/issues/52)
 
 **Merged pull requests:**
 

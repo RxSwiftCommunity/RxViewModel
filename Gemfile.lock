@@ -97,7 +97,7 @@ GEM
     highline (1.7.10)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
-    json (2.2.0)
+    json (2.3.1)
     label (1.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)

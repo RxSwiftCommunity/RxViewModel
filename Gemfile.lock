@@ -85,7 +85,8 @@ GEM
       multi_json (~> 1.0)
       net-http-persistent (~> 2.9)
       net-http-pipeline
-    git (1.5.0)
+    git (1.11.0)
+      rchardet (~> 1.8)
     github_changelog_generator (1.14.3)
       activesupport
       faraday-http-cache
@@ -117,6 +118,7 @@ GEM
       websocket (~> 1.0)
     rainbow (3.0.0)
     rake (12.3.3)
+    rchardet (1.8.0)
     redcarpet (3.4.0)
     retriable (2.1.0)
     rouge (2.0.7)
